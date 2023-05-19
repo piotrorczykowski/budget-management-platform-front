@@ -1,0 +1,15 @@
+#loginPageWrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+#leftPanel {
+    height: 100vh;
+    width: 50vw;
+}
+
+#rightPanel {
+    height: 100vh;
+    width: 50vw;
+}

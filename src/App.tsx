@@ -1,7 +1,7 @@
-import React from 'react'
+import LoginPage from './pages/LoginPage'
 
 function App() {
-    return <div></div>
+    return <LoginPage />
 }
 
 export default App
