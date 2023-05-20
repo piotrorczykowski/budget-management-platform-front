@@ -3,7 +3,6 @@ import WelcomePanel from '../../components/welcomePanel/WelcomePanel'
 import './HomePage.css'
 
 function HomePage() {
-    console.log('Home page')
     return (
         <div id="homePageWrapper">
             <div id="leftPanel">

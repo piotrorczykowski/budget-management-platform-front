@@ -49,6 +49,20 @@
     box-sizing: border-box;
 }
 
+#passwordField {
+    position: relative;
+}
+
+#icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 65px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
 #submitBtn {
     background-color: #040605;
     color: #f0f0f0;
