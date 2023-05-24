@@ -1,14 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
-import { AxiosResponse } from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import api from '../../api/axios'
 import './Login.css'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
+import { useLogin } from '../../hooks/useLogin'
 
 export default function Login() {
-    const navigate = useNavigate()
     const showErrorToast = (message: string) => {
         toast.error(message, {
             position: toast.POSITION.BOTTOM_CENTER,
@@ -19,30 +17,17 @@ export default function Login() {
     }
     const clearAllToasts = () => toast.dismiss()
 
-    const [values, setValues] = useState({
-        username: '',
-        password: '',
-        showPassword: false,
-    })
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
+    const { login, error, isLoading } = useLogin()
 
     const handleSubmit = async (event: SyntheticEvent) => {
-        clearAllToasts()
         event.preventDefault()
-
-        const { username, password } = document.forms[0]
-        const usernameValue: string = username.value
-        const passwordValue: string = password.value
-
-        try {
-            const res: AxiosResponse = await api.post('/auth/signIn', {
-                username: usernameValue,
-                password: passwordValue,
-            })
-
-            localStorage.setItem('accessToken', res.data.accessToken)
-            navigate('/')
-        } catch (e: any) {
-            showErrorToast('User not found!')
+        clearAllToasts()
+        await login(username, password)
+        if (error) {
+            showErrorToast(error)
         }
     }
 
@@ -64,46 +49,34 @@ export default function Login() {
                     placeholder="Enter your username"
                     name="username"
                     required
-                    onChange={(e) =>
-                        setValues({ ...values, username: e.target.value })
-                    }
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
                 />
 
                 <div id="passwordField">
                     <input
                         className="inputField"
-                        type={values.showPassword ? 'text' : 'password'}
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Enter your password"
                         name="password"
                         required
-                        onChange={(e) =>
-                            setValues({ ...values, password: e.target.value })
-                        }
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                     />
-                    {values.showPassword ? (
+                    {showPassword ? (
                         <AiFillEyeInvisible
                             id="icon"
-                            onClick={() =>
-                                setValues({
-                                    ...values,
-                                    showPassword: !values.showPassword,
-                                })
-                            }
+                            onClick={() => setShowPassword(!showPassword)}
                         />
                     ) : (
                         <AiFillEye
                             id="icon"
-                            onClick={() =>
-                                setValues({
-                                    ...values,
-                                    showPassword: !values.showPassword,
-                                })
-                            }
+                            onClick={() => setShowPassword(!showPassword)}
                         />
                     )}
                 </div>
 
-                <button id="submitBtn" type="submit">
+                <button id="submitBtn" disabled={isLoading} type="submit">
                     Log in
                 </button>
             </form>
