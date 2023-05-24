@@ -4,6 +4,7 @@ import Login from '../components/login/Login'
 import HomePage from '../pages/homePage/HomePage'
 import SignUp from '../components/signUp/SignUp'
 import ForgotPassword from '../components/forgotPassword/ForgotPassword'
+import NotFoundPage from '../pages/notFoundPage/NotFoundPage'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
@@ -28,6 +29,7 @@ const Router = () => {
                     element={RedirectAuthUser(<ForgotPassword />)}
                 />
             </Route>
+            <Route path="*" element={<NotFoundPage />}></Route>
         </Routes>
     )
 }
