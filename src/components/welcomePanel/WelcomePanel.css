@@ -1,0 +1,32 @@
+#welcomePanelWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #040605;
+    height: 100vh;
+}
+
+#appName {
+    color: #ffffff;
+    font-size: 100px;
+    font-weight: 600;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 75%;
+}
+
+#appLogo {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 600;
+    align-self: self-start;
+    padding: 0.5em;
+}
+
+#logo {
+    color: #ffffff;
+    font-size: 50px;
+    margin-right: 0.5em;
+}
