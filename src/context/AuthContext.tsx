@@ -1,15 +1,14 @@
 import { createContext, useEffect, useReducer } from 'react'
+import { Action, ActionType } from './@types'
 
-type Action = { type: 'LOGIN'; payload: any } | { type: 'LOGOUT' }
-
-export const AuthContext = createContext(null)
+export const AuthContext = createContext<null>(null)
 
 export const authReducer = (state: any, action: Action) => {
     switch (action.type) {
-        case 'LOGIN':
-            return { user: action.payload }
-        case 'LOGOUT':
-            return { user: null }
+        case ActionType.LOGIN:
+            return { accessToken: action.payload }
+        case ActionType.LOGOUT:
+            return { accessToken: null }
         default:
             return state
     }
@@ -30,7 +29,7 @@ export const AuthContextProvider = ({
         ) as string
 
         if (accessToken) {
-            dispatch({ type: 'LOGIN', payload: accessToken })
+            dispatch({ type: ActionType.LOGIN, payload: accessToken })
         }
     }, [])
 
