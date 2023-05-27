@@ -1,22 +1,13 @@
 import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './Login.module.css'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { useLogin } from '../../hooks/useLogin'
+import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 
 export default function Login() {
-    const showErrorToast = (message: string) => {
-        toast.error(message, {
-            position: toast.POSITION.BOTTOM_CENTER,
-            autoClose: 500,
-            pauseOnHover: false,
-            hideProgressBar: true,
-        })
-    }
-    const clearAllToasts = () => toast.dismiss()
-
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
@@ -38,16 +29,21 @@ export default function Login() {
                     Sign up
                 </Link>
             </div>
-            <form id={styles.loginForm} onSubmit={handleSubmit}>
+            <form
+                id={styles.loginForm}
+                onSubmit={handleSubmit}
+                autoComplete="off"
+            >
                 <div>
                     <p id={styles.mainMessage}>Welcome to BMP</p>
-                    <p id={styles.secondMessage}>Please login in</p>
+                    <p id={styles.secondMessage}>Please login</p>
                 </div>
                 <input
                     className={styles.inputField}
                     type="text"
                     placeholder="Username"
                     name="username"
+                    autoComplete="new-username"
                     required
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
@@ -59,6 +55,7 @@ export default function Login() {
                         type={showPassword ? 'text' : 'password'}
                         placeholder="Password"
                         name="password"
+                        autoComplete="new-password"
                         required
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
@@ -81,7 +78,7 @@ export default function Login() {
                     disabled={isLoading}
                     type="submit"
                 >
-                    Log in
+                    Login
                 </button>
             </form>
             <div id={styles.forgotPassword}>
