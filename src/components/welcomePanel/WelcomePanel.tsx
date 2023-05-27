@@ -1,13 +1,13 @@
 import { MdOutlineToll } from 'react-icons/md'
-import './WelcomePanel.css'
+import styles from './WelcomePanel.module.css'
 
 export default function WelcomePanel() {
     return (
-        <div id="welcomePanelWrapper">
-            <span id="appLogo">
-                <MdOutlineToll id="logo" /> BMP
+        <div id={styles.welcomePanelWrapper}>
+            <span id={styles.appLogo}>
+                <MdOutlineToll id={styles.logo} /> BMP
             </span>
-            <p id="appName">
+            <p id={styles.appName}>
                 BUDGET
                 <br />
                 MANAGEMENT

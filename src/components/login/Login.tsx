@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import './Login.css'
+import styles from './Login.module.css'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { useLogin } from '../../hooks/useLogin'
 
@@ -32,32 +32,32 @@ export default function Login() {
     }
 
     return (
-        <div id="loginWrapper">
-            <div id="signUp">
-                <Link id="signUpLink" to="/signUp">
+        <div id={styles.loginWrapper}>
+            <div id={styles.signUp}>
+                <Link id={styles.signUpLink} to="/signUp">
                     Sign up
                 </Link>
             </div>
-            <form id="loginForm" onSubmit={handleSubmit}>
+            <form id={styles.loginForm} onSubmit={handleSubmit}>
                 <div>
-                    <p id="mainMessage">Welcome to BMP</p>
-                    <p id="secondMessage">Please login in</p>
+                    <p id={styles.mainMessage}>Welcome to BMP</p>
+                    <p id={styles.secondMessage}>Please login in</p>
                 </div>
                 <input
-                    className="inputField"
+                    className={styles.inputField}
                     type="text"
-                    placeholder="Enter your username"
+                    placeholder="Username"
                     name="username"
                     required
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
                 />
 
-                <div id="passwordField">
+                <div id={styles.passwordField}>
                     <input
-                        className="inputField"
+                        className={styles.inputField}
                         type={showPassword ? 'text' : 'password'}
-                        placeholder="Enter your password"
+                        placeholder="Password"
                         name="password"
                         required
                         onChange={(e) => setPassword(e.target.value)}
@@ -65,23 +65,27 @@ export default function Login() {
                     />
                     {showPassword ? (
                         <AiFillEyeInvisible
-                            id="icon"
+                            id={styles.icon}
                             onClick={() => setShowPassword(!showPassword)}
                         />
                     ) : (
                         <AiFillEye
-                            id="icon"
+                            id={styles.icon}
                             onClick={() => setShowPassword(!showPassword)}
                         />
                     )}
                 </div>
 
-                <button id="submitBtn" disabled={isLoading} type="submit">
+                <button
+                    id={styles.submitBtn}
+                    disabled={isLoading}
+                    type="submit"
+                >
                     Log in
                 </button>
             </form>
-            <div id="forgotPassword">
-                <Link id="forgotPasswordLink" to="/forgotPassword">
+            <div id={styles.forgotPassword}>
+                <Link id={styles.forgotPasswordLink} to="/forgotPassword">
                     Forgot your password?
                 </Link>
             </div>
