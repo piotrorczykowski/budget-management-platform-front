@@ -1,27 +1,52 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import { clearAllToasts } from '../../utils/toastUtils'
+import {
+    clearAllToasts,
+    showErrorToast,
+    showSuccessToast,
+} from '../../utils/toastUtils'
 import { ToastContainer } from 'react-toastify'
 import styles from './SignUp.module.css'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import { sleep } from '../../utils/otherUtils'
 
 export default function SignUp() {
     const [username, setUsername] = useState('')
+    const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    // const { login, error, isLoading } = useLogin()
+    const [loading, setLoading] = useState(false)
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (event: SyntheticEvent) => {
-        event.preventDefault()
         clearAllToasts()
-        // await login(username, password)
-        // if (error) {
-        //     showErrorToast(error)
-        // }
+        event.preventDefault()
+
+        try {
+            await api.post(ENDPOINTS.signUp, {
+                username,
+                fullName,
+                email,
+                password,
+            })
+
+            setLoading(false)
+
+            showSuccessToast('Account created successfully')
+            await sleep(1800)
+
+            navigate('/signIn')
+        } catch (e: any) {
+            showErrorToast(e.response.data.Error)
+            setLoading(false)
+        }
     }
 
     return (
@@ -50,6 +75,17 @@ export default function SignUp() {
                     required
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
+                />
+
+                <input
+                    className={styles.inputField}
+                    type="text"
+                    placeholder="FullName"
+                    name="fullName"
+                    autoComplete="new-fullName"
+                    required
+                    onChange={(e) => setFullName(e.target.value)}
+                    value={fullName}
                 />
 
                 <input
@@ -90,7 +126,7 @@ export default function SignUp() {
                 <div id={styles.passwordField}>
                     <input
                         className={styles.inputField}
-                        type={showPassword ? 'text' : 'password'}
+                        type={showConfirmPassword ? 'text' : 'password'}
                         placeholder="Confirm Password"
                         name="confirmPassword"
                         autoComplete="new-confirmPassword"
@@ -115,11 +151,7 @@ export default function SignUp() {
                     )}
                 </div>
 
-                <button
-                    id={styles.submitBtn}
-                    // disabled={isLoading}
-                    type="submit"
-                >
+                <button id={styles.submitBtn} disabled={loading} type="submit">
                     Register
                 </button>
             </form>
