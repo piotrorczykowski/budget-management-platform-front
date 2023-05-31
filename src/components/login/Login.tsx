@@ -38,18 +38,27 @@ export default function Login() {
                     <p id={styles.mainMessage}>Welcome to BMP</p>
                     <p id={styles.secondMessage}>Please login</p>
                 </div>
-                <input
-                    className={styles.inputField}
-                    type="text"
-                    placeholder="Username"
-                    name="username"
-                    autoComplete="new-username"
-                    required
-                    onChange={(e) => setUsername(e.target.value)}
-                    value={username}
-                />
 
-                <div id={styles.passwordField}>
+                <div className={styles.inputWrapper}>
+                    <label className={styles.label} htmlFor="username">
+                        Username
+                    </label>
+                    <input
+                        className={styles.inputField}
+                        type="text"
+                        placeholder="Username"
+                        name="username"
+                        autoComplete="new-username"
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
+                    />
+                </div>
+
+                <div id={styles.passwordField} className={styles.inputWrapper}>
+                    <label className={styles.label} htmlFor="password">
+                        Password
+                    </label>
                     <input
                         className={styles.inputField}
                         type={showPassword ? 'text' : 'password'}

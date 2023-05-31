@@ -39,7 +39,7 @@
     justify-self: flex-start;
     width: 50vw;
     text-align: end;
-    margin-top: 100px;
+    margin-top: 60px;
 }
 
 #loginLink {
@@ -55,16 +55,27 @@
 }
 
 #mainMessage {
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 600;
-    margin: 0;
-    margin-top: 20px;
+    margin: 20px 0 0 0;
+    text-align: center;
 }
 
 #secondMessage {
-    font-size: 30px;
-    font-weight: 600;
-    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.label {
+    font-weight: 500;
 }
 
 .inputField {
@@ -72,7 +83,7 @@
     font-size: 20px;
     font-weight: 500;
     padding: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
     width: 25vw;
     border-radius: 5px;
     box-sizing: border-box;

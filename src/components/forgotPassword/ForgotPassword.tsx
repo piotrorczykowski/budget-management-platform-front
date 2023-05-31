@@ -45,7 +45,7 @@ export default function ForgotPassword() {
                     No worries, we'll send you reset instructions
                 </p>
 
-                <div id={styles.emailInput}>
+                <div className={styles.inputWrapper}>
                     <label className={styles.label} htmlFor="email">
                         Email
                     </label>
