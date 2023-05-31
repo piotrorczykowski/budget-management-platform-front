@@ -1,0 +1,109 @@
+#signUpWrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    height: 100vh;
+    width: 50vw;
+}
+
+#submittedForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    margin-top: 15vh;
+    padding: 50px;
+}
+
+#mainSuccessMessage {
+    font-size: 35px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+}
+
+#secondSuccessMessage {
+    font-size: 22px;
+    text-align: center;
+    margin: 30px 0 0 0;
+}
+
+#email {
+    display: block;
+    font-weight: 500;
+    margin-top: 40px;
+}
+
+#login {
+    justify-self: flex-start;
+    width: 50vw;
+    text-align: end;
+    margin-top: 100px;
+}
+
+#loginLink {
+    padding-right: 120px;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+#signUpForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#mainMessage {
+    font-size: 50px;
+    font-weight: 600;
+    margin: 0;
+    margin-top: 20px;
+}
+
+#secondMessage {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.inputField {
+    background-color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 20px;
+    margin-top: 30px;
+    width: 25vw;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#passwordField {
+    position: relative;
+}
+
+#icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 65px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.errorMessage {
+    color: red;
+    font-weight: 600;
+    margin: 5px 0 0 0;
+}
+
+.customBtn {
+    background-color: #040605;
+    color: #f0f0f0;
+    font-size: 30px;
+    font-weight: 600;
+    padding: 10px;
+    margin-top: 40px;
+    width: 25vw;
+    border-radius: 5px;
+}
