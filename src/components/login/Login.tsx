@@ -82,7 +82,10 @@ export default function Login() {
                 </button>
             </form>
             <div id={styles.forgotPassword}>
-                <Link id={styles.forgotPasswordLink} to="/forgotPassword">
+                <Link
+                    // id={styles.forgotPasswordLink}
+                    to="/forgotPassword"
+                >
                     Forgot your password?
                 </Link>
             </div>
