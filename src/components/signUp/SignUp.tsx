@@ -26,6 +26,7 @@ export default function SignUp() {
     const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
         clearAllToasts()
+        setLoading(true)
 
         const errors: FormInputsType = await validate(formValues)
         setFormErrors(errors)
@@ -35,10 +36,10 @@ export default function SignUp() {
         )
 
         if (!isFormValid) {
+            setLoading(false)
             return
         }
 
-        setLoading(true)
         try {
             await api.post(ENDPOINTS.signUp, {
                 username: formValues.username,
@@ -47,10 +48,9 @@ export default function SignUp() {
                 password: formValues.password,
             })
 
-            setLoading(false)
-
             showSuccessToast('Account created successfully')
             setIsSubmit(true)
+            setLoading(false)
         } catch (e: any) {
             showErrorToast(e.response.data.Error)
             setLoading(false)
