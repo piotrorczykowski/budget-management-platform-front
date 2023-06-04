@@ -7,6 +7,7 @@ import { showErrorToast } from '../../utils/toastUtils'
 import styles from './EmailVerification.module.css'
 
 export default function EmailVerification() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [searchParams, setSearchParams] = useSearchParams()
     const [isEmailVerified, setIsEmailVerified] = useState(false)
     const dataFetchedRef = useRef(false)
@@ -32,6 +33,7 @@ export default function EmailVerification() {
         verifiedEmail().then((isEmailVerified: boolean) => {
             setIsEmailVerified(isEmailVerified)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
