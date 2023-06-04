@@ -19,7 +19,9 @@ export default function ResetPassword() {
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
 
-    const [formValues, setFormValues] = useState(InitialValues)
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
     const [formErrors, setFormErrors] = useState(InitialValues)
     const [isPasswordChanged, setIsPasswordChanged] = useState(false)
 
@@ -32,7 +34,10 @@ export default function ResetPassword() {
         clearAllToasts()
         setLoading(true)
 
-        const errors: FormInputsType = await validate(formValues)
+        const errors: FormInputsType = await validate({
+            password,
+            confirmPassword,
+        })
         setFormErrors(errors)
 
         const isFormValid: boolean = Object.values(errors).every(
@@ -48,7 +53,7 @@ export default function ResetPassword() {
         try {
             await api.post(ENDPOINTS.resetPassword, {
                 token: token,
-                password: formValues.password,
+                password: password,
             })
 
             showSuccessToast('Password changed successfully')
@@ -90,11 +95,6 @@ export default function ResetPassword() {
         }
 
         return errors
-    }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormValues({ ...formValues, [name]: value })
     }
 
     return (
@@ -142,8 +142,8 @@ export default function ResetPassword() {
                                 name="password"
                                 autoComplete="new-password"
                                 required
-                                onChange={handleChange}
-                                value={formValues.password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                             />
                             {showPassword ? (
                                 <AiFillEyeInvisible
@@ -181,8 +181,10 @@ export default function ResetPassword() {
                                 name="confirmPassword"
                                 autoComplete="new-confirmPassword"
                                 required
-                                onChange={handleChange}
-                                value={formValues.confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                value={confirmPassword}
                             />
                             {showConfirmPassword ? (
                                 <AiFillEyeInvisible
