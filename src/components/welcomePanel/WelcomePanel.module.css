@@ -6,6 +6,10 @@
     height: 100vh;
 }
 
+#homePageLink {
+    align-self: self-start;
+}
+
 #appName {
     color: #ffffff;
     font-size: 100px;

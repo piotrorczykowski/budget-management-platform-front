@@ -100,9 +100,19 @@ export default function SignUp() {
         setFormValues({ ...formValues, [name]: value })
     }
 
-    const resendVerificationEmail = () => {
-        // TODO add resending email
-        console.log('RESEND EMAIL')
+    const resendVerificationEmail = async () => {
+        setLoading(true)
+
+        try {
+            await api.post(ENDPOINTS.resendActivationEmail, {
+                email: formValues.email,
+            })
+
+            setLoading(false)
+        } catch (e: any) {
+            showErrorToast(e.response.data.Error)
+            setLoading(false)
+        }
     }
 
     return (
