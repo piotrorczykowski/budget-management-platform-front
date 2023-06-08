@@ -13,6 +13,7 @@ import api from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
+import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
 export default function ResetPassword() {
     const [searchParams] = useSearchParams()
@@ -98,12 +99,10 @@ export default function ResetPassword() {
         <div id={styles.resetPasswordWrapper}>
             {isPasswordChanged ? (
                 <div id={styles.resetPasswordSuccessfully}>
-                    <p className={styles.mainSuccessMessage}>
-                        Password Reset Successfully!
-                    </p>
-                    <p className={styles.secondSuccessMessage}>
-                        You can now login.
-                    </p>
+                    <CustomWelcomeMessage
+                        mainText="Password Reset Successfully!"
+                        otherText="You can now login."
+                    />
 
                     <CustomButton
                         buttonText="Login"
@@ -116,14 +115,10 @@ export default function ResetPassword() {
                     onSubmit={handleSubmit}
                     autoComplete="off"
                 >
-                    <div>
-                        <p className={styles.mainSuccessMessage}>
-                            Reset Password
-                        </p>
-                        <p className={styles.secondSuccessMessage}>
-                            Enter your new password:
-                        </p>
-                    </div>
+                    <CustomWelcomeMessage
+                        mainText="Reset Password"
+                        otherText="Enter your new password:"
+                    />
 
                     <CustomInputText
                         labelText="New Password"

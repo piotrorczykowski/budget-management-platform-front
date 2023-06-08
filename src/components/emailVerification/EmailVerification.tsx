@@ -5,6 +5,14 @@ import { ENDPOINTS } from '../../api'
 import { showErrorToast } from '../../utils/toastUtils'
 import styles from './EmailVerification.module.css'
 import CustomButton from '../CustomButton'
+import CustomWelcomeMessage from '../CustomWelcomeMessage'
+import { css } from '@emotion/css'
+
+const styledAlignCenterWrapper = css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
 
 export default function EmailVerification() {
     const [searchParams] = useSearchParams()
@@ -38,11 +46,11 @@ export default function EmailVerification() {
     return (
         <div id={styles.emailVerificationWrapper}>
             {isEmailVerified ? (
-                <div>
-                    <p className={styles.message}>
-                        Email Verification Successfully!
-                    </p>
-                    <p className={styles.message}>You can now login.</p>
+                <div className={styledAlignCenterWrapper}>
+                    <CustomWelcomeMessage
+                        mainText="Email Verification Successfully!"
+                        otherText="You can now login.."
+                    />
 
                     <CustomButton
                         buttonText="Login"
@@ -50,9 +58,12 @@ export default function EmailVerification() {
                     />
                 </div>
             ) : (
-                <div>
-                    <p className={styles.message}>Email Verification Failed!</p>
-                    <p className={styles.message}>Please try again.</p>
+                <div className={styledAlignCenterWrapper}>
+                    <CustomWelcomeMessage
+                        mainText="Email Verification Failed!"
+                        otherText="Please try again."
+                    />
+
                     <CustomButton
                         buttonText="Homepage"
                         onClickHandler={() => navigate('/signIn')}

@@ -7,6 +7,7 @@ import { showErrorToast } from '../../utils/toastUtils'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
 import CustomLink from '../CustomLink'
+import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('')
@@ -59,11 +60,11 @@ export default function ForgotPassword() {
             <div id={styles.forgotPassword}>
                 {isEmailSent ? (
                     <div id={styles.emailSent}>
-                        <p className={styles.mainMessage}>Reset Password</p>
-                        <p className={styles.secondMessage}>
-                            We have sent you an email with instructions on how
-                            to reset your password
-                        </p>
+                        <CustomWelcomeMessage
+                            mainText="Reset Password"
+                            otherText="We have sent you an email with instructions on how
+                            to reset your password"
+                        />
 
                         <CustomButton
                             buttonText="Homepage"
@@ -73,10 +74,10 @@ export default function ForgotPassword() {
                     </div>
                 ) : (
                     <div>
-                        <p className={styles.mainMessage}>Forgot Password?</p>
-                        <p className={styles.secondMessage}>
-                            No worries, we'll send you reset instructions
-                        </p>
+                        <CustomWelcomeMessage
+                            mainText="Forgot Password?"
+                            otherText="No worries, we'll send you reset instructions"
+                        />
 
                         <CustomInputText
                             labelText="Email"

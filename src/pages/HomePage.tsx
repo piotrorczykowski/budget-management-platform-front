@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import WelcomePanel from '../components/welcomePanel/WelcomePanel'
+import WelcomePanel from '../components/WelcomePanel'
 import { ToastContainer } from 'react-toastify'
 import { css } from '@emotion/css'
 

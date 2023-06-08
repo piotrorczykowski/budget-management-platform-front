@@ -7,6 +7,7 @@ import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
 import CustomLink from '../CustomLink'
+import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
 export default function Login() {
     const [username, setUsername] = useState('')
@@ -31,10 +32,10 @@ export default function Login() {
                 onSubmit={handleSubmit}
                 autoComplete="off"
             >
-                <div>
-                    <p id={styles.mainMessage}>Welcome to BMP</p>
-                    <p id={styles.secondMessage}>Please login</p>
-                </div>
+                <CustomWelcomeMessage
+                    mainText="Welcome to BMP"
+                    otherText="Please login"
+                />
 
                 <CustomInputText
                     labelText="Username"

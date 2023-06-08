@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
 import {
     clearAllToasts,
@@ -14,6 +13,7 @@ import { InitialValues } from './@types/constants'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
 import CustomLink from '../CustomLink'
+import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
 export default function SignUp() {
     const [username, setUsername] = useState('')
@@ -123,14 +123,12 @@ export default function SignUp() {
 
             {isSubmit ? (
                 <div id={styles.submittedForm}>
-                    <p id={styles.mainSuccessMessage}>
-                        Verify your email address
-                    </p>
-                    <p id={styles.secondSuccessMessage}>
-                        In order to start using your BMP account, please verify
-                        your email address: <br />
-                        <span id={styles.email}>{email}</span>
-                    </p>
+                    <CustomWelcomeMessage
+                        mainText="Verify your email address"
+                        otherText="In order to start using your BMP account, please verify
+                        your email address: <br />"
+                    />
+                    <span id={styles.email}>{email}test@example.com</span>
 
                     <CustomButton
                         buttonText="Send Verification Email"
@@ -144,10 +142,10 @@ export default function SignUp() {
                     onSubmit={handleSubmit}
                     autoComplete="off"
                 >
-                    <div>
-                        <p id={styles.mainMessage}>Register</p>
-                        <p id={styles.secondMessage}>Create your account</p>
-                    </div>
+                    <CustomWelcomeMessage
+                        mainText="Register"
+                        otherText="Create your account"
+                    />
 
                     <CustomInputText
                         labelText="Username"
