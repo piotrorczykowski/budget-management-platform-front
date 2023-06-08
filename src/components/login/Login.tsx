@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './Login.module.css'
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai'
 import { useLogin } from '../../hooks/useLogin'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
+import CustomButton from '../CustomButton'
 
 export default function Login() {
     const [username, setUsername] = useState('')
@@ -82,23 +82,15 @@ export default function Login() {
                     )}
                 </div>
 
-                <button
-                    id={styles.submitBtn}
-                    disabled={isLoading}
-                    type="submit"
-                >
-                    Login
-                </button>
+                <CustomButton
+                    buttonType="submit"
+                    buttonText="Login"
+                    loading={isLoading}
+                />
             </form>
             <div id={styles.forgotPassword}>
-                <Link
-                    // id={styles.forgotPasswordLink}
-                    to="/forgotPassword"
-                >
-                    Forgot your password?
-                </Link>
+                <Link to="/forgotPassword">Forgot your password?</Link>
             </div>
-            <ToastContainer />
         </div>
     )
 }

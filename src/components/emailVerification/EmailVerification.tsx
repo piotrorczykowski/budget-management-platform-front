@@ -1,10 +1,10 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLayoutEffect, useRef, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
 import api from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { showErrorToast } from '../../utils/toastUtils'
 import styles from './EmailVerification.module.css'
+import CustomButton from '../CustomButton'
 
 export default function EmailVerification() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,28 +44,22 @@ export default function EmailVerification() {
                         Email Verification Successfully!
                     </p>
                     <p className={styles.message}>You can now login.</p>
-                    <button
-                        className={styles.customBtn}
-                        type="button"
-                        onClick={() => navigate('/signIn')}
-                    >
-                        Login
-                    </button>
+
+                    <CustomButton
+                        buttonText="Login"
+                        onClickHandler={() => navigate('/signIn')}
+                    />
                 </div>
             ) : (
                 <div>
                     <p className={styles.message}>Email Verification Failed!</p>
                     <p className={styles.message}>Please try again.</p>
-                    <button
-                        className={styles.customBtn}
-                        type="button"
-                        onClick={() => navigate('/signIn')}
-                    >
-                        Homepage
-                    </button>
+                    <CustomButton
+                        buttonText="Homepage"
+                        onClickHandler={() => navigate('/signIn')}
+                    />
                 </div>
             )}
-            <ToastContainer />
         </div>
     )
 }

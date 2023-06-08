@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styles from './ResetPassword.module.css'
 import { SyntheticEvent, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import _ from 'lodash'
 import {
@@ -13,6 +12,7 @@ import { FormInputsType } from './@types/index'
 import { InitialValues } from './@types/constants'
 import api from '../../api/axios'
 import { ENDPOINTS } from '../../api'
+import CustomButton from '../CustomButton'
 
 export default function ResetPassword() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -107,13 +107,11 @@ export default function ResetPassword() {
                     <p className={styles.secondSuccessMessage}>
                         You can now login.
                     </p>
-                    <button
-                        className={styles.customBtn}
-                        type="button"
-                        onClick={() => navigate('/signIn')}
-                    >
-                        Login
-                    </button>
+
+                    <CustomButton
+                        buttonText="Login"
+                        onClickHandler={() => navigate('/signIn')}
+                    />
                 </div>
             ) : (
                 <form
@@ -211,17 +209,13 @@ export default function ResetPassword() {
                         </p>
                     </div>
 
-                    <button
-                        className={styles.customBtn}
-                        disabled={loading}
-                        type="submit"
-                    >
-                        Update Password
-                    </button>
+                    <CustomButton
+                        buttonText="Update Password"
+                        loading={loading}
+                        buttonType="submit"
+                    />
                 </form>
             )}
-
-            <ToastContainer />
         </div>
     )
 }

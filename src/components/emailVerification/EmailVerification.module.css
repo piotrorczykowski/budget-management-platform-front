@@ -18,14 +18,3 @@
 .message:nth-of-type(1) {
     margin-top: 35vh;
 }
-
-.customBtn {
-    background-color: #040605;
-    color: #f0f0f0;
-    font-size: 30px;
-    font-weight: 600;
-    padding: 10px;
-    margin-top: 50px;
-    width: 25vw;
-    border-radius: 5px;
-}

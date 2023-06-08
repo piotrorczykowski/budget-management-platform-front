@@ -6,13 +6,13 @@ import {
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import { ToastContainer } from 'react-toastify'
 import _ from 'lodash'
 import styles from './SignUp.module.css'
 import api from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { FormInputsType } from './@types/index'
 import { InitialValues } from './@types/constants'
+import CustomButton from '../CustomButton'
 
 export default function SignUp() {
     const [formValues, setFormValues] = useState(InitialValues)
@@ -133,14 +133,12 @@ export default function SignUp() {
                         your email address: <br />
                         <span id={styles.email}>{formValues.email}</span>
                     </p>
-                    <button
-                        className={styles.customBtn}
-                        disabled={loading}
-                        type="button"
-                        onClick={resendVerificationEmail}
-                    >
-                        Send Verification Email
-                    </button>
+
+                    <CustomButton
+                        buttonText="Send Verification Email"
+                        loading={loading}
+                        onClickHandler={resendVerificationEmail}
+                    />
                 </div>
             ) : (
                 <form
@@ -289,16 +287,13 @@ export default function SignUp() {
                         </p>
                     </div>
 
-                    <button
-                        className={styles.customBtn}
-                        disabled={loading}
-                        type="submit"
-                    >
-                        Register
-                    </button>
+                    <CustomButton
+                        buttonText="Register"
+                        loading={loading}
+                        buttonType="submit"
+                    />
                 </form>
             )}
-            <ToastContainer />
         </div>
     )
 }

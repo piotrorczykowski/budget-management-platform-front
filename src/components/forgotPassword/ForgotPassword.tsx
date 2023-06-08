@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ENDPOINTS } from '../../api'
 import api from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
-import { ToastContainer } from 'react-toastify'
+import CustomButton from '../CustomButton'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('')
@@ -16,7 +16,8 @@ export default function ForgotPassword() {
     const resetPassword = async (): Promise<void> => {
         setLoading(true)
 
-        await validate(email)
+        const emailError: string = await validate(email)
+        setEmailError(emailError)
         if (!!emailError.length) {
             setLoading(false)
             return
@@ -35,16 +36,18 @@ export default function ForgotPassword() {
         }
     }
 
-    const validate = async (email: string): Promise<void> => {
-        setEmailError('')
+    const validate = async (email: string): Promise<string> => {
+        let emailError: string = ''
 
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
 
         if (!email.length) {
-            setEmailError('Email is required!')
+            emailError = 'Email is required!'
         } else if (!regex.test(email)) {
-            setEmailError('This is not a valid email format!')
+            emailError = 'This is not a valid email format!'
         }
+
+        return emailError
     }
 
     return (
@@ -62,13 +65,12 @@ export default function ForgotPassword() {
                             We have sent you an email with instructions on how
                             to reset your password
                         </p>
-                        <button
-                            className={styles.customBtn}
-                            type="button"
-                            onClick={() => navigate('/signIn')}
-                        >
-                            Homepage
-                        </button>
+
+                        <CustomButton
+                            buttonText="Homepage"
+                            loading={loading}
+                            onClickHandler={() => navigate('/signIn')}
+                        />
                     </div>
                 ) : (
                     <div>
@@ -94,18 +96,14 @@ export default function ForgotPassword() {
                             <p className={styles.errorMessage}>{emailError}</p>
                         </div>
 
-                        <button
-                            className={styles.customBtn}
-                            disabled={loading}
-                            type="button"
-                            onClick={resetPassword}
-                        >
-                            Reset Password
-                        </button>
+                        <CustomButton
+                            buttonText="Reset Password"
+                            loading={loading}
+                            onClickHandler={resetPassword}
+                        />
                     </div>
                 )}
             </div>
-            <ToastContainer />
         </div>
     )
 }
