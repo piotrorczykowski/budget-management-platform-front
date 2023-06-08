@@ -1,23 +1,29 @@
-import { Link } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import styles from './ResetPassword.module.css'
 import { SyntheticEvent, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import _ from 'lodash'
 import {
     clearAllToasts,
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import { ToastContainer } from 'react-toastify'
-import _ from 'lodash'
-import styles from './SignUp.module.css'
-import api from '../../api/axios'
-import { ENDPOINTS } from '../../api'
 import { FormInputsType } from './@types/index'
 import { InitialValues } from './@types/constants'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
 
-export default function SignUp() {
-    const [formValues, setFormValues] = useState(InitialValues)
+export default function ResetPassword() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [searchParams, setSearchParams] = useSearchParams()
+    const navigate = useNavigate()
+
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
     const [formErrors, setFormErrors] = useState(InitialValues)
-    const [isSubmit, setIsSubmit] = useState(false)
+    const [isPasswordChanged, setIsPasswordChanged] = useState(false)
 
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -28,7 +34,10 @@ export default function SignUp() {
         clearAllToasts()
         setLoading(true)
 
-        const errors: FormInputsType = await validate(formValues)
+        const errors: FormInputsType = await validate({
+            password,
+            confirmPassword,
+        })
         setFormErrors(errors)
 
         const isFormValid: boolean = Object.values(errors).every(
@@ -40,16 +49,15 @@ export default function SignUp() {
             return
         }
 
+        const token: string = searchParams.get('token') as string
         try {
-            await api.post(ENDPOINTS.signUp, {
-                username: formValues.username,
-                fullName: formValues.fullName,
-                email: formValues.email,
-                password: formValues.password,
+            await api.post(ENDPOINTS.resetPassword, {
+                token: token,
+                password: password,
             })
 
-            showSuccessToast('Account created successfully')
-            setIsSubmit(true)
+            showSuccessToast('Password changed successfully')
+            setIsPasswordChanged(true)
             setLoading(false)
         } catch (e: any) {
             showErrorToast(e.response.data.Error)
@@ -76,12 +84,6 @@ export default function SignUp() {
             }
         }
 
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
-
-        if (!regex.test(values.email) && !!values.email.length) {
-            errors.email = 'This is not a valid email format!'
-        }
-
         if (
             !(values.password === values.confirmPassword) &&
             !!values.password.length &&
@@ -95,135 +97,53 @@ export default function SignUp() {
         return errors
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormValues({ ...formValues, [name]: value })
-    }
-
-    const resendVerificationEmail = async () => {
-        setLoading(true)
-
-        try {
-            await api.post(ENDPOINTS.resendActivationEmail, {
-                email: formValues.email,
-            })
-
-            setLoading(false)
-        } catch (e: any) {
-            showErrorToast(e.response.data.Error)
-            setLoading(false)
-        }
-    }
-
     return (
-        <div id={styles.signUpWrapper}>
-            <div id={styles.login}>
-                <Link id={styles.loginLink} to="/signIn">
-                    Login
-                </Link>
-            </div>
-
-            {isSubmit ? (
-                <div id={styles.submittedForm}>
-                    <p id={styles.mainSuccessMessage}>
-                        Verify your email address
+        <div id={styles.resetPasswordWrapper}>
+            {isPasswordChanged ? (
+                <div id={styles.resetPasswordSuccessfully}>
+                    <p className={styles.mainSuccessMessage}>
+                        Password Reset Successfully!
                     </p>
-                    <p id={styles.secondSuccessMessage}>
-                        In order to start using your BMP account, please verify
-                        your email address: <br />
-                        <span id={styles.email}>{formValues.email}</span>
+                    <p className={styles.secondSuccessMessage}>
+                        You can now login.
                     </p>
                     <button
                         className={styles.customBtn}
-                        disabled={loading}
                         type="button"
-                        onClick={resendVerificationEmail}
+                        onClick={() => navigate('/signIn')}
                     >
-                        Send Verification Email
+                        Login
                     </button>
                 </div>
             ) : (
                 <form
-                    id={styles.signUpForm}
+                    id={styles.resetPasswordForm}
                     onSubmit={handleSubmit}
                     autoComplete="off"
                 >
                     <div>
-                        <p id={styles.mainMessage}>Register</p>
-                        <p id={styles.secondMessage}>Create your account</p>
-                    </div>
-
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="username">
-                            Username
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            autoComplete="new-username"
-                            required
-                            onChange={handleChange}
-                            value={formValues.username}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.username}
+                        <p className={styles.mainSuccessMessage}>
+                            Reset Password
                         </p>
-                    </div>
-
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="fullName">
-                            FullName
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="text"
-                            placeholder="FullName"
-                            name="fullName"
-                            autoComplete="new-fullName"
-                            required
-                            onChange={handleChange}
-                            value={formValues.fullName}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.fullName}
-                        </p>
-                    </div>
-
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            autoComplete="new-email"
-                            required
-                            onChange={handleChange}
-                            value={formValues.email}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.email}
+                        <p className={styles.secondSuccessMessage}>
+                            Enter your new password:
                         </p>
                     </div>
 
                     <div className={styles.inputWrapper}>
                         <label className={styles.label} htmlFor="password">
-                            Password
+                            New Password
                         </label>
                         <div id={styles.passwordField}>
                             <input
                                 className={styles.inputField}
                                 type={showPassword ? 'text' : 'password'}
-                                placeholder="Password"
+                                placeholder="New Password"
                                 name="password"
                                 autoComplete="new-password"
                                 required
-                                onChange={handleChange}
-                                value={formValues.password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                             />
                             {showPassword ? (
                                 <AiFillEyeInvisible
@@ -261,8 +181,10 @@ export default function SignUp() {
                                 name="confirmPassword"
                                 autoComplete="new-confirmPassword"
                                 required
-                                onChange={handleChange}
-                                value={formValues.confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                value={confirmPassword}
                             />
                             {showConfirmPassword ? (
                                 <AiFillEyeInvisible
@@ -294,10 +216,11 @@ export default function SignUp() {
                         disabled={loading}
                         type="submit"
                     >
-                        Register
+                        Update Password
                     </button>
                 </form>
             )}
+
             <ToastContainer />
         </div>
     )
