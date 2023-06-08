@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import {
     clearAllToasts,
     showErrorToast,
@@ -13,14 +12,18 @@ import { ENDPOINTS } from '../../api'
 import { FormInputsType } from './@types/index'
 import { InitialValues } from './@types/constants'
 import CustomButton from '../CustomButton'
+import CustomInputText from '../CustomInputText'
 
 export default function SignUp() {
-    const [formValues, setFormValues] = useState(InitialValues)
+    const [username, setUsername] = useState('')
+    const [fullName, setFullName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
     const [formErrors, setFormErrors] = useState(InitialValues)
     const [isSubmit, setIsSubmit] = useState(false)
 
-    const [showPassword, setShowPassword] = useState(false)
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (event: SyntheticEvent) => {
@@ -28,7 +31,13 @@ export default function SignUp() {
         clearAllToasts()
         setLoading(true)
 
-        const errors: FormInputsType = await validate(formValues)
+        const errors: FormInputsType = await validate({
+            username,
+            fullName,
+            email,
+            password,
+            confirmPassword,
+        })
         setFormErrors(errors)
 
         const isFormValid: boolean = Object.values(errors).every(
@@ -42,10 +51,10 @@ export default function SignUp() {
 
         try {
             await api.post(ENDPOINTS.signUp, {
-                username: formValues.username,
-                fullName: formValues.fullName,
-                email: formValues.email,
-                password: formValues.password,
+                username,
+                fullName,
+                email,
+                password,
             })
 
             showSuccessToast('Account created successfully')
@@ -95,19 +104,11 @@ export default function SignUp() {
         return errors
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setFormValues({ ...formValues, [name]: value })
-    }
-
     const resendVerificationEmail = async () => {
         setLoading(true)
 
         try {
-            await api.post(ENDPOINTS.resendActivationEmail, {
-                email: formValues.email,
-            })
-
+            await api.post(ENDPOINTS.resendActivationEmail, { email })
             setLoading(false)
         } catch (e: any) {
             showErrorToast(e.response.data.Error)
@@ -131,7 +132,7 @@ export default function SignUp() {
                     <p id={styles.secondSuccessMessage}>
                         In order to start using your BMP account, please verify
                         your email address: <br />
-                        <span id={styles.email}>{formValues.email}</span>
+                        <span id={styles.email}>{email}</span>
                     </p>
 
                     <CustomButton
@@ -151,141 +152,55 @@ export default function SignUp() {
                         <p id={styles.secondMessage}>Create your account</p>
                     </div>
 
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="username">
-                            Username
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            autoComplete="new-username"
-                            required
-                            onChange={handleChange}
-                            value={formValues.username}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.username}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="Username"
+                        inputName="username"
+                        placeholderText="Username"
+                        value={username}
+                        onChangeHandler={setUsername}
+                        errorMessage={formErrors.username}
+                    />
 
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="fullName">
-                            FullName
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="text"
-                            placeholder="FullName"
-                            name="fullName"
-                            autoComplete="new-fullName"
-                            required
-                            onChange={handleChange}
-                            value={formValues.fullName}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.fullName}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="FullName"
+                        inputName="fullName"
+                        placeholderText="FullName"
+                        value={fullName}
+                        onChangeHandler={setFullName}
+                        errorMessage={formErrors.fullName}
+                    />
 
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className={styles.inputField}
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            autoComplete="new-email"
-                            required
-                            onChange={handleChange}
-                            value={formValues.email}
-                        />
-                        <p className={styles.errorMessage}>
-                            {formErrors.email}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="Email"
+                        inputName="email"
+                        placeholderText="Email"
+                        value={email}
+                        onChangeHandler={setEmail}
+                        errorMessage={formErrors.email}
+                        inputType="email"
+                    />
 
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="password">
-                            Password
-                        </label>
-                        <div id={styles.passwordField}>
-                            <input
-                                className={styles.inputField}
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="Password"
-                                name="password"
-                                autoComplete="new-password"
-                                required
-                                onChange={handleChange}
-                                value={formValues.password}
-                            />
-                            {showPassword ? (
-                                <AiFillEyeInvisible
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                />
-                            ) : (
-                                <AiFillEye
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                />
-                            )}
-                        </div>
-                        <p className={styles.errorMessage}>
-                            {formErrors.password}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="Password"
+                        inputName="password"
+                        placeholderText="Password"
+                        value={password}
+                        onChangeHandler={setPassword}
+                        errorMessage={formErrors.password}
+                        inputType="password"
+                        isInputTypePassword={true}
+                    />
 
-                    <div className={styles.inputWrapper}>
-                        <label
-                            className={styles.label}
-                            htmlFor="confirmPassword"
-                        >
-                            Confirm Password
-                        </label>
-                        <div id={styles.passwordField}>
-                            <input
-                                className={styles.inputField}
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                placeholder="Confirm Password"
-                                name="confirmPassword"
-                                autoComplete="new-confirmPassword"
-                                required
-                                onChange={handleChange}
-                                value={formValues.confirmPassword}
-                            />
-                            {showConfirmPassword ? (
-                                <AiFillEyeInvisible
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowConfirmPassword(
-                                            !showConfirmPassword
-                                        )
-                                    }
-                                />
-                            ) : (
-                                <AiFillEye
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowConfirmPassword(
-                                            !showConfirmPassword
-                                        )
-                                    }
-                                />
-                            )}
-                        </div>
-                        <p className={styles.errorMessage}>
-                            {formErrors.confirmPassword}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="Confirm Password"
+                        inputName="confirmPassword"
+                        placeholderText="Confirm Password"
+                        value={confirmPassword}
+                        onChangeHandler={setConfirmPassword}
+                        errorMessage={formErrors.confirmPassword}
+                        inputType="password"
+                        isInputTypePassword={true}
+                    />
 
                     <CustomButton
                         buttonText="Register"

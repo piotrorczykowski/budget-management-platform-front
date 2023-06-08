@@ -5,6 +5,7 @@ import { ENDPOINTS } from '../../api'
 import api from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import CustomButton from '../CustomButton'
+import CustomInputText from '../CustomInputText'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('')
@@ -79,22 +80,15 @@ export default function ForgotPassword() {
                             No worries, we'll send you reset instructions
                         </p>
 
-                        <div className={styles.inputWrapper}>
-                            <label className={styles.label} htmlFor="email">
-                                Email
-                            </label>
-                            <input
-                                className={styles.inputField}
-                                type="email"
-                                placeholder="Email"
-                                name="email"
-                                autoComplete="new-email"
-                                required
-                                onChange={(e) => setEmail(e.target.value)}
-                                value={email}
-                            />
-                            <p className={styles.errorMessage}>{emailError}</p>
-                        </div>
+                        <CustomInputText
+                            labelText="Email"
+                            inputName="email"
+                            placeholderText="Email"
+                            value={email}
+                            onChangeHandler={setEmail}
+                            errorMessage={emailError}
+                            inputType="email"
+                        />
 
                         <CustomButton
                             buttonText="Reset Password"

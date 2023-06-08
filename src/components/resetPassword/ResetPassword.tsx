@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import styles from './ResetPassword.module.css'
 import { SyntheticEvent, useState } from 'react'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import _ from 'lodash'
 import {
     clearAllToasts,
@@ -13,10 +12,10 @@ import { InitialValues } from './@types/constants'
 import api from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import CustomButton from '../CustomButton'
+import CustomInputText from '../CustomInputText'
 
 export default function ResetPassword() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const navigate = useNavigate()
 
     const [password, setPassword] = useState('')
@@ -25,8 +24,6 @@ export default function ResetPassword() {
     const [formErrors, setFormErrors] = useState(InitialValues)
     const [isPasswordChanged, setIsPasswordChanged] = useState(false)
 
-    const [showPassword, setShowPassword] = useState(false)
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (event: SyntheticEvent) => {
@@ -128,86 +125,27 @@ export default function ResetPassword() {
                         </p>
                     </div>
 
-                    <div className={styles.inputWrapper}>
-                        <label className={styles.label} htmlFor="password">
-                            New Password
-                        </label>
-                        <div id={styles.passwordField}>
-                            <input
-                                className={styles.inputField}
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder="New Password"
-                                name="password"
-                                autoComplete="new-password"
-                                required
-                                onChange={(e) => setPassword(e.target.value)}
-                                value={password}
-                            />
-                            {showPassword ? (
-                                <AiFillEyeInvisible
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                />
-                            ) : (
-                                <AiFillEye
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                />
-                            )}
-                        </div>
-                        <p className={styles.errorMessage}>
-                            {formErrors.password}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="New Password"
+                        inputName="password"
+                        placeholderText="New Password"
+                        value={password}
+                        onChangeHandler={setPassword}
+                        errorMessage={formErrors.password}
+                        inputType="password"
+                        isInputTypePassword={true}
+                    />
 
-                    <div className={styles.inputWrapper}>
-                        <label
-                            className={styles.label}
-                            htmlFor="confirmPassword"
-                        >
-                            Confirm Password
-                        </label>
-                        <div id={styles.passwordField}>
-                            <input
-                                className={styles.inputField}
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                placeholder="Confirm Password"
-                                name="confirmPassword"
-                                autoComplete="new-confirmPassword"
-                                required
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
-                                value={confirmPassword}
-                            />
-                            {showConfirmPassword ? (
-                                <AiFillEyeInvisible
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowConfirmPassword(
-                                            !showConfirmPassword
-                                        )
-                                    }
-                                />
-                            ) : (
-                                <AiFillEye
-                                    id={styles.icon}
-                                    onClick={() =>
-                                        setShowConfirmPassword(
-                                            !showConfirmPassword
-                                        )
-                                    }
-                                />
-                            )}
-                        </div>
-                        <p className={styles.errorMessage}>
-                            {formErrors.confirmPassword}
-                        </p>
-                    </div>
+                    <CustomInputText
+                        labelText="Confirm Password"
+                        inputName="confirmPassword"
+                        placeholderText="Confirm Password"
+                        value={confirmPassword}
+                        onChangeHandler={setConfirmPassword}
+                        errorMessage={formErrors.confirmPassword}
+                        inputType="password"
+                        isInputTypePassword={true}
+                    />
 
                     <CustomButton
                         buttonText="Update Password"
