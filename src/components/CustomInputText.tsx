@@ -6,7 +6,6 @@ const styledInputWrapper = (isInputTypePassword: boolean) => css`
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-
     position: ${isInputTypePassword ? 'relative' : 'static'};
 `
 

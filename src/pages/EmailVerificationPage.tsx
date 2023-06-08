@@ -1,20 +1,13 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLayoutEffect, useRef, useState } from 'react'
-import api from '../../api/axios'
-import { ENDPOINTS } from '../../api'
-import { showErrorToast } from '../../utils/toastUtils'
-import styles from './EmailVerification.module.css'
-import CustomButton from '../CustomButton'
-import CustomWelcomeMessage from '../CustomWelcomeMessage'
-import { css } from '@emotion/css'
+import api from '../api/axios'
+import { ENDPOINTS } from '../api'
+import CustomButton from '../components/CustomButton'
+import CustomWelcomeMessage from '../components/CustomWelcomeMessage'
+import AlignCenterWrapper from '../components/AlignCenterWrapper'
+import { showErrorToast } from '../utils/toastUtils'
 
-const styledAlignCenterWrapper = css`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`
-
-export default function EmailVerification() {
+export default function EmailVerificationPage() {
     const [searchParams] = useSearchParams()
     const [isEmailVerified, setIsEmailVerified] = useState(false)
     const dataFetchedRef = useRef(false)
@@ -44,9 +37,9 @@ export default function EmailVerification() {
     }, [])
 
     return (
-        <div id={styles.emailVerificationWrapper}>
+        <AlignCenterWrapper paddingTop="35vh">
             {isEmailVerified ? (
-                <div className={styledAlignCenterWrapper}>
+                <AlignCenterWrapper>
                     <CustomWelcomeMessage
                         mainText="Email Verification Successfully!"
                         otherText="You can now login.."
@@ -56,9 +49,9 @@ export default function EmailVerification() {
                         buttonText="Login"
                         onClickHandler={() => navigate('/signIn')}
                     />
-                </div>
+                </AlignCenterWrapper>
             ) : (
-                <div className={styledAlignCenterWrapper}>
+                <AlignCenterWrapper>
                     <CustomWelcomeMessage
                         mainText="Email Verification Failed!"
                         otherText="Please try again."
@@ -68,8 +61,8 @@ export default function EmailVerification() {
                         buttonText="Homepage"
                         onClickHandler={() => navigate('/signIn')}
                     />
-                </div>
+                </AlignCenterWrapper>
             )}
-        </div>
+        </AlignCenterWrapper>
     )
 }

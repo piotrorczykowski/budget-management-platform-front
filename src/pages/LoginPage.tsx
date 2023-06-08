@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
-import 'react-toastify/dist/ReactToastify.css'
-import styles from './Login.module.css'
-import { useLogin } from '../../hooks/useLogin'
-import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
-import CustomButton from '../CustomButton'
-import CustomInputText from '../CustomInputText'
-import CustomLink from '../CustomLink'
-import CustomWelcomeMessage from '../CustomWelcomeMessage'
+import { css } from '@emotion/css'
+import { useLogin } from '../hooks/useLogin'
+import CustomButton from '../components/CustomButton'
+import CustomInputText from '../components/CustomInputText'
+import CustomLink from '../components/CustomLink'
+import CustomWelcomeMessage from '../components/CustomWelcomeMessage'
+import AlignCenterWrapper from '../components/AlignCenterWrapper'
+import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 
-export default function Login() {
+const styledForgotPasswordLink = css`
+    font-weight: 500;
+    color: #000000;
+    margin-top: 30px;
+`
+
+export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const { login, error, isLoading } = useLogin()
@@ -24,14 +30,10 @@ export default function Login() {
     }
 
     return (
-        <div id={styles.loginWrapper}>
+        <AlignCenterWrapper paddingTop="20vh">
             <CustomLink linkText="Sign up" linkTo="/signUp" />
 
-            <form
-                id={styles.loginForm}
-                onSubmit={handleSubmit}
-                autoComplete="off"
-            >
+            <form onSubmit={handleSubmit} autoComplete="off">
                 <CustomWelcomeMessage
                     mainText="Welcome to BMP"
                     otherText="Please login"
@@ -61,9 +63,9 @@ export default function Login() {
                     loading={isLoading}
                 />
             </form>
-            <div id={styles.forgotPassword}>
+            <div className={styledForgotPasswordLink}>
                 <Link to="/forgotPassword">Forgot your password?</Link>
             </div>
-        </div>
+        </AlignCenterWrapper>
     )
 }

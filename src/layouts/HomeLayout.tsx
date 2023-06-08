@@ -14,7 +14,7 @@ const styledPanel = css`
     width: 50vw;
 `
 
-function HomePage() {
+export default function HomeLayout() {
     return (
         <div className={styledHomepageWrapper}>
             <div className={styledPanel}>
@@ -27,5 +27,3 @@ function HomePage() {
         </div>
     )
 }
-
-export default HomePage

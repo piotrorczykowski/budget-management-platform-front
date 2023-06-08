@@ -1,21 +1,28 @@
 import { SyntheticEvent, useState } from 'react'
+import { css } from '@emotion/css'
+import _ from 'lodash'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import CustomButton from '../../components/CustomButton'
+import CustomInputText from '../../components/CustomInputText'
+import CustomLink from '../../components/CustomLink'
+import CustomWelcomeMessage from '../../components/CustomWelcomeMessage'
+import AlignCenterWrapper from '../../components/AlignCenterWrapper'
+import { FormInputsType } from './@types/index'
+import { InitialValues } from './@types/constants'
 import {
     clearAllToasts,
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import _ from 'lodash'
-import styles from './SignUp.module.css'
-import api from '../../api/axios'
-import { ENDPOINTS } from '../../api'
-import { FormInputsType } from './@types/index'
-import { InitialValues } from './@types/constants'
-import CustomButton from '../CustomButton'
-import CustomInputText from '../CustomInputText'
-import CustomLink from '../CustomLink'
-import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
-export default function SignUp() {
+const styledEmail = css`
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 30px;
+`
+
+export default function SignUpPage() {
     const [username, setUsername] = useState('')
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
@@ -118,30 +125,26 @@ export default function SignUp() {
     }
 
     return (
-        <div id={styles.signUpWrapper}>
+        <AlignCenterWrapper paddingTop="7vh">
             <CustomLink linkText="Login" linkTo="/signIn" />
 
             {isSubmit ? (
-                <div id={styles.submittedForm}>
+                <AlignCenterWrapper paddingTop="30vh">
                     <CustomWelcomeMessage
                         mainText="Verify your email address"
                         otherText="In order to start using your BMP account, please verify
-                        your email address: <br />"
+                        your email address: "
                     />
-                    <span id={styles.email}>{email}test@example.com</span>
+                    <span className={styledEmail}>{email}test@example.com</span>
 
                     <CustomButton
                         buttonText="Send Verification Email"
                         loading={loading}
                         onClickHandler={resendVerificationEmail}
                     />
-                </div>
+                </AlignCenterWrapper>
             ) : (
-                <form
-                    id={styles.signUpForm}
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                >
+                <form onSubmit={handleSubmit} autoComplete="off">
                     <CustomWelcomeMessage
                         mainText="Register"
                         otherText="Create your account"
@@ -204,6 +207,6 @@ export default function SignUp() {
                     />
                 </form>
             )}
-        </div>
+        </AlignCenterWrapper>
     )
 }

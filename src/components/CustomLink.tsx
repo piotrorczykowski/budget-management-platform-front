@@ -1,15 +1,15 @@
-import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
+import { Link } from 'react-router-dom'
 
 const styledLinkWrapper = css`
-    text-align: end;
-    margin-top: 60px;
     font-size: 25px;
     font-weight: 600;
+    position: absolute;
+    right: 120px;
+    top: 60px;
 `
 
 const styledLink = css`
-    padding-right: 120px;
     color: #000000;
 `
 

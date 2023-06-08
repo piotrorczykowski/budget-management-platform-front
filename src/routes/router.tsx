@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Dashboard from '../components/dashboard/Dashboard'
-import Login from '../components/login/Login'
-import HomePage from '../pages/HomePage'
-import SignUp from '../components/signUp/SignUp'
-import ForgotPassword from '../components/forgotPassword/ForgotPassword'
+import LoginPage from '../pages/LoginPage'
+import SignUpPage from '../pages/signUpPage/SignUpPage'
+import ForgotPasswordPage from '../pages/ForgotPasswordPage'
 import NotFoundPage from '../pages/NotFoundPage'
-import EmailVerification from '../components/emailVerification/EmailVerification'
-import ResetPassword from '../components/resetPassword/ResetPassword'
+import EmailVerificationPage from '../pages/EmailVerificationPage'
+import ResetPasswordPage from '../pages/resetPasswordPage/ResetPasswordPage'
+import HomeLayout from '../layouts/HomeLayout'
+import DashboardLayout from '../layouts/DashboardLayout'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
@@ -22,21 +22,30 @@ const RedirectAuthUser = (element: JSX.Element): JSX.Element => {
 const Router = () => {
     return (
         <Routes>
-            <Route path="/" element={RedirectNotAuthUser(<Dashboard />)} />
-            <Route element={<HomePage />}>
-                <Route path="/signIn" element={RedirectAuthUser(<Login />)} />
-                <Route path="/signUp" element={RedirectAuthUser(<SignUp />)} />
+            <Route
+                path="/"
+                element={RedirectNotAuthUser(<DashboardLayout />)}
+            />
+            <Route element={<HomeLayout />}>
+                <Route
+                    path="/signIn"
+                    element={RedirectAuthUser(<LoginPage />)}
+                />
+                <Route
+                    path="/signUp"
+                    element={RedirectAuthUser(<SignUpPage />)}
+                />
                 <Route
                     path="/activateAccount"
-                    element={RedirectAuthUser(<EmailVerification />)}
+                    element={RedirectAuthUser(<EmailVerificationPage />)}
                 />
                 <Route
                     path="/forgotPassword"
-                    element={RedirectAuthUser(<ForgotPassword />)}
+                    element={RedirectAuthUser(<ForgotPasswordPage />)}
                 />
                 <Route
                     path="/resetPassword"
-                    element={RedirectAuthUser(<ResetPassword />)}
+                    element={RedirectAuthUser(<ResetPasswordPage />)}
                 />
             </Route>
             <Route path="*" element={<NotFoundPage />}></Route>

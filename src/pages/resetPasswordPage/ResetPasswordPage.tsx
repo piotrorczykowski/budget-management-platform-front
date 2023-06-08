@@ -1,21 +1,26 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import styles from './ResetPassword.module.css'
 import { SyntheticEvent, useState } from 'react'
+import { css } from '@emotion/css'
 import _ from 'lodash'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import CustomButton from '../../components/CustomButton'
+import CustomInputText from '../../components/CustomInputText'
+import CustomWelcomeMessage from '../../components/CustomWelcomeMessage'
+import AlignCenterWrapper from '../../components/AlignCenterWrapper'
+import { InitialValues } from './@types/constants'
+import { FormInputsType } from './@types'
 import {
     clearAllToasts,
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import { FormInputsType } from './@types/index'
-import { InitialValues } from './@types/constants'
-import api from '../../api/axios'
-import { ENDPOINTS } from '../../api'
-import CustomButton from '../CustomButton'
-import CustomInputText from '../CustomInputText'
-import CustomWelcomeMessage from '../CustomWelcomeMessage'
 
-export default function ResetPassword() {
+const styledForm = css`
+    margin-top: 20vh;
+`
+
+export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
 
@@ -96,9 +101,9 @@ export default function ResetPassword() {
     }
 
     return (
-        <div id={styles.resetPasswordWrapper}>
+        <AlignCenterWrapper>
             {isPasswordChanged ? (
-                <div id={styles.resetPasswordSuccessfully}>
+                <AlignCenterWrapper paddingTop="35vh">
                     <CustomWelcomeMessage
                         mainText="Password Reset Successfully!"
                         otherText="You can now login."
@@ -108,10 +113,10 @@ export default function ResetPassword() {
                         buttonText="Login"
                         onClickHandler={() => navigate('/signIn')}
                     />
-                </div>
+                </AlignCenterWrapper>
             ) : (
                 <form
-                    id={styles.resetPasswordForm}
+                    className={styledForm}
                     onSubmit={handleSubmit}
                     autoComplete="off"
                 >
@@ -149,6 +154,6 @@ export default function ResetPassword() {
                     />
                 </form>
             )}
-        </div>
+        </AlignCenterWrapper>
     )
 }

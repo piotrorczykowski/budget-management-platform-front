@@ -34,7 +34,7 @@ const styledBackLink = css`
     border-radius: 5px;
 `
 
-function NotFoundPage() {
+export default function NotFoundPage() {
     return (
         <div className={styledNotFoundPageWrapper}>
             <div className={styledStatusCode}>404</div>
@@ -45,5 +45,3 @@ function NotFoundPage() {
         </div>
     )
 }
-
-export default NotFoundPage

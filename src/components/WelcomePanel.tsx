@@ -1,6 +1,6 @@
-import { MdOutlineToll } from 'react-icons/md'
-import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
+import { Link } from 'react-router-dom'
+import { MdOutlineToll } from 'react-icons/md'
 
 const styledWelcomePanelWrapper = css`
     display: flex;
