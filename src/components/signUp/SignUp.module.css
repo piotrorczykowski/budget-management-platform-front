@@ -35,19 +35,6 @@
     margin-top: 30px;
 }
 
-#login {
-    justify-self: flex-start;
-    width: 50vw;
-    text-align: end;
-    margin-top: 60px;
-}
-
-#loginLink {
-    padding-right: 120px;
-    font-size: 25px;
-    font-weight: 600;
-}
-
 #signUpForm {
     display: flex;
     flex-direction: column;

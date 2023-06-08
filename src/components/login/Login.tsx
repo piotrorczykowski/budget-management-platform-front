@@ -6,6 +6,7 @@ import { useLogin } from '../../hooks/useLogin'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
+import CustomLink from '../CustomLink'
 
 export default function Login() {
     const [username, setUsername] = useState('')
@@ -23,11 +24,8 @@ export default function Login() {
 
     return (
         <div id={styles.loginWrapper}>
-            <div id={styles.signUp}>
-                <Link id={styles.signUpLink} to="/signUp">
-                    Sign up
-                </Link>
-            </div>
+            <CustomLink linkText="Sign up" linkTo="/signUp" />
+
             <form
                 id={styles.loginForm}
                 onSubmit={handleSubmit}

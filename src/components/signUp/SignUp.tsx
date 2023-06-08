@@ -13,6 +13,7 @@ import { FormInputsType } from './@types/index'
 import { InitialValues } from './@types/constants'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
+import CustomLink from '../CustomLink'
 
 export default function SignUp() {
     const [username, setUsername] = useState('')
@@ -118,11 +119,7 @@ export default function SignUp() {
 
     return (
         <div id={styles.signUpWrapper}>
-            <div id={styles.login}>
-                <Link id={styles.loginLink} to="/signIn">
-                    Login
-                </Link>
-            </div>
+            <CustomLink linkText="Login" linkTo="/signIn" />
 
             {isSubmit ? (
                 <div id={styles.submittedForm}>

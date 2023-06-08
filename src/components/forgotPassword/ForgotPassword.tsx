@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import styles from './ForgotPassword.module.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ENDPOINTS } from '../../api'
 import api from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
+import CustomLink from '../CustomLink'
 
 export default function ForgotPassword() {
     const [email, setEmail] = useState('')
@@ -53,11 +54,8 @@ export default function ForgotPassword() {
 
     return (
         <div id={styles.forgotPasswordWrapper}>
-            <div id={styles.login}>
-                <Link id={styles.loginLink} to="/signIn">
-                    Login
-                </Link>
-            </div>
+            <CustomLink linkText="Login" linkTo="/signIn" />
+
             <div id={styles.forgotPassword}>
                 {isEmailSent ? (
                     <div id={styles.emailSent}>

@@ -7,8 +7,7 @@ import styles from './EmailVerification.module.css'
 import CustomButton from '../CustomButton'
 
 export default function EmailVerification() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const [isEmailVerified, setIsEmailVerified] = useState(false)
     const dataFetchedRef = useRef(false)
     const navigate = useNavigate()
