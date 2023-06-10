@@ -16,9 +16,8 @@ const sideBarWrapper = css`
     padding: 2em;
 `
 
-const dashboardWrapper = css`
+const styledOutletWrapper = css`
     width: 100%;
-    padding: 2em;
 `
 
 export default function DashboardLayout() {
@@ -27,7 +26,7 @@ export default function DashboardLayout() {
             <div className={sideBarWrapper}>
                 <SideBar />
             </div>
-            <div className={dashboardWrapper}>
+            <div className={styledOutletWrapper}>
                 <Outlet />
             </div>
             <ToastContainer />
