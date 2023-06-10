@@ -7,7 +7,7 @@ const styledAppLogo = css`
     align-items: center;
     align-self: flex-start;
     color: #ffffff;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 600;
 `
 
@@ -17,7 +17,7 @@ export default function AppLogo(customClassName?: any) {
             className={styledAppLogo + ' ' + customClassName?.className}
             to="/"
         >
-            <MdOutlineToll size="60px" /> BMP
+            <MdOutlineToll size="50px" /> BMP
         </Link>
     )
 }

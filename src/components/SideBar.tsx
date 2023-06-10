@@ -1,12 +1,8 @@
-import { Link } from 'react-router-dom'
 import AlignCenterWrapper from './AlignCenterWrapper'
 import { css } from '@emotion/css'
 import AppLogo from './AppLogo'
-import { MdSpaceDashboard, MdSettings } from 'react-icons/md'
-import { IoLogOut, IoWallet } from 'react-icons/io5'
-import { BiTransfer } from 'react-icons/bi'
-import { FaCalculator } from 'react-icons/fa'
-import { IoMdAnalytics } from 'react-icons/io'
+import SideBarButton from './SideBarButton'
+import { useLogout } from '../hooks/useLogout'
 
 const styledAppLogo = css`
     margin-bottom: 1em;
@@ -15,78 +11,64 @@ const styledAppLogo = css`
 const styledLabel = css`
     align-self: flex-start;
     width: 250px;
-
     padding: 0 0 0 10px;
     font-weight: 600;
+    font-size: 12px;
     color: #626569;
 `
 
-const styledSideBarLink = (shouldBeAtTheBottom: boolean = false) => css`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: flex-start;
-    font-size: 20px;
-    font-weight: 600;
-    width: 250px;
-    padding: 10px;
-    margin-bottom: 10px;
-    ${shouldBeAtTheBottom ? 'margin-top: auto;' : ''}
-
-    color: #bebfbf;
-
-    &:hover {
-        color: #ffffff;
-        background-color: #f0f0f040;
-    }
-`
-
-const styledIcon = css`
-    font-size: 24px;
-    margin-right: 1em;
-`
-
 export default function SideBar() {
+    const { logout } = useLogout()
+
     return (
         <AlignCenterWrapper>
             <AppLogo className={styledAppLogo} />
 
             <p className={styledLabel}>OVERVIEW</p>
 
-            <Link className={styledSideBarLink()} to="/">
-                <MdSpaceDashboard className={styledIcon} />
-                Dashboard
-            </Link>
+            <SideBarButton
+                linkTo="/"
+                buttonText="Dashboard"
+                icon="MdSpaceDashboard"
+            />
 
-            <Link className={styledSideBarLink()} to="/">
-                <IoWallet className={styledIcon} />
-                Accounts
-            </Link>
+            <SideBarButton
+                linkTo="/accounts"
+                buttonText="Accounts"
+                icon="IoWallet"
+            />
 
-            <Link className={styledSideBarLink()} to="/">
-                <BiTransfer className={styledIcon} />
-                Records
-            </Link>
+            <SideBarButton
+                linkTo="/records"
+                buttonText="Records"
+                icon="BiTransfer"
+            />
 
-            <Link className={styledSideBarLink()} to="/">
-                <FaCalculator className={styledIcon} />
-                Budgets
-            </Link>
+            <SideBarButton
+                linkTo="/budgets"
+                buttonText="Budgets"
+                icon="FaCalculator"
+            />
 
-            <Link className={styledSideBarLink()} to="/">
-                <IoMdAnalytics className={styledIcon} />
-                Analysis
-            </Link>
+            <SideBarButton
+                linkTo="/analysis"
+                buttonText="Analysis"
+                icon="IoMdAnalytics"
+            />
 
-            <Link className={styledSideBarLink(true)} to="/">
-                <MdSettings className={styledIcon} />
-                Settings
-            </Link>
+            <SideBarButton
+                linkTo="/settings"
+                buttonText="Settings"
+                icon="MdSettings"
+                shouldBeAtTheBottom={true}
+            />
 
-            <Link className={styledSideBarLink()} to="/">
-                <IoLogOut className={styledIcon} />
-                Log out
-            </Link>
+            <SideBarButton
+                linkTo="/signIn"
+                buttonText="Log out"
+                icon="IoLogOut"
+                onClickHandler={logout}
+            />
         </AlignCenterWrapper>
     )
 }
