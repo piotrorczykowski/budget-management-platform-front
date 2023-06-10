@@ -1,6 +1,7 @@
-import Dashboard from '../components/Dashboard'
 import { css } from '@emotion/css'
 import SideBar from '../components/SideBar'
+import { ToastContainer } from 'react-toastify'
+import { Outlet } from 'react-router-dom'
 
 const dashboardPageWrapper = css`
     height: 100vh;
@@ -27,8 +28,9 @@ export default function DashboardLayout() {
                 <SideBar />
             </div>
             <div className={dashboardWrapper}>
-                <Dashboard />
+                <Outlet />
             </div>
+            <ToastContainer />
         </div>
     )
 }
