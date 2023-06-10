@@ -7,29 +7,30 @@ const styledDashboardPageWrapper = css`
 `
 
 const styledDashboardPageContent = css`
+    height: 85%;
     display: grid;
-    grid-template-columns: repeat(3, 200px);
-    grid-template-rows: repeat(3, 200px);
+    grid-template-columns: repeat(5, 19%);
+    grid-template-rows: repeat(7, 13%);
+    grid-gap: 1em;
     padding: 2em;
 `
 
 const one = css`
     border: solid 1px black;
+    padding: 0.5em;
 `
 
 export default function DashboardPage() {
+    const rows = []
+    for (let i = 0; i < 5 * 7; i++) {
+        rows.push(<div className={one}>{i}</div>)
+    }
+
     return (
         <div className={styledDashboardPageWrapper}>
             <TopBar pageNameText={'Dashboard'} />
 
-            <div className={styledDashboardPageContent}>
-                <div className={one}>One</div>
-                <div className={one}>Two</div>
-                <div className={one}>Three</div>
-                <div className={one}>Four</div>
-                <div className={one}>Five</div>
-                <div className={one}>Six</div>
-            </div>
+            <div className={styledDashboardPageContent}>{rows}</div>
         </div>
     )
 }
