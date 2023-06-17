@@ -1,12 +1,15 @@
 import { css } from '@emotion/css'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { MdSpaceDashboard, MdSettings } from 'react-icons/md'
 import { IoLogOut, IoWallet } from 'react-icons/io5'
 import { BiTransfer } from 'react-icons/bi'
 import { FaCalculator } from 'react-icons/fa'
 import { IoMdAnalytics } from 'react-icons/io'
 
-const styledSideBarLink = (shouldBeAtTheBottom: boolean = false) => css`
+const styledSideBarLink = (
+    isCurrentButtonActive: boolean,
+    shouldBeAtTheBottom: boolean = false
+) => css`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -17,7 +20,9 @@ const styledSideBarLink = (shouldBeAtTheBottom: boolean = false) => css`
     margin-bottom: 10px;
     ${shouldBeAtTheBottom ? 'margin-top: auto;' : ''}
 
-    color: #bebfbf;
+    ${isCurrentButtonActive
+        ? 'color: #ffffff; background-color: #f0f0f040;'
+        : 'color: #bebfbf;'}
 
     &:hover {
         color: #ffffff;
@@ -43,6 +48,12 @@ export default function SideBarButton({
     shouldBeAtTheBottom?: boolean
     onClickHandler?: () => void
 }) {
+    const location = useLocation()
+    const pathName: string = location.pathname
+    const isCurrentButtonActive: boolean =
+        pathName === `/${buttonText.toLowerCase()}` ||
+        (pathName === '/' && `/${buttonText.toLowerCase()}` === '/dashboard')
+
     const icons: Map<string, any> = new Map([
         ['MdSpaceDashboard', <MdSpaceDashboard className={styledIcon} />],
         ['IoWallet', <IoWallet className={styledIcon} />],
@@ -55,7 +66,10 @@ export default function SideBarButton({
 
     return (
         <Link
-            className={styledSideBarLink(shouldBeAtTheBottom)}
+            className={styledSideBarLink(
+                isCurrentButtonActive,
+                shouldBeAtTheBottom
+            )}
             to={linkTo}
             onClick={onClickHandler}
         >
