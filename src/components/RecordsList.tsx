@@ -44,6 +44,8 @@ const styledRecords = css`
 `
 
 export default function RecordsList() {
+    // TODO add fetching account from the backend
+
     const records: {
         category: string
         date: string

@@ -6,7 +6,7 @@ const styledAccountsListWrapper = css`
 `
 
 export default function AccountsList() {
-    // TODO add fetching account from backend
+    // TODO add fetching account from the backend
     const accounts: { accountName: string; accountBalance: number }[] = [
         { accountName: 'mBank', accountBalance: 1234.53 },
         { accountName: 'Millenium', accountBalance: 2000 },

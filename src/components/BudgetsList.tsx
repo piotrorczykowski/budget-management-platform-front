@@ -1,0 +1,81 @@
+import { css } from '@emotion/css'
+import { TbMathGreater } from 'react-icons/tb'
+import Budget from './Budget'
+
+const styledBudgetsListWrapper = css`
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 2px;
+    margin: 1em;
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
+`
+
+const styledHeader = css`
+    padding: 1em;
+    font-weight: 600;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+const styledRecentRecordText = css`
+    padding: 0.5em;
+    font-size: 24px;
+`
+
+const styledSeeAllRecords = css`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5em;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 18px;
+
+    &:hover {
+        background-color: #f0f0f080;
+    }
+`
+
+const styledBudgets = css`
+    padding: 0 1em 0 1em;
+`
+
+export default function BudgetsList() {
+    // TODO add fetching account from the backend
+    const budgets: {
+        name: string
+        leftAmount: number
+        leftPercentages: number
+    }[] = [
+        { name: 'Food', leftAmount: 1000, leftPercentages: 50 },
+        { name: 'House', leftAmount: 2400, leftPercentages: 0 },
+        { name: 'Car', leftAmount: -200, leftPercentages: -100 },
+    ]
+
+    return (
+        <div className={styledBudgetsListWrapper}>
+            <div className={styledHeader}>
+                <p className={styledRecentRecordText}>Budgets</p>
+
+                <div className={styledSeeAllRecords}>
+                    <p>See All</p>
+                    <TbMathGreater size="15px" />
+                </div>
+            </div>
+            <div className={styledBudgets}>
+                {budgets.map((budget) => {
+                    return (
+                        <Budget
+                            name={budget.name}
+                            leftAmount={budget.leftAmount}
+                            leftPercentages={budget.leftPercentages}
+                        />
+                    )
+                })}
+            </div>
+        </div>
+    )
+}

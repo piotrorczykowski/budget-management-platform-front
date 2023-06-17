@@ -10,6 +10,7 @@ const styledRecordWrapper = css`
     font-weight: 500;
     margin: auto;
     position: relative;
+    margin-bottom: 0.5em;
 `
 
 const styledCategoryName = css`
