@@ -13,19 +13,20 @@ export default function AccountsList() {
         { accountName: 'Savings', accountBalance: 12534.03 },
     ]
 
+    const hasUserMaxAccount: boolean = accounts.length > 4
+
     return (
         <div className={styledAccountsListWrapper}>
-            {accounts.length === 0 ? (
+            {accounts.map((account) => {
+                return (
+                    <Account
+                        accountName={account.accountName}
+                        accountBalance={account.accountBalance}
+                    />
+                )
+            })}
+            {!hasUserMaxAccount && (
                 <Account accountName="" accountBalance={0} isEmpty={true} />
-            ) : (
-                accounts.map((account) => {
-                    return (
-                        <Account
-                            accountName={account.accountName}
-                            accountBalance={account.accountBalance}
-                        />
-                    )
-                })
             )}
         </div>
     )
