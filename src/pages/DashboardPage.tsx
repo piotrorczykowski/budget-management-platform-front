@@ -7,30 +7,48 @@ const styledDashboardPageWrapper = css`
 `
 
 const styledDashboardPageContent = css`
-    height: 85%;
-    display: grid;
-    grid-template-columns: repeat(5, 19%);
-    grid-template-rows: repeat(7, 13%);
-    grid-gap: 1em;
-    padding: 2em;
+    display: flex;
+    flex-wrap: wrap;
+    height: 90vh;
+    background-color: #f0f0f0;
 `
 
-const one = css`
+const styledAccounts = css`
     border: solid 1px black;
-    padding: 0.5em;
+    padding: 1em;
+    height: 150px;
+`
+
+const styledRecords = css`
+    border: solid 1px black;
+    padding: 1em;
+    align-self: flex-start;
+    height: 71.2vh;
+`
+
+const styledBudgets = css`
+    border: solid 1px black;
+    padding: 1em;
+    width: 28%;
+    height: 89vh;
+`
+
+const styledLeftPanel = css`
+    width: 70%;
 `
 
 export default function DashboardPage() {
-    const rows = []
-    for (let i = 0; i < 5 * 7; i++) {
-        rows.push(<div className={one}>{i}</div>)
-    }
-
     return (
         <div className={styledDashboardPageWrapper}>
             <TopBar pageNameText={'Dashboard'} />
 
-            <div className={styledDashboardPageContent}>{rows}</div>
+            <div className={styledDashboardPageContent}>
+                <div className={styledLeftPanel}>
+                    <div className={styledAccounts}>Accounts</div>
+                    <div className={styledRecords}>Records</div>
+                </div>
+                <div className={styledBudgets}>Budgets</div>
+            </div>
         </div>
     )
 }
