@@ -6,7 +6,6 @@ const styledRecordWrapper = css`
     border-bottom: 2px solid #f0f0f0;
     display: flex;
     align-items: center;
-    // justify-content: space-between;
     padding: 0.5em;
     font-weight: 500;
     margin: auto;
