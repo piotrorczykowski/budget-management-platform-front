@@ -1,6 +1,7 @@
 import { css } from '@emotion/css'
 import { TbMathGreater } from 'react-icons/tb'
 import Record from './Record'
+import { useNavigate } from 'react-router-dom'
 
 const styledRecordsListWrapper = css`
     width: 97.5%;
@@ -44,8 +45,9 @@ const styledRecords = css`
 `
 
 export default function RecordsList() {
-    // TODO add fetching account from the backend
+    const navigate = useNavigate()
 
+    // TODO add fetching account from the backend
     const records: {
         category: string
         date: string
@@ -112,7 +114,10 @@ export default function RecordsList() {
             <div className={styledHeader}>
                 <p className={styledRecentRecordText}>Recent Records</p>
 
-                <div className={styledSeeAllRecords}>
+                <div
+                    className={styledSeeAllRecords}
+                    onClick={() => navigate('/records')}
+                >
                     <p>See All</p>
                     <TbMathGreater size="15px" />
                 </div>

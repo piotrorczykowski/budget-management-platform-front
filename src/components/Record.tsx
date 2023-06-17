@@ -11,6 +11,14 @@ const styledRecordWrapper = css`
     margin: auto;
     position: relative;
     margin-bottom: 0.5em;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: #f0f0f0;
+
+        border-bottom: 2px solid #62656980;
+    }
 `
 
 const styledCategoryName = css`

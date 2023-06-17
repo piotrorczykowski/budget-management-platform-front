@@ -16,6 +16,7 @@ const styledUserProfile = css`
     margin-left: auto;
     cursor: pointer;
     margin-right: 1em;
+    z-index: 1000;
 `
 
 const styledIcon = css`

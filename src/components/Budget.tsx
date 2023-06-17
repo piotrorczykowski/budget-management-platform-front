@@ -7,6 +7,12 @@ const styledBudgetWrapper = css`
     font-weight: 500;
     margin: auto;
     margin-bottom: 0.5em;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
 `
 
 const styledBudgetInfo = css`

@@ -1,6 +1,7 @@
 import { css } from '@emotion/css'
 import { TbMathGreater } from 'react-icons/tb'
 import Budget from './Budget'
+import { useNavigate } from 'react-router-dom'
 
 const styledBudgetsListWrapper = css`
     width: 100%;
@@ -44,6 +45,8 @@ const styledBudgets = css`
 `
 
 export default function BudgetsList() {
+    const navigate = useNavigate()
+
     // TODO add fetching account from the backend
     const budgets: {
         name: string
@@ -60,7 +63,10 @@ export default function BudgetsList() {
             <div className={styledHeader}>
                 <p className={styledRecentRecordText}>Budgets</p>
 
-                <div className={styledSeeAllRecords}>
+                <div
+                    className={styledSeeAllRecords}
+                    onClick={() => navigate('/budgets')}
+                >
                     <p>See All</p>
                     <TbMathGreater size="15px" />
                 </div>

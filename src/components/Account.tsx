@@ -34,6 +34,7 @@ const styledIcon = css`
 const styledAccountName = css`
     font-size: 20px;
     margin: 0.1em;
+    font-weight: 500;
 `
 
 const styledAccountBalance = css`
