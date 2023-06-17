@@ -1,6 +1,7 @@
 import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountsList'
+import RecordsList from '../components/RecordsList'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -19,10 +20,8 @@ const styledAccounts = css`
 `
 
 const styledRecords = css`
-    border: solid 1px black;
-    padding: 1em;
     align-self: flex-start;
-    height: 66.4vh;
+    height: 66.7vh;
 `
 
 const styledBudgets = css`
@@ -46,7 +45,9 @@ export default function DashboardPage() {
                     <div className={styledAccounts}>
                         <AccountsList />
                     </div>
-                    <div className={styledRecords}>Records</div>
+                    <div className={styledRecords}>
+                        <RecordsList />
+                    </div>
                 </div>
                 <div className={styledBudgets}>Budgets</div>
             </div>
