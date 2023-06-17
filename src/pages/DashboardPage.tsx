@@ -16,14 +16,14 @@ const styledDashboardPageContent = css`
 const styledAccounts = css`
     border: solid 1px black;
     padding: 1em;
-    height: 150px;
+    height: 200px;
 `
 
 const styledRecords = css`
     border: solid 1px black;
     padding: 1em;
     align-self: flex-start;
-    height: 71.2vh;
+    height: 66.4vh;
 `
 
 const styledBudgets = css`
