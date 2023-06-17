@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
-import Account from '../components/Account'
+import AccountsList from '../components/AccountsList'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -15,7 +15,6 @@ const styledDashboardPageContent = css`
 `
 
 const styledAccounts = css`
-    display: flex;
     height: 230px;
 `
 
@@ -38,13 +37,6 @@ const styledLeftPanel = css`
 `
 
 export default function DashboardPage() {
-    // TODO add fetching account from backend
-    const accounts: { accountName: string; accountBalance: number }[] = [
-        { accountName: 'mBank', accountBalance: 1234.53 },
-        { accountName: 'Millenium', accountBalance: 2000 },
-        { accountName: 'Savings', accountBalance: 12534.03 },
-    ]
-
     return (
         <div className={styledDashboardPageWrapper}>
             <TopBar pageNameText={'Dashboard'} />
@@ -52,22 +44,7 @@ export default function DashboardPage() {
             <div className={styledDashboardPageContent}>
                 <div className={styledLeftPanel}>
                     <div className={styledAccounts}>
-                        {accounts.length === 0 ? (
-                            <Account
-                                accountName=""
-                                accountBalance={0}
-                                isEmpty={true}
-                            />
-                        ) : (
-                            accounts.map((account) => {
-                                return (
-                                    <Account
-                                        accountName={account.accountName}
-                                        accountBalance={account.accountBalance}
-                                    />
-                                )
-                            })
-                        )}
+                        <AccountsList />
                     </div>
                     <div className={styledRecords}>Records</div>
                 </div>
