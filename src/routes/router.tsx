@@ -14,7 +14,6 @@ import RecordsPage from '../pages/RecordsPage'
 import BudgetsPage from '../pages/BudgetsPage'
 import AnalysisPage from '../pages/AnalysisPage'
 import SettingsPage from '../pages/SettingsPage'
-import ProfilePage from '../pages/ProfilePage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
     const { accessToken } = useAuthContext()
@@ -53,10 +52,6 @@ const Router = () => {
                 <Route
                     path="/settings"
                     element={RedirectNotAuthUser(<SettingsPage />)}
-                />
-                <Route
-                    path="/profile"
-                    element={RedirectNotAuthUser(<ProfilePage />)}
                 />
             </Route>
 

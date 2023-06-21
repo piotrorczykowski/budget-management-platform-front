@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import WelcomePanel from '../components/WelcomePanel'
-import { ToastContainer } from 'react-toastify'
 import { css } from '@emotion/css'
 
 const styledHomepageWrapper = css`
@@ -23,7 +22,6 @@ export default function HomeLayout() {
             <div className={styledPanel}>
                 <Outlet />
             </div>
-            <ToastContainer />
         </div>
     )
 }

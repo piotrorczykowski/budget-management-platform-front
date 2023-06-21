@@ -21,7 +21,7 @@ const styledSideBarLink = (
     ${shouldBeAtTheBottom ? 'margin-top: auto;' : ''}
 
     ${isCurrentButtonActive
-        ? 'color: #ffffff; background-color: #f0f0f040;'
+        ? 'color: #ffffff; background-color: #f0f0f030;'
         : 'color: #bebfbf;'}
 
     &:hover {
