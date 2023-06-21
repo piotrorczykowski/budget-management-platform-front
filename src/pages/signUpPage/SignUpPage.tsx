@@ -160,9 +160,9 @@ export default function SignUpPage() {
                     />
 
                     <CustomInputText
-                        labelText="FullName"
+                        labelText="Full Name"
                         inputName="fullName"
-                        placeholderText="FullName"
+                        placeholderText="Full Name"
                         value={fullName}
                         onChangeHandler={setFullName}
                         errorMessage={formErrors.fullName}

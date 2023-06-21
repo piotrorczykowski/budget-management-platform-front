@@ -7,6 +7,7 @@ const styledInputWrapper = (isInputTypePassword: boolean) => css`
     flex-direction: column;
     margin-top: 30px;
     position: ${isInputTypePassword ? 'relative' : 'static'};
+    width: 25vw;
 `
 
 const styledLabel = css`
@@ -46,22 +47,31 @@ export default function CustomInputText({
     value,
     onChangeHandler,
     errorMessage = '',
+    customClassName,
     inputType = 'text',
     isInputTypePassword = false,
+    isDisabled = false,
+    isRequired = true,
 }: {
     labelText: string
     inputName: string
     placeholderText: string
     value: string
     onChangeHandler: (value: string, name?: string) => void
+    customClassName?: string
     errorMessage?: string
     inputType?: string
     isInputTypePassword?: boolean
+    isDisabled?: boolean
+    isRequired?: boolean
 }) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
-        <div className={styledInputWrapper(isInputTypePassword)}>
+        <div
+            className={`
+                ${styledInputWrapper(isInputTypePassword)} ${customClassName}`}
+        >
             <label className={styledLabel} htmlFor={inputName}>
                 {labelText}
             </label>
@@ -77,9 +87,10 @@ export default function CustomInputText({
                 name={inputName}
                 placeholder={placeholderText}
                 autoComplete="new-username"
-                required
+                required={isRequired}
                 onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
                 value={value}
+                disabled={isDisabled}
             />
 
             {isInputTypePassword &&

@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import { ButtonHTMLAttributes } from 'react'
 
-const styledButton = css`
+const styledButton = (isDisabled: boolean) => css`
     background-color: #040605;
     color: #f0f0f0;
     font-size: 30px;
@@ -10,6 +10,10 @@ const styledButton = css`
     margin-top: 40px;
     width: 25vw;
     border-radius: 5px;
+
+    &:disabled {
+        ${isDisabled ? 'background-color: #04060580;' : ''}
+    }
 `
 
 export default function CustomButton({
@@ -17,16 +21,19 @@ export default function CustomButton({
     loading = false,
     buttonType = 'button',
     onClickHandler,
+    isDisabled = false,
 }: {
     buttonText: string
     loading?: boolean
     buttonType?: ButtonHTMLAttributes<HTMLButtonElement>['type']
     onClickHandler?: () => void
+    isDisabled?: boolean
 }) {
+    console.log(isDisabled)
     return (
         <button
-            className={styledButton}
-            disabled={loading}
+            className={styledButton(isDisabled)}
+            disabled={loading || isDisabled}
             type={buttonType}
             onClick={onClickHandler}
         >
