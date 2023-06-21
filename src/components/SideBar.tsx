@@ -17,6 +17,10 @@ const styledLabel = css`
     color: #626569;
 `
 
+const styledBottomButtons = css`
+    margin-top: auto;
+`
+
 export default function SideBar() {
     const { logout } = useLogout()
 
@@ -26,49 +30,52 @@ export default function SideBar() {
 
             <p className={styledLabel}>OVERVIEW</p>
 
-            <SideBarButton
-                linkTo="/"
-                buttonText="Dashboard"
-                icon="MdSpaceDashboard"
-            />
+            <div>
+                <SideBarButton
+                    linkTo="/"
+                    buttonText="Dashboard"
+                    icon="MdSpaceDashboard"
+                />
 
-            <SideBarButton
-                linkTo="/accounts"
-                buttonText="Accounts"
-                icon="IoWallet"
-            />
+                <SideBarButton
+                    linkTo="/accounts"
+                    buttonText="Accounts"
+                    icon="IoWallet"
+                />
 
-            <SideBarButton
-                linkTo="/records"
-                buttonText="Records"
-                icon="BiTransfer"
-            />
+                <SideBarButton
+                    linkTo="/records"
+                    buttonText="Records"
+                    icon="BiTransfer"
+                />
 
-            <SideBarButton
-                linkTo="/budgets"
-                buttonText="Budgets"
-                icon="FaCalculator"
-            />
+                <SideBarButton
+                    linkTo="/budgets"
+                    buttonText="Budgets"
+                    icon="FaCalculator"
+                />
 
-            <SideBarButton
-                linkTo="/analysis"
-                buttonText="Analysis"
-                icon="IoMdAnalytics"
-            />
+                <SideBarButton
+                    linkTo="/analysis"
+                    buttonText="Analysis"
+                    icon="IoMdAnalytics"
+                />
+            </div>
 
-            <SideBarButton
-                linkTo="/settings"
-                buttonText="Settings"
-                icon="MdSettings"
-                shouldBeAtTheBottom={true}
-            />
+            <div className={styledBottomButtons}>
+                <SideBarButton
+                    linkTo="/settings"
+                    buttonText="Settings"
+                    icon="MdSettings"
+                />
 
-            <SideBarButton
-                linkTo="/signIn"
-                buttonText="Log out"
-                icon="IoLogOut"
-                onClickHandler={logout}
-            />
+                <SideBarButton
+                    linkTo="/signIn"
+                    buttonText="Log out"
+                    icon="IoLogOut"
+                    onClickHandler={logout}
+                />
+            </div>
         </AlignCenterWrapper>
     )
 }
