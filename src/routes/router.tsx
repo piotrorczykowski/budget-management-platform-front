@@ -12,7 +12,7 @@ import DashboardPage from '../pages/DashboardPage'
 import AccountsPage from '../pages/AccountsPage'
 import RecordsPage from '../pages/RecordsPage'
 import BudgetsPage from '../pages/BudgetsPage'
-import AnalysisPage from '../pages/AnalysisPage'
+import AnalyticsPage from '../pages/AnalyticsPage'
 import SettingsPage from '../pages/SettingsPage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
@@ -46,8 +46,8 @@ const Router = () => {
                     element={RedirectNotAuthUser(<BudgetsPage />)}
                 />
                 <Route
-                    path="/analysis"
-                    element={RedirectNotAuthUser(<AnalysisPage />)}
+                    path="/analytics"
+                    element={RedirectNotAuthUser(<AnalyticsPage />)}
                 />
                 <Route
                     path="/settings"

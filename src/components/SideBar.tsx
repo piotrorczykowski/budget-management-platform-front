@@ -56,8 +56,8 @@ export default function SideBar() {
                 />
 
                 <SideBarButton
-                    linkTo="/analysis"
-                    buttonText="Analysis"
+                    linkTo="/analytics"
+                    buttonText="Analytics"
                     icon="IoMdAnalytics"
                 />
             </div>
