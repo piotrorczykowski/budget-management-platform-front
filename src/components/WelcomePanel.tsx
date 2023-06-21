@@ -1,6 +1,5 @@
 import { css } from '@emotion/css'
-import { Link } from 'react-router-dom'
-import { MdOutlineToll } from 'react-icons/md'
+import AppLogo from './AppLogo'
 
 const styledWelcomePanelWrapper = css`
     display: flex;
@@ -11,13 +10,6 @@ const styledWelcomePanelWrapper = css`
 `
 
 const styledAppLogo = css`
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 140px;
-    color: #ffffff;
-    font-size: 40px;
-    font-weight: 600;
     position: absolute;
     left: 0.5em;
     top: 0.5em;
@@ -35,9 +27,8 @@ const styledAppName = css`
 export default function WelcomePanel() {
     return (
         <div className={styledWelcomePanelWrapper}>
-            <Link className={styledAppLogo} to="/">
-                <MdOutlineToll size="50px" /> BMP
-            </Link>
+            <AppLogo className={styledAppLogo} />
+
             <p className={styledAppName}>
                 BUDGET
                 <br />
