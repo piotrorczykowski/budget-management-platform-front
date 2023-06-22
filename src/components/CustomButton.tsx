@@ -29,7 +29,6 @@ export default function CustomButton({
     onClickHandler?: () => void
     isDisabled?: boolean
 }) {
-    console.log(isDisabled)
     return (
         <button
             className={styledButton(isDisabled)}
