@@ -49,6 +49,7 @@ export default function RecordsList() {
 
     // TODO add fetching account from the backend
     const records: {
+        id: number
         category: string
         date: string
         accountName: string
@@ -57,6 +58,7 @@ export default function RecordsList() {
         description?: string
     }[] = [
         {
+            id: 1,
             category: 'Food',
             date: '06.30.2023',
             accountName: 'Savings',
@@ -65,12 +67,14 @@ export default function RecordsList() {
             description: 'New computer',
         },
         {
+            id: 2,
             category: 'Salary',
             date: '06.07.2023',
             accountName: 'Millenium',
             amount: 6345.95,
         },
         {
+            id: 3,
             category: 'House',
             date: '06.30.2023',
             accountName: 'mBank',
@@ -78,6 +82,7 @@ export default function RecordsList() {
             isExpense: true,
         },
         {
+            id: 4,
             category: 'Food',
             date: '06.12.2023',
             accountName: 'Millenium',
@@ -86,6 +91,7 @@ export default function RecordsList() {
             description: 'Hot Dog',
         },
         {
+            id: 5,
             category: 'Food',
             date: '06.24.2023',
             accountName: 'mBank',
@@ -93,6 +99,7 @@ export default function RecordsList() {
             isExpense: true,
         },
         {
+            id: 6,
             category: 'Alcohol',
             date: '06.05.2023',
             accountName: 'Millenium',
@@ -101,6 +108,7 @@ export default function RecordsList() {
             description: 'Wine for friend',
         },
         {
+            id: 7,
             category: 'Food',
             date: '06.20.2023',
             accountName: 'mBank',
@@ -126,6 +134,7 @@ export default function RecordsList() {
                 {records.map((record) => {
                     return (
                         <Record
+                            key={record.id}
                             category={record.category}
                             date={record.date}
                             accountName={record.accountName}
