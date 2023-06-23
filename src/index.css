@@ -25,3 +25,7 @@ button {
 button:disabled {
     cursor: not-allowed;
 }
+
+select:disabled {
+    cursor: not-allowed;
+}

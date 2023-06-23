@@ -6,4 +6,5 @@ export const ENDPOINTS = {
     forgotPassword: '/auth/forgot-password',
     resetPassword: '/auth/reset-password',
     fetchProfile: '/users/me',
+    updateUser: (userId: number) => `/users/${userId}`,
 }

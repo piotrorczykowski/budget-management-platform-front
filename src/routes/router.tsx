@@ -13,7 +13,7 @@ import AccountsPage from '../pages/AccountsPage'
 import RecordsPage from '../pages/RecordsPage'
 import BudgetsPage from '../pages/BudgetsPage'
 import AnalyticsPage from '../pages/AnalyticsPage'
-import SettingsPage from '../pages/SettingsPage'
+import SettingsPage from '../pages/settingsPage/SettingsPage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
     const { accessToken } = useAuthContext()

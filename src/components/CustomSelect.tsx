@@ -21,17 +21,23 @@ const styledSelect = css`
     margin-top: 10px;
     border-radius: 5px;
     border: solid 2px black;
+
+    &:disabled {
+        border: solid 2px #aaaaaa;
+    }
 `
 
 export default function CustomSelect({
     labelText,
     selectName,
+    selected,
     options,
     onChangeHandler,
     isDisabled = false,
 }: {
     labelText: string
     selectName: string
+    selected: string
     options: string[]
     onChangeHandler: (value: string) => void
     isDisabled?: boolean
@@ -45,10 +51,13 @@ export default function CustomSelect({
                 name={selectName}
                 className={styledSelect}
                 disabled={isDisabled}
+                value={selected}
                 onChange={(e) => onChangeHandler(e.target.value)}
             >
                 {options.map((optionValue) => (
-                    <option value={optionValue}>{optionValue}</option>
+                    <option key={optionValue} value={optionValue}>
+                        {optionValue}
+                    </option>
                 ))}
             </select>
         </div>
