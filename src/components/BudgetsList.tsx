@@ -49,13 +49,14 @@ export default function BudgetsList() {
 
     // TODO add fetching account from the backend
     const budgets: {
+        id: number
         name: string
         leftAmount: number
         leftPercentages: number
     }[] = [
-        { name: 'Food', leftAmount: 1000, leftPercentages: 50 },
-        { name: 'House', leftAmount: 2400, leftPercentages: 0 },
-        { name: 'Car', leftAmount: -200, leftPercentages: -100 },
+        { id: 1, name: 'Food', leftAmount: 1000, leftPercentages: 50 },
+        { id: 2, name: 'House', leftAmount: 2400, leftPercentages: 0 },
+        { id: 3, name: 'Car', leftAmount: -200, leftPercentages: -100 },
     ]
 
     return (
@@ -75,6 +76,7 @@ export default function BudgetsList() {
                 {budgets.map((budget) => {
                     return (
                         <Budget
+                            key={budget.id}
                             name={budget.name}
                             leftAmount={budget.leftAmount}
                             leftPercentages={budget.leftPercentages}

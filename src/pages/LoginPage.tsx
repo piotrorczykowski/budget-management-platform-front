@@ -7,7 +7,7 @@ import CustomInputText from '../components/CustomInputText'
 import CustomLink from '../components/CustomLink'
 import CustomWelcomeMessage from '../components/CustomWelcomeMessage'
 import AlignCenterWrapper from '../components/AlignCenterWrapper'
-import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
+import { clearAllToasts } from '../utils/toastUtils'
 
 const styledForgotPasswordLink = css`
     font-weight: 500;
@@ -18,15 +18,12 @@ const styledForgotPasswordLink = css`
 export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const { login, error, isLoading } = useLogin()
+    const { login, isLoading } = useLogin()
 
     const handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
         clearAllToasts()
         await login(username, password)
-        if (error) {
-            showErrorToast(error)
-        }
     }
 
     return (

@@ -6,10 +6,7 @@ import { BiTransfer } from 'react-icons/bi'
 import { FaCalculator } from 'react-icons/fa'
 import { IoMdAnalytics } from 'react-icons/io'
 
-const styledSideBarLink = (
-    isCurrentButtonActive: boolean,
-    shouldBeAtTheBottom: boolean = false
-) => css`
+const styledSideBarLink = (isCurrentButtonActive: boolean) => css`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -18,7 +15,6 @@ const styledSideBarLink = (
     width: 250px;
     padding: 10px;
     margin-bottom: 10px;
-    ${shouldBeAtTheBottom ? 'margin-top: auto;' : ''}
 
     ${isCurrentButtonActive
         ? 'color: #ffffff; background-color: #f0f0f030;'
@@ -39,13 +35,11 @@ export default function SideBarButton({
     linkTo,
     buttonText,
     icon,
-    shouldBeAtTheBottom = false,
     onClickHandler,
 }: {
     linkTo: string
     buttonText: string
     icon: string
-    shouldBeAtTheBottom?: boolean
     onClickHandler?: () => void
 }) {
     const location = useLocation()
@@ -66,10 +60,7 @@ export default function SideBarButton({
 
     return (
         <Link
-            className={styledSideBarLink(
-                isCurrentButtonActive,
-                shouldBeAtTheBottom
-            )}
+            className={styledSideBarLink(isCurrentButtonActive)}
             to={linkTo}
             onClick={onClickHandler}
         >
