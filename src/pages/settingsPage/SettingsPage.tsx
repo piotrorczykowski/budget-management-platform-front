@@ -167,7 +167,7 @@ export default function SettingsPage() {
 
             setLoading(false)
         } catch (e: any) {
-            showErrorToast(e.response.data.Error)
+            showErrorToast(e?.response?.data?.Error)
             setLoading(false)
         }
     }
@@ -180,9 +180,10 @@ export default function SettingsPage() {
 
         try {
             const res: AxiosResponse = await api.get(ENDPOINTS.fetchProfile)
+            console.log(res)
             return res.data
         } catch (e: any) {
-            showErrorToast(e.response.data.Error)
+            showErrorToast(e?.response?.data?.Error)
             setLoading(false)
         }
     }
