@@ -54,6 +54,7 @@ export default function CustomInputText({
     isInputTypePassword = false,
     isDisabled = false,
     isRequired = true,
+    minValue = 0,
 }: {
     labelText: string
     inputName: string
@@ -66,6 +67,7 @@ export default function CustomInputText({
     isInputTypePassword?: boolean
     isDisabled?: boolean
     isRequired?: boolean
+    minValue?: number
 }) {
     const [showPassword, setShowPassword] = useState(false)
 
@@ -93,6 +95,7 @@ export default function CustomInputText({
                 onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
                 value={value}
                 disabled={isDisabled}
+                min={minValue}
             />
 
             {isInputTypePassword &&
