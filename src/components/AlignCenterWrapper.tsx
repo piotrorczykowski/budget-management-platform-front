@@ -5,6 +5,7 @@ const styledAlignCenterWrapper = (paddingTop: string | undefined) => css`
     flex-direction: column;
     align-items: center;
     padding-top: ${paddingTop};
+    ${!paddingTop ? 'height: 100%;' : ''}
 `
 
 export default function AlignCenterWrapper({

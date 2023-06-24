@@ -5,4 +5,8 @@ export const ENDPOINTS = {
     emailVerification: '/auth/activate-user',
     forgotPassword: '/auth/forgot-password',
     resetPassword: '/auth/reset-password',
+    fetchProfile: '/users/me',
+    updateUser: (userId: number) => `/users/${userId}`,
+    createAccount: '/accounts/',
+    fetchUserAccounts: (userId: number) => `/accounts/${userId}`,
 }

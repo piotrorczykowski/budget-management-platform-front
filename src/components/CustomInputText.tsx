@@ -7,6 +7,7 @@ const styledInputWrapper = (isInputTypePassword: boolean) => css`
     flex-direction: column;
     margin-top: 30px;
     position: ${isInputTypePassword ? 'relative' : 'static'};
+    width: 25vw;
 `
 
 const styledLabel = css`
@@ -31,11 +32,13 @@ const styledErrorMessage = css`
 
 const styledIcon = css`
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
     width: 30px;
     height: 65px;
     margin-right: 20px;
+    margin-top: 35px;
+
     cursor: pointer;
 `
 
@@ -46,22 +49,33 @@ export default function CustomInputText({
     value,
     onChangeHandler,
     errorMessage = '',
+    customClassName,
     inputType = 'text',
     isInputTypePassword = false,
+    isDisabled = false,
+    isRequired = true,
+    minValue = 0,
 }: {
     labelText: string
     inputName: string
     placeholderText: string
     value: string
     onChangeHandler: (value: string, name?: string) => void
+    customClassName?: string
     errorMessage?: string
     inputType?: string
     isInputTypePassword?: boolean
+    isDisabled?: boolean
+    isRequired?: boolean
+    minValue?: number
 }) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
-        <div className={styledInputWrapper(isInputTypePassword)}>
+        <div
+            className={`
+                ${styledInputWrapper(isInputTypePassword)} ${customClassName}`}
+        >
             <label className={styledLabel} htmlFor={inputName}>
                 {labelText}
             </label>
@@ -77,22 +91,26 @@ export default function CustomInputText({
                 name={inputName}
                 placeholder={placeholderText}
                 autoComplete="new-username"
-                required
+                required={isRequired}
                 onChange={(e) => onChangeHandler(e.target.value, e.target.name)}
                 value={value}
+                disabled={isDisabled}
+                min={minValue}
             />
 
             {isInputTypePassword &&
-                (showPassword ? (
+                (showPassword && !isDisabled ? (
                     <AiFillEyeInvisible
                         className={styledIcon}
                         onClick={() => setShowPassword(!showPassword)}
                     />
                 ) : (
-                    <AiFillEye
-                        className={styledIcon}
-                        onClick={() => setShowPassword(!showPassword)}
-                    />
+                    !isDisabled && (
+                        <AiFillEye
+                            className={styledIcon}
+                            onClick={() => setShowPassword(!showPassword)}
+                        />
+                    )
                 ))}
 
             {errorMessage && (

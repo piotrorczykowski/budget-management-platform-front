@@ -8,6 +8,12 @@ import ResetPasswordPage from '../pages/resetPasswordPage/ResetPasswordPage'
 import HomeLayout from '../layouts/HomeLayout'
 import DashboardLayout from '../layouts/DashboardLayout'
 import { useAuthContext } from '../hooks/useAuthContext'
+import DashboardPage from '../pages/DashboardPage'
+import AccountsPage from '../pages/AccountsPage'
+import RecordsPage from '../pages/RecordsPage'
+import BudgetsPage from '../pages/BudgetsPage'
+import AnalyticsPage from '../pages/AnalyticsPage'
+import SettingsPage from '../pages/settingsPage/SettingsPage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
     const { accessToken } = useAuthContext()
@@ -22,10 +28,33 @@ const RedirectAuthUser = (element: JSX.Element): JSX.Element => {
 const Router = () => {
     return (
         <Routes>
-            <Route
-                path="/"
-                element={RedirectNotAuthUser(<DashboardLayout />)}
-            />
+            <Route element={<DashboardLayout />}>
+                <Route
+                    path="/"
+                    element={RedirectNotAuthUser(<DashboardPage />)}
+                />
+                <Route
+                    path="/accounts"
+                    element={RedirectNotAuthUser(<AccountsPage />)}
+                />
+                <Route
+                    path="/records"
+                    element={RedirectNotAuthUser(<RecordsPage />)}
+                />
+                <Route
+                    path="/budgets"
+                    element={RedirectNotAuthUser(<BudgetsPage />)}
+                />
+                <Route
+                    path="/analytics"
+                    element={RedirectNotAuthUser(<AnalyticsPage />)}
+                />
+                <Route
+                    path="/settings"
+                    element={RedirectNotAuthUser(<SettingsPage />)}
+                />
+            </Route>
+
             <Route element={<HomeLayout />}>
                 <Route
                     path="/signIn"

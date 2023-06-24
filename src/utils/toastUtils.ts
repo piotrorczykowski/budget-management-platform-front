@@ -1,7 +1,8 @@
 import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export const showErrorToast = (message: string) => {
-    toast.error(message, {
+    toast.error(message || 'Network Error', {
         position: toast.POSITION.BOTTOM_CENTER,
         autoClose: 500,
         pauseOnHover: false,
