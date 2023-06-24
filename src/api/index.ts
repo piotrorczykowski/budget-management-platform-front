@@ -9,4 +9,9 @@ export const ENDPOINTS = {
     updateUser: (userId: number) => `/users/${userId}`,
     createAccount: '/accounts/',
     fetchUserAccounts: (userId: number) => `/accounts/${userId}`,
+    fetchPaginatedUserRecords: (
+        userId: number,
+        page: number,
+        pageSize: number
+    ) => `/records/${userId}?page=${page}&pageSize=${pageSize}`,
 }

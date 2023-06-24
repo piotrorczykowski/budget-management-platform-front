@@ -34,7 +34,7 @@ const styledSettings = css`
     margin-right: 10px;
     padding: 0.5em;
     width: 150px;
-    height: 140px;
+    height: 100px;
     background-color: #ffffff;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
 `
@@ -54,10 +54,6 @@ export default function UserProfile() {
                 <div>
                     <MdOutlineKeyboardArrowUp className={styledIcon} />
                     <div className={styledSettings}>
-                        <UserProfileButton
-                            buttonText="Profile"
-                            onClickHandler={() => navigate('/profile')}
-                        />
                         <UserProfileButton
                             buttonText="Settings"
                             onClickHandler={() => navigate('/settings')}

@@ -2,6 +2,12 @@ import { css } from '@emotion/css'
 import { TbMathGreater } from 'react-icons/tb'
 import Record from './Record'
 import { useNavigate } from 'react-router-dom'
+import { Pagination } from '@mui/material'
+import { useLayoutEffect, useState } from 'react'
+import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
+import { AxiosResponse } from 'axios'
+import api from '../api/axios'
+import { ENDPOINTS } from '../api'
 
 const styledRecordsListWrapper = css`
     width: 97.5%;
@@ -10,6 +16,7 @@ const styledRecordsListWrapper = css`
     border-radius: 2px;
     margin: 1em;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
 `
 
 const styledHeader = css`
@@ -44,78 +51,68 @@ const styledRecords = css`
     padding: 0 1em 0 1em;
 `
 
+const styledPagination = css`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 2em;
+`
+
 export default function RecordsList() {
     const navigate = useNavigate()
 
-    // TODO add fetching account from the backend
-    const records: {
-        id: number
-        category: string
-        date: string
-        accountName: string
-        amount: number
-        isExpense?: boolean
-        description?: string
-    }[] = [
+    const [records, setRecords] = useState([
         {
-            id: 1,
-            category: 'Food',
-            date: '06.30.2023',
-            accountName: 'Savings',
-            amount: 2345.95,
+            id: 0,
+            category: '',
+            date: '',
+            accountName: '',
+            amount: -1,
             isExpense: true,
-            description: 'New computer',
+            description: '',
         },
-        {
-            id: 2,
-            category: 'Salary',
-            date: '06.07.2023',
-            accountName: 'Millenium',
-            amount: 6345.95,
-        },
-        {
-            id: 3,
-            category: 'House',
-            date: '06.30.2023',
-            accountName: 'mBank',
-            amount: 2345.95,
-            isExpense: true,
-        },
-        {
-            id: 4,
-            category: 'Food',
-            date: '06.12.2023',
-            accountName: 'Millenium',
-            amount: 3.99,
-            isExpense: true,
-            description: 'Hot Dog',
-        },
-        {
-            id: 5,
-            category: 'Food',
-            date: '06.24.2023',
-            accountName: 'mBank',
-            amount: 421.95,
-            isExpense: true,
-        },
-        {
-            id: 6,
-            category: 'Alcohol',
-            date: '06.05.2023',
-            accountName: 'Millenium',
-            amount: 52.95,
-            isExpense: true,
-            description: 'Wine for friend',
-        },
-        {
-            id: 7,
-            category: 'Food',
-            date: '06.20.2023',
-            accountName: 'mBank',
-            amount: 23.95,
-            isExpense: true,
-        },
-    ]
+    ])
+
+    const [page, setPage] = useState(1)
+    const [pageCount, setPageCount] = useState(1)
+
+    const [loading, setLoading] = useState(true)
+
+    useLayoutEffect(() => {
+        const fetchUserRecords = async () => {
+            setLoading(true)
+            clearAllToasts()
+
+            try {
+                const userId: number = localStorage.getItem(
+                    'userId'
+                ) as unknown as number
+
+                const res: AxiosResponse = await api.get(
+                    ENDPOINTS.fetchPaginatedUserRecords(userId, page, 9)
+                )
+
+                return res.data
+            } catch (e: any) {
+                showErrorToast(e?.response?.data?.Error)
+                setLoading(false)
+            }
+        }
+
+        fetchUserRecords().then((data: any) => {
+            setRecords(data?.items)
+            setPageCount(data?.pageCount)
+            setLoading(false)
+        })
+    }, [page])
+
+    console.log(page)
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value)
+    }
 
     return (
         <div className={styledRecordsListWrapper}>
@@ -144,6 +141,16 @@ export default function RecordsList() {
                         />
                     )
                 })}
+            </div>
+            <div className={styledPagination}>
+                <Pagination
+                    page={page}
+                    count={pageCount}
+                    size="medium"
+                    shape="rounded"
+                    disabled={loading}
+                    onChange={handleChange}
+                />
             </div>
         </div>
     )

@@ -93,7 +93,7 @@ export default function AccountsList() {
 
     return (
         <div className={styledAccountsListWrapper}>
-            {accounts.map((account) => {
+            {accounts?.map((account) => {
                 return (
                     <Account
                         key={account.id}
