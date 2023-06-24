@@ -27,9 +27,9 @@ export default function AccountsList() {
     const [accountName, setAccountName] = useState('')
     const [accountBalance, setAccountBalance] = useState('')
 
+    const [hasUserMaxAccount, setHasUserMaxAccount] = useState(false)
     const [showAccountForm, setShowAccountForm] = useState(false)
-
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const handleAddAccount = async () => {
         setLoading(true)
@@ -85,12 +85,11 @@ export default function AccountsList() {
 
         fetchUserAccounts().then((data: any) => {
             setAccounts(data)
+            setHasUserMaxAccount(data?.length > 4)
             setLoading(false)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    const hasUserMaxAccount: boolean = accounts.length > 4
 
     return (
         <div className={styledAccountsListWrapper}>
