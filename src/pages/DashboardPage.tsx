@@ -3,11 +3,6 @@ import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountsList'
 import RecordsList from '../components/RecordsList'
 import BudgetsList from '../components/BudgetsList'
-import { useLayoutEffect, useRef } from 'react'
-import api from '../api/axios'
-import { AxiosResponse } from 'axios'
-import { ENDPOINTS } from '../api'
-import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -40,29 +35,6 @@ const styledLeftPanel = css`
 `
 
 export default function DashboardPage() {
-    const dataFetchedRef = useRef(false)
-
-    const fetchUserProfile = async () => {
-        clearAllToasts()
-
-        try {
-            const res: AxiosResponse = await api.get(ENDPOINTS.fetchProfile)
-            return res.data
-        } catch (e: any) {
-            showErrorToast(e?.response?.data?.Error)
-        }
-    }
-
-    useLayoutEffect(() => {
-        if (dataFetchedRef.current) return
-        dataFetchedRef.current = true
-
-        fetchUserProfile().then((data: any) => {
-            localStorage.setItem('userId', data?.id)
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     return (
         <div className={styledDashboardPageWrapper}>
             <TopBar pageNameText={'Dashboard'} />
