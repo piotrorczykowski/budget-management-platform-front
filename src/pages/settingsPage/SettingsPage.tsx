@@ -75,9 +75,7 @@ export default function SettingsPage() {
 
     const [formErrors, setFormErrors] = useState(InitialValues)
 
-    const validate = async (
-        values: FormInputsType
-    ): Promise<FormInputsType> => {
+    const validate = async (): Promise<FormInputsType> => {
         const errors: FormInputsType = { ...InitialValues }
 
         if (!username) {
@@ -128,13 +126,7 @@ export default function SettingsPage() {
         setLoading(true)
         clearAllToasts()
 
-        const errors: FormInputsType = await validate({
-            username,
-            fullName,
-            email,
-            currentPassword,
-            newPassword,
-        })
+        const errors: FormInputsType = await validate()
         setFormErrors(errors)
 
         const isFormValid: boolean = Object.values(errors).every(
@@ -167,7 +159,7 @@ export default function SettingsPage() {
 
             setLoading(false)
         } catch (e: any) {
-            showErrorToast(e.response.data.Error)
+            showErrorToast(e?.response?.data?.Error)
             setLoading(false)
         }
     }
@@ -182,7 +174,7 @@ export default function SettingsPage() {
             const res: AxiosResponse = await api.get(ENDPOINTS.fetchProfile)
             return res.data
         } catch (e: any) {
-            showErrorToast(e.response.data.Error)
+            showErrorToast(e?.response?.data?.Error)
             setLoading(false)
         }
     }

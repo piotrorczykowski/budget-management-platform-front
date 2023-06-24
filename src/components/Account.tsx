@@ -64,14 +64,16 @@ export default function Account({
     accountName,
     accountBalance,
     isEmpty = false,
+    onClickHandler,
 }: {
     accountName: string
     accountBalance: number
     isEmpty?: boolean
+    onClickHandler?: () => void
 }) {
     // TODO add displaying currency from data
     return (
-        <div className={styledAccount}>
+        <div className={styledAccount} onClick={onClickHandler}>
             {isEmpty ? (
                 <div className={styledEmptyAccount}>+ Add Account</div>
             ) : (

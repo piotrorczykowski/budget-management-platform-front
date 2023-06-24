@@ -18,6 +18,8 @@ export const useLogin = () => {
             })
 
             localStorage.setItem('accessToken', res.data.accessToken)
+            localStorage.setItem('userId', res.data.userId)
+
             dispatch({ type: 'LOGIN', payload: res.data.accessToken })
             setIsLoading(false)
         } catch (e: unknown) {
