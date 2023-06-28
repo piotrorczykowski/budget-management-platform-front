@@ -108,8 +108,6 @@ export default function RecordsList() {
         })
     }, [page])
 
-    console.log(page)
-
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)
     }
@@ -128,7 +126,7 @@ export default function RecordsList() {
                 </div>
             </div>
             <div className={styledRecords}>
-                {records.map((record) => {
+                {records?.map((record) => {
                     return (
                         <Record
                             key={record.id}

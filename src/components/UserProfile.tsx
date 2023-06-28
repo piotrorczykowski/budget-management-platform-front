@@ -13,7 +13,6 @@ const styledUserProfile = css`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: auto;
     cursor: pointer;
     margin-right: 1em;
     z-index: 1000;
@@ -29,9 +28,9 @@ const styledSettings = css`
     align-items: center;
     justify-content: space-around;
     position: absolute;
-    top: 140;
     right: 0;
     margin-right: 10px;
+    margin-top: 10px;
     padding: 0.5em;
     width: 150px;
     height: 100px;

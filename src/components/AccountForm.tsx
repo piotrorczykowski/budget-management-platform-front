@@ -57,7 +57,7 @@ export default function AccountForm({
     return (
         <div className={accountFormWrapper(showModal)}>
             <div className={styledModal}>
-                <p className={styledModalName}>Account Form</p>
+                <p className={styledModalName}>Add Account</p>
                 <CustomInputText
                     labelText="Account Name"
                     inputName="accountName"
@@ -82,6 +82,7 @@ export default function AccountForm({
                     buttonText="Cancel"
                     onClickHandler={handleModalClose}
                     isDisabled={isLoading}
+                    inverseColor={true}
                 />
             </div>
         </div>
