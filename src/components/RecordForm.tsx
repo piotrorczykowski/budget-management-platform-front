@@ -4,8 +4,12 @@ import CustomInputText from './CustomInputText'
 import { useLayoutEffect, useRef, useState } from 'react'
 import CustomDatePicker from './CustomDatePicker'
 import CustomSelect from './CustomSelect'
-import { Category } from '../types/enums'
-import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
+import { Category, RecordType } from '../types/enums'
+import {
+    clearAllToasts,
+    showErrorToast,
+    showSuccessToast,
+} from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import api from '../api/axios'
 import { ENDPOINTS } from '../api'
@@ -50,6 +54,16 @@ const alignTextRight = css`
     }
 `
 
+const smallerInput = css`
+    width: 12vw;
+`
+
+const styledCategoryAndDate = css`
+    width: 25vw;
+    display: flex;
+    justify-content: space-between;
+`
+
 export default function RecordForm({
     showModal,
     handleModalClose,
@@ -57,24 +71,27 @@ export default function RecordForm({
     showModal: boolean
     handleModalClose: () => void
 }) {
-    const categories: string[] = Object.keys(Category)
+    const categories: { id: number; name: string }[] = Object.keys(
+        Category
+    ).map((category, index) => {
+        return { id: index, name: category }
+    })
 
-    const [amount, setAmount] = useState('')
+    const [recordType, setRecordType] = useState(RecordType.Expense)
     const [category, setCategory] = useState(categories[0])
-    const [accounts, setAccounts] = useState([''])
-    const [recordType, setRecordType] = useState('expense')
+    const [accounts, setAccounts] = useState([{ id: -1, name: '-' }])
+    const [amount, setAmount] = useState('')
+    const [date, setDate] = useState(new Date())
+    const [description, setDescription] = useState('')
 
-    const [account, setAccount] = useState('')
-    const [toAccount, setToAccount] = useState(accounts[1])
+    const [account, setAccount] = useState({ id: -1, name: '-' })
+    const [toAccount, setToAccount] = useState({ id: -1, name: '-' })
 
     const [loading, setLoading] = useState(false)
 
-    const isTransfer: boolean = recordType === 'transfer'
-    const isValueNegative: boolean = recordType === 'expense' ? true : false
-
-    const handleAddRecord = async () => {
-        console.log('HERE')
-    }
+    const isTransfer: boolean = recordType === RecordType.Transfer
+    const isValueNegative: boolean =
+        recordType === RecordType.Expense ? true : false
 
     const dataFetchedRef = useRef(false)
 
@@ -108,7 +125,11 @@ export default function RecordForm({
                 return
             }
 
-            const accounts: string[] = data?.map((account: any) => account.name)
+            const accounts: { id: number; name: string }[] = data?.map(
+                (account: any) => {
+                    return { id: account.id, name: account.name }
+                }
+            )
             setAccounts(accounts)
             setAccount(accounts[0])
             setToAccount(accounts[1] || accounts[0])
@@ -116,6 +137,28 @@ export default function RecordForm({
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const handleAddRecord = async () => {
+        setLoading(true)
+        clearAllToasts()
+
+        try {
+            await api.post(ENDPOINTS.createRecord, {
+                recordType,
+                accountId: account.id,
+                amount,
+                date,
+                category: category.name,
+                toAccountId: toAccount.id,
+                description,
+            })
+
+            showSuccessToast('Successfully added record!')
+            handleModalClose()
+        } catch (e: any) {
+            showErrorToast(e?.response?.data?.Error)
+        }
+    }
 
     return (
         <div className={accountFormWrapper(showModal)}>
@@ -144,6 +187,7 @@ export default function RecordForm({
                         isDisabled={loading}
                     />
                 )}
+
                 <CustomInputText
                     labelText="Amount"
                     inputName="amount"
@@ -157,17 +201,42 @@ export default function RecordForm({
                 />
 
                 {!isTransfer && (
-                    <CustomSelect
-                        labelText="Category"
-                        selectName="category"
-                        selected={category}
-                        options={categories}
-                        onChangeHandler={setCategory}
-                        isDisabled={loading}
+                    <div className={styledCategoryAndDate}>
+                        <CustomSelect
+                            labelText="Category"
+                            selectName="category"
+                            selected={category}
+                            options={categories}
+                            onChangeHandler={setCategory}
+                            isDisabled={loading}
+                            customClassName={smallerInput}
+                        />
+                        <CustomDatePicker
+                            labelText="Date"
+                            selectedDate={date}
+                            onChangeHandler={setDate}
+                            customClassName={smallerInput}
+                        />
+                    </div>
+                )}
+
+                {isTransfer && (
+                    <CustomDatePicker
+                        labelText="Date"
+                        selectedDate={date}
+                        onChangeHandler={setDate}
                     />
                 )}
 
-                <CustomDatePicker labelText="Date" />
+                {!isTransfer && (
+                    <CustomInputText
+                        labelText="Description"
+                        inputName="description"
+                        placeholderText=""
+                        value={description}
+                        onChangeHandler={setDescription}
+                    />
+                )}
 
                 <CustomButton
                     buttonText="Add Record"

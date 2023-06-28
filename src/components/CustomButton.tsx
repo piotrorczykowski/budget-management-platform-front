@@ -12,7 +12,9 @@ const styledButton = (isDisabled: boolean, inverseColor: boolean) => css`
     border-radius: 5px;
 
     &:disabled {
-        ${isDisabled ? 'background-color: #04060580;' : ''}
+        ${inverseColor
+            ? 'background-color: #ffffff80; color: #04060580;'
+            : 'background-color: #04060580;'}
     }
 `
 

@@ -53,7 +53,6 @@ export default function AccountsList() {
             setShowAccountForm(false)
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
-            return false
         }
     }
 

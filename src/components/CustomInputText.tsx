@@ -20,11 +20,11 @@ const styledLabel = css`
 `
 
 const styledInput = css`
+    width: 100%;
     font-size: 20px;
     font-weight: 500;
     padding: 20px;
     margin-top: 10px;
-    width: 25vw;
     border-radius: 5px;
     box-sizing: border-box;
     border: solid 2px black;

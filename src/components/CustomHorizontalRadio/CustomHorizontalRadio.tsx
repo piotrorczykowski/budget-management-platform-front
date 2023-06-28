@@ -1,3 +1,4 @@
+import { RecordType } from '../../types/enums'
 import styles from './CustomHorizontalRadio.module.css'
 
 export default function CustomHorizontalRadio({
@@ -15,7 +16,7 @@ export default function CustomHorizontalRadio({
                         type="radio"
                         id="expense"
                         name="record"
-                        value="expense"
+                        value={RecordType.Expense}
                         className={styles.styledInput}
                         checked={selectedValue === 'expense'}
                         onChange={onChangeHandler}
@@ -30,7 +31,7 @@ export default function CustomHorizontalRadio({
                         type="radio"
                         id="income"
                         name="record"
-                        value="income"
+                        value={RecordType.Income}
                         className={styles.styledInput}
                         checked={selectedValue === 'income'}
                         onChange={onChangeHandler}
@@ -45,7 +46,7 @@ export default function CustomHorizontalRadio({
                         type="radio"
                         id="transfer"
                         name="record"
-                        value="transfer"
+                        value={RecordType.Transfer}
                         className={styles.styledInput}
                         checked={selectedValue === 'transfer'}
                         onChange={onChangeHandler}

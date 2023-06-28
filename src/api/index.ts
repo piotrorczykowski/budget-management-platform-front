@@ -14,4 +14,5 @@ export const ENDPOINTS = {
         page: number,
         pageSize: number
     ) => `/records/${userId}?page=${page}&pageSize=${pageSize}`,
+    createRecord: '/records/',
 }
