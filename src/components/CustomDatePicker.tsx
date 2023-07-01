@@ -26,15 +26,24 @@ const styledLabel = css`
     font-size: 15px;
 `
 
+const styledErrorMessage = css`
+    color: red;
+    font-weight: 600;
+    font-size: 14px;
+    margin: 5px 0 0 0;
+`
+
 export default function CustomDatePicker({
     labelText,
     selectedDate,
     onChangeHandler,
+    errorMessage = '',
     customClassName,
 }: {
     labelText: string
     selectedDate: Date
     onChangeHandler: (value: Date) => void
+    errorMessage?: string
     customClassName?: string
 }) {
     return (
@@ -49,6 +58,9 @@ export default function CustomDatePicker({
                 onChange={(date: Date) => onChangeHandler(date)}
                 dateFormat="dd/MM/yyyy"
             />
+            {errorMessage && (
+                <p className={styledErrorMessage}>{errorMessage}</p>
+            )}
         </div>
     )
 }

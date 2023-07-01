@@ -16,6 +16,7 @@ const styledAccountsListWrapper = css`
 `
 
 export default function AccountsList() {
+    const [errorMessage, setErrorMessage] = useState('')
     const [accounts, setAccounts] = useState([
         {
             id: 0,
@@ -32,8 +33,15 @@ export default function AccountsList() {
     const [loading, setLoading] = useState(true)
 
     const handleAddAccount = async () => {
+        setErrorMessage('')
         setLoading(true)
         clearAllToasts()
+
+        if (!accountName.length) {
+            setErrorMessage('Account Name cannot be empty')
+            setLoading(false)
+            return
+        }
 
         try {
             await api.post(ENDPOINTS.createAccount, {
@@ -52,6 +60,7 @@ export default function AccountsList() {
 
             setShowAccountForm(false)
         } catch (e: any) {
+            setLoading(false)
             showErrorToast(e?.response?.data?.Error)
         }
     }
@@ -90,6 +99,12 @@ export default function AccountsList() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const handleAccountBalanceChange = (value: string) => {
+        const regex: RegExp = /[^0-9]/g
+        const transformedAmount: string = value.replace(regex, '')
+        setAccountBalance(transformedAmount)
+    }
+
     return (
         <div className={styledAccountsListWrapper}>
             {accounts?.map((account) => {
@@ -116,9 +131,10 @@ export default function AccountsList() {
                     accountBalance={accountBalance}
                     isLoading={loading}
                     onNameChangeHandler={setAccountName}
-                    onBalanceChangeHandler={setAccountBalance}
+                    onBalanceChangeHandler={handleAccountBalanceChange}
                     onClickHandler={handleAddAccount}
                     handleModalClose={() => setShowAccountForm(false)}
+                    errorMessage={errorMessage}
                 />
             )}
         </div>

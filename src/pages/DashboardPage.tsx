@@ -4,7 +4,7 @@ import AccountsList from '../components/AccountsList'
 import RecordsList from '../components/RecordsList'
 import BudgetsList from '../components/BudgetsList'
 import { useState } from 'react'
-import RecordForm from '../components/RecordForm'
+import RecordForm from '../components/RecordForm/RecordForm'
 import TopBarButton from '../components/TopBarButton'
 
 const styledDashboardPageWrapper = css`

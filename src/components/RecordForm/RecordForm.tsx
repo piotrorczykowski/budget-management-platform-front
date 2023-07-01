@@ -1,19 +1,22 @@
 import { css } from '@emotion/css'
-import CustomButton from './CustomButton'
-import CustomInputText from './CustomInputText'
+import CustomButton from '../CustomButton'
+import CustomInputText from '../CustomInputText'
 import { useLayoutEffect, useRef, useState } from 'react'
-import CustomDatePicker from './CustomDatePicker'
-import CustomSelect from './CustomSelect'
-import { Category, RecordType } from '../types/enums'
+import CustomDatePicker from '../CustomDatePicker'
+import CustomSelect from '../CustomSelect'
+import { Category, RecordType } from '../../types/enums'
 import {
     clearAllToasts,
     showErrorToast,
     showSuccessToast,
-} from '../utils/toastUtils'
+} from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api from '../api/axios'
-import { ENDPOINTS } from '../api'
-import CustomHorizontalRadio from './CustomHorizontalRadio/CustomHorizontalRadio'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import CustomHorizontalRadio from '../CustomHorizontalRadio/CustomHorizontalRadio'
+import moment from 'moment'
+import { RecordFormErrorsType } from './types'
+import { InitialValues } from './types/constant'
 
 const accountFormWrapper = (showModal: boolean) => css`
     position: fixed;
@@ -77,6 +80,8 @@ export default function RecordForm({
         return { id: index, name: category }
     })
 
+    const [formErrors, setFormErrors] = useState({ ...InitialValues })
+
     const [recordType, setRecordType] = useState(RecordType.Expense)
     const [category, setCategory] = useState(categories[0])
     const [accounts, setAccounts] = useState([{ id: -1, name: '-' }])
@@ -138,26 +143,66 @@ export default function RecordForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const validate = () => {
+        const errors: RecordFormErrorsType = { ...InitialValues }
+
+        if (moment().isBefore(date, 'days')) {
+            errors.date = 'Payment date cannot be in future'
+        }
+
+        if (Number(amount) <= 0) {
+            errors.amount = 'Amount cannot be less than or equal to zero'
+        }
+
+        if (isTransfer && account.id === toAccount.id) {
+            errors.account = 'From Account and To account cannot be the same'
+        }
+
+        return errors
+    }
+
     const handleAddRecord = async () => {
         setLoading(true)
         clearAllToasts()
 
+        const errors: {
+            date: string
+            amount: string
+            account: string
+        } = validate()
+        setFormErrors(errors)
+
+        const isFormValid: boolean = Object.values(errors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            setLoading(false)
+            return
+        }
+
         try {
-            await api.post(ENDPOINTS.createRecord, {
-                recordType,
-                accountId: account.id,
-                amount,
-                date,
-                category: category.name,
-                toAccountId: toAccount.id,
-                description,
-            })
+            // await api.post(ENDPOINTS.createRecord, {
+            //     recordType,
+            //     accountId: account.id,
+            //     amount,
+            //     date,
+            //     category: category.name,
+            //     toAccountId: toAccount.id,
+            //     description,
+            // })
 
             showSuccessToast('Successfully added record!')
             handleModalClose(true)
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
         }
+    }
+
+    const handleAmountChange = (value: string) => {
+        const regex: RegExp = /[^0-9]/g
+        const transformedAmount: string = value.replace(regex, '')
+        setAmount(transformedAmount)
     }
 
     return (
@@ -176,6 +221,7 @@ export default function RecordForm({
                     options={accounts}
                     onChangeHandler={setAccount}
                     isDisabled={loading}
+                    errorMessage={formErrors.account}
                 />
                 {isTransfer && (
                     <CustomSelect
@@ -185,6 +231,7 @@ export default function RecordForm({
                         options={accounts}
                         onChangeHandler={setToAccount}
                         isDisabled={loading}
+                        errorMessage={formErrors.account}
                     />
                 )}
 
@@ -193,11 +240,11 @@ export default function RecordForm({
                     inputName="amount"
                     placeholderText="0"
                     value={amount}
-                    onChangeHandler={setAmount}
+                    onChangeHandler={handleAmountChange}
                     customClassName={alignTextRight}
-                    inputType="number"
                     showNumberSign={!isTransfer}
                     isNegative={isValueNegative}
+                    errorMessage={formErrors.amount}
                 />
 
                 {!isTransfer && (
@@ -210,12 +257,16 @@ export default function RecordForm({
                             onChangeHandler={setCategory}
                             isDisabled={loading}
                             customClassName={smallerInput}
+                            // workaround for having the same height as CustomDatePicker
+                            errorMessage={formErrors.date}
+                            shouldHideMessage={true}
                         />
                         <CustomDatePicker
                             labelText="Date"
                             selectedDate={date}
                             onChangeHandler={setDate}
                             customClassName={smallerInput}
+                            errorMessage={formErrors.date}
                         />
                     </div>
                 )}
@@ -225,6 +276,7 @@ export default function RecordForm({
                         labelText="Date"
                         selectedDate={date}
                         onChangeHandler={setDate}
+                        errorMessage={formErrors.date}
                     />
                 )}
 

@@ -27,22 +27,34 @@ const styledSelect = css`
     }
 `
 
+const styledErrorMessage = (shouldHideMessage: boolean) => css`
+    ${shouldHideMessage ? 'opacity: 0;' : 'opacity: 1;'}
+    font-size: 14px;
+    color: red;
+    font-weight: 600;
+    margin: 5px 0 0 0;
+`
+
 export default function CustomSelect({
     labelText,
     selectName,
     selected,
     options,
     onChangeHandler,
+    errorMessage = '',
     isDisabled = false,
     customClassName,
+    shouldHideMessage = false,
 }: {
     labelText: string
     selectName: string
     selected: { id: number; name: string }
     options: { id: number; name: string }[]
     onChangeHandler: ({ id, name }: { id: number; name: string }) => void
+    errorMessage?: string
     isDisabled?: boolean
     customClassName?: string
+    shouldHideMessage?: boolean
 }) {
     return (
         <div className={`${styledSelectWrapper} ${customClassName}`}>
@@ -67,6 +79,11 @@ export default function CustomSelect({
                     </option>
                 ))}
             </select>
+            {errorMessage && (
+                <p className={styledErrorMessage(shouldHideMessage)}>
+                    {errorMessage}
+                </p>
+            )}
         </div>
     )
 }
