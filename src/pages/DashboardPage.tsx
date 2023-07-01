@@ -37,6 +37,7 @@ export default function DashboardPage() {
     const [refresh, setRefresh] = useState(false)
 
     const handleModalClose = async (addedRecord: boolean) => {
+        setRefresh(false)
         setShowRecordForm(false)
         if (addedRecord) {
             setRefresh(!refresh)
@@ -55,7 +56,7 @@ export default function DashboardPage() {
             <div className={styledDashboardPageContent}>
                 <div className={styledLeftPanel}>
                     <div>
-                        <AccountsList />
+                        <AccountsList refresh={refresh} />
                     </div>
                     <div className={styledRecords}>
                         <RecordsList refresh={refresh} />

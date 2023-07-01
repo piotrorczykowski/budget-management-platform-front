@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import Account from './Account'
 import AccountForm from './AccountForm'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import {
     clearAllToasts,
     showErrorToast,
@@ -15,7 +15,7 @@ const styledAccountsListWrapper = css`
     display: flex;
 `
 
-export default function AccountsList() {
+export default function AccountsList({ refresh }: { refresh: boolean }) {
     const [errorMessage, setErrorMessage] = useState('')
     const [accounts, setAccounts] = useState([
         {
@@ -65,8 +65,6 @@ export default function AccountsList() {
         }
     }
 
-    const dataFetchedRef = useRef(false)
-
     const fetchUserAccounts = async () => {
         setLoading(true)
         clearAllToasts()
@@ -88,16 +86,12 @@ export default function AccountsList() {
     }
 
     useLayoutEffect(() => {
-        if (dataFetchedRef.current) return
-        dataFetchedRef.current = true
-
         fetchUserAccounts().then((data: any) => {
             setAccounts(data)
             setHasUserMaxAccount(data?.length > 4)
             setLoading(false)
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [refresh])
 
     const handleAccountBalanceChange = (value: string) => {
         const regex: RegExp = /[^0-9]/g
