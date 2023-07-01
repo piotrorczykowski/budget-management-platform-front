@@ -9,6 +9,7 @@ const topBarWrapper = css`
     height: 80px;
     background-color: #ffffff;
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2);
+    z-index: 999;
 `
 
 const pageName = css`

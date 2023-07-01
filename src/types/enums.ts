@@ -19,7 +19,15 @@ export enum Category {
 }
 
 export enum RecordType {
+    All = 'All',
     Expense = 'Expense',
     Income = 'Income',
     Transfer = 'Transfer',
+}
+
+export enum SortingOptions {
+    DateAsc = 'Date (old to new)',
+    DateDesc = 'Date (new to old)',
+    AmountAsc = 'Amount (lower to higher)',
+    AmountDesc = 'Amount (higher to lower)',
 }

@@ -19,6 +19,7 @@ const sideBarWrapper = css`
 
 const styledOutletWrapper = css`
     width: 100%;
+    z-index: 999;
 `
 
 export default function DashboardLayout() {
