@@ -182,15 +182,15 @@ export default function RecordForm({
         }
 
         try {
-            // await api.post(ENDPOINTS.createRecord, {
-            //     recordType,
-            //     accountId: account.id,
-            //     amount,
-            //     date,
-            //     category: category.name,
-            //     toAccountId: toAccount.id,
-            //     description,
-            // })
+            await api.post(ENDPOINTS.createRecord, {
+                recordType,
+                accountId: account.id,
+                amount,
+                date,
+                category: category.name,
+                toAccountId: toAccount.id,
+                description,
+            })
 
             showSuccessToast('Successfully added record!')
             handleModalClose(true)
@@ -200,7 +200,7 @@ export default function RecordForm({
     }
 
     const handleAmountChange = (value: string) => {
-        const regex: RegExp = /[^0-9]/g
+        const regex: RegExp = /[^0-9.]/g
         const transformedAmount: string = value.replace(regex, '')
         setAmount(transformedAmount)
     }
