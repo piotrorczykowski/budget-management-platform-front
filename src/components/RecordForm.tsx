@@ -69,7 +69,7 @@ export default function RecordForm({
     handleModalClose,
 }: {
     showModal: boolean
-    handleModalClose: () => void
+    handleModalClose: (addedRecord: boolean) => void
 }) {
     const categories: { id: number; name: string }[] = Object.keys(
         Category
@@ -154,7 +154,7 @@ export default function RecordForm({
             })
 
             showSuccessToast('Successfully added record!')
-            handleModalClose()
+            handleModalClose(true)
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
         }
@@ -245,7 +245,7 @@ export default function RecordForm({
                 />
                 <CustomButton
                     buttonText="Cancel"
-                    onClickHandler={handleModalClose}
+                    onClickHandler={() => handleModalClose(false)}
                     isDisabled={loading}
                     inverseColor={true}
                 />

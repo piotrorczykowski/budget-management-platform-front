@@ -60,7 +60,7 @@ const styledPagination = css`
     margin-bottom: 2em;
 `
 
-export default function RecordsList() {
+export default function RecordsList({ refresh }: { refresh: boolean }) {
     const navigate = useNavigate()
 
     const [records, setRecords] = useState([
@@ -106,7 +106,7 @@ export default function RecordsList() {
             setPageCount(data?.pageCount)
             setLoading(false)
         })
-    }, [page])
+    }, [page, refresh])
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)

@@ -3,6 +3,9 @@ import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountsList'
 import RecordsList from '../components/RecordsList'
 import BudgetsList from '../components/BudgetsList'
+import { useState } from 'react'
+import RecordForm from '../components/RecordForm'
+import TopBarButton from '../components/TopBarButton'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -35,9 +38,24 @@ const styledLeftPanel = css`
 `
 
 export default function DashboardPage() {
+    const [showRecordForm, setShowRecordForm] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+
+    const handleModalClose = async (addedRecord: boolean) => {
+        setShowRecordForm(false)
+        if (addedRecord) {
+            setRefresh(!refresh)
+        }
+    }
+
     return (
         <div className={styledDashboardPageWrapper}>
-            <TopBar pageNameText={'Dashboard'} />
+            <TopBar pageNameText={'Dashboard'}>
+                <TopBarButton
+                    buttonText="Add Record"
+                    onClickHandler={() => setShowRecordForm(true)}
+                />
+            </TopBar>
 
             <div className={styledDashboardPageContent}>
                 <div className={styledLeftPanel}>
@@ -45,13 +63,19 @@ export default function DashboardPage() {
                         <AccountsList />
                     </div>
                     <div className={styledRecords}>
-                        <RecordsList />
+                        <RecordsList refresh={refresh} />
                     </div>
                 </div>
                 <div className={styledBudgets}>
                     <BudgetsList />
                 </div>
             </div>
+            {showRecordForm && (
+                <RecordForm
+                    showModal={showRecordForm}
+                    handleModalClose={handleModalClose}
+                />
+            )}
         </div>
     )
 }

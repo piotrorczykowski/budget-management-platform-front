@@ -1,8 +1,5 @@
-import { useState } from 'react'
-import TopBarButton from './TopBarButton'
 import UserProfile from './UserProfile'
 import { css } from '@emotion/css'
-import RecordForm from './RecordForm'
 
 const topBarWrapper = css`
     display: flex;
@@ -27,25 +24,20 @@ const styledRightSide = css`
     margin-right: 1em;
 `
 
-export default function TopBar({ pageNameText }: { pageNameText: string }) {
-    const [showRecordForm, setShowRecordForm] = useState(false)
-
+export default function TopBar({
+    children,
+    pageNameText,
+}: {
+    children?: JSX.Element[] | JSX.Element
+    pageNameText: string
+}) {
     return (
         <div className={topBarWrapper}>
             <p className={pageName}>{pageNameText}</p>
             <div className={styledRightSide}>
-                <TopBarButton
-                    buttonText="Add Record"
-                    onClickHandler={() => setShowRecordForm(true)}
-                />
+                {children}
                 <UserProfile />
             </div>
-            {showRecordForm && (
-                <RecordForm
-                    showModal={showRecordForm}
-                    handleModalClose={() => setShowRecordForm(false)}
-                />
-            )}
         </div>
     )
 }
