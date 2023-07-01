@@ -9,32 +9,27 @@ import TopBarButton from '../components/TopBarButton'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
-    background-color: #f0f0f0;
 `
 
 const styledDashboardPageContent = css`
     display: flex;
     flex-wrap: wrap;
     height: 90vh;
-    background-color: #f0f0f0;
-`
-
-const styledAccounts = css`
-    height: 230px;
 `
 
 const styledRecords = css`
     align-self: flex-start;
-    height: 66.7vh;
+    max-height: 70%;
 `
 
 const styledBudgets = css`
     width: 28%;
-    height: 89vh;
+    max-height: 98%;
 `
 
 const styledLeftPanel = css`
     width: 70%;
+    height: 85vh;
 `
 
 export default function DashboardPage() {
@@ -59,7 +54,7 @@ export default function DashboardPage() {
 
             <div className={styledDashboardPageContent}>
                 <div className={styledLeftPanel}>
-                    <div className={styledAccounts}>
+                    <div>
                         <AccountsList />
                     </div>
                     <div className={styledRecords}>
