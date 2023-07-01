@@ -68,6 +68,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
             accountName: '',
             amount: -1,
             isExpense: true,
+            isTransfer: false,
             description: '',
         },
     ])
@@ -132,6 +133,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
                             accountName={record.accountName}
                             amount={record.amount}
                             isExpense={record.isExpense}
+                            isTransfer={record.isTransfer}
                             description={record.description}
                         />
                     )

@@ -45,9 +45,9 @@ const styledAccountName = css`
     left: 800px;
 `
 
-const styledRecordAmount = (isExpense: boolean) => css`
+const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
     font-weight: 600;
-    color: ${isExpense ? '#f12e25' : '#1d934b'};
+    color: ${isTransfer ? '#626569' : isExpense ? '#f12e25' : '#1d934b'};
     position: absolute;
     left: 980px;
     width: 100px;
@@ -60,13 +60,15 @@ export default function Record({
     accountName,
     amount,
     isExpense = false,
+    isTransfer = false,
     description = '',
 }: {
     category: string
     date: string
     accountName: string
     amount: number
-    isExpense?: boolean
+    isExpense: boolean
+    isTransfer: boolean
     description?: string
 }) {
     // TODO add displaying currency from the backend
@@ -78,7 +80,7 @@ export default function Record({
                 {moment(date).format('Do MMM YY')}
             </p>
             <p className={styledAccountName}>{accountName}</p>
-            <p className={styledRecordAmount(isExpense)}>
+            <p className={styledRecordAmount(isExpense, isTransfer)}>
                 {isExpense && '-'}&#36;{amount}
             </p>
         </div>
