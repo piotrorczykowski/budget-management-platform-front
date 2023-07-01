@@ -10,7 +10,7 @@ const styledRecordWrapper = css`
     font-weight: 500;
     margin: auto;
     position: relative;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.7em;
     cursor: pointer;
     border-radius: 2px;
 

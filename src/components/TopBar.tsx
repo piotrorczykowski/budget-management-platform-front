@@ -17,11 +17,27 @@ const pageName = css`
     padding: 0.5em;
 `
 
-export default function TopBar({ pageNameText }: { pageNameText: string }) {
+const styledRightSide = css`
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: 1em;
+`
+
+export default function TopBar({
+    children,
+    pageNameText,
+}: {
+    children?: JSX.Element[] | JSX.Element
+    pageNameText: string
+}) {
     return (
         <div className={topBarWrapper}>
             <p className={pageName}>{pageNameText}</p>
-            <UserProfile />
+            <div className={styledRightSide}>
+                {children}
+                <UserProfile />
+            </div>
         </div>
     )
 }
