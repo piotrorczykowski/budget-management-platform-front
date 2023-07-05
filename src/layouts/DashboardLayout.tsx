@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 const dashboardPageWrapper = css`
     height: 100vh;
+    background-color: #f0f0f0;
     display: flex;
     flex-direction: row;
 `
@@ -18,6 +19,7 @@ const sideBarWrapper = css`
 
 const styledOutletWrapper = css`
     width: 100%;
+    z-index: 999;
 `
 
 export default function DashboardLayout() {

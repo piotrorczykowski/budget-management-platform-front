@@ -58,7 +58,11 @@ const styledButtons = css`
 `
 
 export default function SettingsPage() {
-    const currencies: string[] = Object.keys(Currency)
+    const currencies: { id: number; name: string }[] = Object.keys(
+        Currency
+    ).map((currency, index) => {
+        return { id: index, name: currency }
+    })
 
     const [userId, setUserId] = useState(0)
 
@@ -298,6 +302,7 @@ export default function SettingsPage() {
                     buttonType="submit"
                     onClickHandler={() => handleCancelEditing()}
                     isDisabled={!editingData}
+                    inverseColor={true}
                 />
             </div>
         </div>

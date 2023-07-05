@@ -44,6 +44,7 @@ export default function AccountForm({
     onBalanceChangeHandler,
     onClickHandler,
     handleModalClose,
+    errorMessage,
 }: {
     showModal: any
     accountName: string
@@ -53,17 +54,19 @@ export default function AccountForm({
     onBalanceChangeHandler: (accountBalance: string) => void
     onClickHandler: () => {}
     handleModalClose: () => void
+    errorMessage: string
 }) {
     return (
         <div className={accountFormWrapper(showModal)}>
             <div className={styledModal}>
-                <p className={styledModalName}>Account Form</p>
+                <p className={styledModalName}>Add Account</p>
                 <CustomInputText
                     labelText="Account Name"
                     inputName="accountName"
                     placeholderText="Account Name"
                     value={accountName}
                     onChangeHandler={onNameChangeHandler}
+                    errorMessage={errorMessage}
                 />
                 <CustomInputText
                     labelText="Initial Balance"
@@ -71,10 +74,10 @@ export default function AccountForm({
                     placeholderText="0"
                     value={accountBalance}
                     onChangeHandler={onBalanceChangeHandler}
-                    inputType="number"
                 />
                 <CustomButton
                     buttonText="Add Account"
+                    buttonType="submit"
                     onClickHandler={onClickHandler}
                     isDisabled={isLoading}
                 />
@@ -82,6 +85,7 @@ export default function AccountForm({
                     buttonText="Cancel"
                     onClickHandler={handleModalClose}
                     isDisabled={isLoading}
+                    inverseColor={true}
                 />
             </div>
         </div>

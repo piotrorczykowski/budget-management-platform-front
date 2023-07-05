@@ -10,11 +10,11 @@ const styledSelectWrapper = css`
 const styledLabel = css`
     font-weight: 500;
     font-size: 15px;
-    margin-top: 30px;
+    align-self: inherit;
 `
 
 const styledSelect = css`
-    width: 25vw;
+    width: 100%;
     font-size: 19px;
     font-weight: 500;
     padding: 20px;
@@ -27,39 +27,65 @@ const styledSelect = css`
     }
 `
 
+const styledErrorMessage = (shouldHideMessage: boolean) => css`
+    ${shouldHideMessage ? 'opacity: 0;' : 'opacity: 1;'}
+    font-size: 14px;
+    color: red;
+    font-weight: 600;
+    margin: 5px 0 0 0;
+`
+
 export default function CustomSelect({
     labelText,
     selectName,
     selected,
     options,
     onChangeHandler,
+    errorMessage = '',
     isDisabled = false,
+    customClassName,
+    customInputClassName,
+    shouldHideMessage = false,
 }: {
     labelText: string
     selectName: string
-    selected: string
-    options: string[]
-    onChangeHandler: (value: string) => void
+    selected: { id: number; name: string }
+    options: { id: number; name: string }[]
+    onChangeHandler: ({ id, name }: { id: number; name: string }) => void
+    errorMessage?: string
     isDisabled?: boolean
+    customClassName?: string
+    customInputClassName?: string
+    shouldHideMessage?: boolean
 }) {
     return (
-        <div className={styledSelectWrapper}>
+        <div className={`${styledSelectWrapper} ${customClassName}`}>
             <label className={styledLabel} htmlFor={selectName}>
                 {labelText}
             </label>
             <select
                 name={selectName}
-                className={styledSelect}
+                className={`${styledSelect} ${customInputClassName}`}
                 disabled={isDisabled}
-                value={selected}
-                onChange={(e) => onChangeHandler(e.target.value)}
+                value={selected.id}
+                onChange={(e) => {
+                    onChangeHandler({
+                        id: Number(e.target.value),
+                        name: e.target.options[e.target.selectedIndex].text,
+                    })
+                }}
             >
                 {options.map((optionValue) => (
-                    <option key={optionValue} value={optionValue}>
-                        {optionValue}
+                    <option key={optionValue.id} value={optionValue.id}>
+                        {optionValue.name}
                     </option>
                 ))}
             </select>
+            {errorMessage && (
+                <p className={styledErrorMessage(shouldHideMessage)}>
+                    {errorMessage}
+                </p>
+            )}
         </div>
     )
 }

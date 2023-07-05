@@ -1,12 +1,17 @@
 import { css } from '@emotion/css'
 import { useState } from 'react'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import {
+    AiFillEye,
+    AiFillEyeInvisible,
+    AiOutlineMinus,
+    AiOutlinePlus,
+} from 'react-icons/ai'
 
-const styledInputWrapper = (isInputTypePassword: boolean) => css`
+const styledInputWrapper = (isInputWithIcon: boolean) => css`
     display: flex;
     flex-direction: column;
     margin-top: 30px;
-    position: ${isInputTypePassword ? 'relative' : 'static'};
+    position: ${isInputWithIcon ? 'relative' : 'static'};
     width: 25vw;
 `
 
@@ -15,13 +20,14 @@ const styledLabel = css`
 `
 
 const styledInput = css`
+    width: 100%;
     font-size: 20px;
     font-weight: 500;
     padding: 20px;
     margin-top: 10px;
-    width: 25vw;
     border-radius: 5px;
     box-sizing: border-box;
+    border: solid 2px black;
 `
 
 const styledErrorMessage = css`
@@ -30,15 +36,13 @@ const styledErrorMessage = css`
     margin: 5px 0 0 0;
 `
 
-const styledIcon = css`
+const styledIcon = (onLeft: boolean = false) => css`
     position: absolute;
     top: 0;
-    right: 0;
+    ${onLeft ? 'left: 0; margin-left: 20px;' : 'right: 0; margin-right: 20px;'}
     width: 30px;
     height: 65px;
-    margin-right: 20px;
     margin-top: 35px;
-
     cursor: pointer;
 `
 
@@ -55,6 +59,8 @@ export default function CustomInputText({
     isDisabled = false,
     isRequired = true,
     minValue = 0,
+    showNumberSign = false,
+    isNegative = false,
 }: {
     labelText: string
     inputName: string
@@ -68,13 +74,17 @@ export default function CustomInputText({
     isDisabled?: boolean
     isRequired?: boolean
     minValue?: number
+    showNumberSign?: boolean
+    isNegative?: boolean
 }) {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
         <div
             className={`
-                ${styledInputWrapper(isInputTypePassword)} ${customClassName}`}
+                ${styledInputWrapper(
+                    isInputTypePassword || showNumberSign
+                )} ${customClassName}`}
         >
             <label className={styledLabel} htmlFor={inputName}>
                 {labelText}
@@ -101,13 +111,13 @@ export default function CustomInputText({
             {isInputTypePassword &&
                 (showPassword && !isDisabled ? (
                     <AiFillEyeInvisible
-                        className={styledIcon}
+                        className={styledIcon()}
                         onClick={() => setShowPassword(!showPassword)}
                     />
                 ) : (
                     !isDisabled && (
                         <AiFillEye
-                            className={styledIcon}
+                            className={styledIcon()}
                             onClick={() => setShowPassword(!showPassword)}
                         />
                     )
@@ -116,6 +126,13 @@ export default function CustomInputText({
             {errorMessage && (
                 <p className={styledErrorMessage}>{errorMessage}</p>
             )}
+
+            {showNumberSign &&
+                (isNegative ? (
+                    <AiOutlineMinus className={styledIcon(true)} />
+                ) : (
+                    <AiOutlinePlus className={styledIcon(true)} />
+                ))}
         </div>
     )
 }

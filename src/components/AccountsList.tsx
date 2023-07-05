@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import Account from './Account'
 import AccountForm from './AccountForm'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import {
     clearAllToasts,
     showErrorToast,
@@ -15,7 +15,8 @@ const styledAccountsListWrapper = css`
     display: flex;
 `
 
-export default function AccountsList() {
+export default function AccountsList({ refresh }: { refresh: boolean }) {
+    const [errorMessage, setErrorMessage] = useState('')
     const [accounts, setAccounts] = useState([
         {
             id: 0,
@@ -27,13 +28,20 @@ export default function AccountsList() {
     const [accountName, setAccountName] = useState('')
     const [accountBalance, setAccountBalance] = useState('')
 
+    const [hasUserMaxAccount, setHasUserMaxAccount] = useState(false)
     const [showAccountForm, setShowAccountForm] = useState(false)
-
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const handleAddAccount = async () => {
+        setErrorMessage('')
         setLoading(true)
         clearAllToasts()
+
+        if (!accountName.length) {
+            setErrorMessage('Account Name cannot be empty')
+            setLoading(false)
+            return
+        }
 
         try {
             await api.post(ENDPOINTS.createAccount, {
@@ -52,12 +60,10 @@ export default function AccountsList() {
 
             setShowAccountForm(false)
         } catch (e: any) {
+            setLoading(false)
             showErrorToast(e?.response?.data?.Error)
-            return false
         }
     }
-
-    const dataFetchedRef = useRef(false)
 
     const fetchUserAccounts = async () => {
         setLoading(true)
@@ -80,21 +86,22 @@ export default function AccountsList() {
     }
 
     useLayoutEffect(() => {
-        if (dataFetchedRef.current) return
-        dataFetchedRef.current = true
-
         fetchUserAccounts().then((data: any) => {
             setAccounts(data)
+            setHasUserMaxAccount(data?.length > 4)
             setLoading(false)
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [refresh])
 
-    const hasUserMaxAccount: boolean = accounts.length > 4
+    const handleAccountBalanceChange = (value: string) => {
+        const regex: RegExp = /[^0-9.]/g
+        const transformedAmount: string = value.replace(regex, '')
+        setAccountBalance(transformedAmount)
+    }
 
     return (
         <div className={styledAccountsListWrapper}>
-            {accounts.map((account) => {
+            {accounts?.map((account) => {
                 return (
                     <Account
                         key={account.id}
@@ -118,9 +125,10 @@ export default function AccountsList() {
                     accountBalance={accountBalance}
                     isLoading={loading}
                     onNameChangeHandler={setAccountName}
-                    onBalanceChangeHandler={setAccountBalance}
+                    onBalanceChangeHandler={handleAccountBalanceChange}
                     onClickHandler={handleAddAccount}
                     handleModalClose={() => setShowAccountForm(false)}
+                    errorMessage={errorMessage}
                 />
             )}
         </div>
