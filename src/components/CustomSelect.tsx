@@ -10,7 +10,7 @@ const styledSelectWrapper = css`
 const styledLabel = css`
     font-weight: 500;
     font-size: 15px;
-    margin-top: 30px;
+    align-self: inherit;
 `
 
 const styledSelect = css`
@@ -44,6 +44,7 @@ export default function CustomSelect({
     errorMessage = '',
     isDisabled = false,
     customClassName,
+    customInputClassName,
     shouldHideMessage = false,
 }: {
     labelText: string
@@ -54,6 +55,7 @@ export default function CustomSelect({
     errorMessage?: string
     isDisabled?: boolean
     customClassName?: string
+    customInputClassName?: string
     shouldHideMessage?: boolean
 }) {
     return (
@@ -63,7 +65,7 @@ export default function CustomSelect({
             </label>
             <select
                 name={selectName}
-                className={styledSelect}
+                className={`${styledSelect} ${customInputClassName}`}
                 disabled={isDisabled}
                 value={selected.id}
                 onChange={(e) => {

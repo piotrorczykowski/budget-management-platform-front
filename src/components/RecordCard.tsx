@@ -4,16 +4,19 @@ import moment from 'moment'
 const styledRecordWrapper = css`
     display: flex;
     align-items: center;
-    padding: 0.5em;
+    border-bottom: 2px solid #ffffff;
+
     font-weight: 500;
-    margin-bottom: 0.7em;
+    margin-bottom: 1em;
     cursor: pointer;
     border-radius: 2px;
-    border-bottom: 2px solid #f0f0f0;
+
+    background-color: #ffffff;
+    padding: 1em;
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
 
     &:hover {
         background-color: #f0f0f0;
-
         border-bottom: 2px solid #62656980;
     }
 `
@@ -46,7 +49,7 @@ const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
     width: 10%;
 `
 
-export default function Record({
+export default function RecordCard({
     category,
     date,
     accountName,
@@ -63,7 +66,6 @@ export default function Record({
     isTransfer: boolean
     description?: string
 }) {
-    // TODO add displaying currency from the backend
     return (
         <div className={styledRecordWrapper}>
             <p className={styledCategoryName}>{category}</p>

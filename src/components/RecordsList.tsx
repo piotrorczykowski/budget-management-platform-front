@@ -10,8 +10,6 @@ import api from '../api/axios'
 import { ENDPOINTS } from '../api'
 
 const styledRecordsListWrapper = css`
-    width: 97.5%;
-    height: 100%;
     background-color: #ffffff;
     border-radius: 2px;
     margin: 1em;
@@ -55,9 +53,8 @@ const styledPagination = css`
     display: flex;
     justify-content: center;
     width: 100%;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 2em;
+    margin-top: 2em;
+    padding-bottom: 2em;
 `
 
 export default function RecordsList({ refresh }: { refresh: boolean }) {
@@ -71,6 +68,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
             accountName: '',
             amount: -1,
             isExpense: true,
+            isTransfer: false,
             description: '',
         },
     ])
@@ -135,6 +133,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
                             accountName={record.accountName}
                             amount={record.amount}
                             isExpense={record.isExpense}
+                            isTransfer={record.isTransfer}
                             description={record.description}
                         />
                     )

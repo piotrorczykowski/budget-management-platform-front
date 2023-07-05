@@ -18,7 +18,7 @@ export default function CustomHorizontalRadio({
                         name="record"
                         value={RecordType.Expense}
                         className={styles.styledInput}
-                        checked={selectedValue === 'expense'}
+                        checked={selectedValue === RecordType.Expense}
                         onChange={onChangeHandler}
                     />
                     <label className={styles.styledLabel} htmlFor="expense">
@@ -33,7 +33,7 @@ export default function CustomHorizontalRadio({
                         name="record"
                         value={RecordType.Income}
                         className={styles.styledInput}
-                        checked={selectedValue === 'income'}
+                        checked={selectedValue === RecordType.Income}
                         onChange={onChangeHandler}
                     />
                     <label className={styles.styledLabel} htmlFor="income">
@@ -48,7 +48,7 @@ export default function CustomHorizontalRadio({
                         name="record"
                         value={RecordType.Transfer}
                         className={styles.styledInput}
-                        checked={selectedValue === 'transfer'}
+                        checked={selectedValue === RecordType.Transfer}
                         onChange={onChangeHandler}
                     />
                     <label className={styles.styledLabel} htmlFor="transfer">

@@ -67,6 +67,15 @@ const styledCategoryAndDate = css`
     justify-content: space-between;
 `
 
+const classWithMargin = css`
+    margin-top: 30px;
+`
+
+const smallerInputWithMargin = css`
+    width: 12vw;
+    margin-top: 30px;
+`
+
 export default function RecordForm({
     showModal,
     handleModalClose,
@@ -222,6 +231,7 @@ export default function RecordForm({
                     onChangeHandler={setAccount}
                     isDisabled={loading}
                     errorMessage={formErrors.account}
+                    customClassName={classWithMargin}
                 />
                 {isTransfer && (
                     <CustomSelect
@@ -232,6 +242,7 @@ export default function RecordForm({
                         onChangeHandler={setToAccount}
                         isDisabled={loading}
                         errorMessage={formErrors.account}
+                        customClassName={classWithMargin}
                     />
                 )}
 
@@ -256,7 +267,7 @@ export default function RecordForm({
                             options={categories}
                             onChangeHandler={setCategory}
                             isDisabled={loading}
-                            customClassName={smallerInput}
+                            customClassName={smallerInputWithMargin}
                             // workaround for having the same height as CustomDatePicker
                             errorMessage={formErrors.date}
                             shouldHideMessage={true}
