@@ -72,6 +72,7 @@ export default function Account({
     onClickHandler?: () => void
 }) {
     // TODO add displaying currency from data
+    const isNegative: boolean = accountBalance < 0
     return (
         <div className={styledAccount} onClick={onClickHandler}>
             {isEmpty ? (
@@ -81,7 +82,8 @@ export default function Account({
                     <IoWallet className={styledIcon} />
                     <p className={styledAccountName}>{accountName}</p>
                     <p className={styledAccountBalance}>
-                        &#36;{accountBalance}
+                        {isNegative ? '-' : ''}&#36;
+                        {Number(Math.abs(accountBalance)).toFixed(2)}
                     </p>
                 </div>
             )}
