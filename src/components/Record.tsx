@@ -2,17 +2,14 @@ import { css } from '@emotion/css'
 import moment from 'moment'
 
 const styledRecordWrapper = css`
-    width: 95%;
-    border-bottom: 2px solid #f0f0f0;
     display: flex;
     align-items: center;
     padding: 0.5em;
     font-weight: 500;
-    margin: auto;
-    position: relative;
     margin-bottom: 0.7em;
     cursor: pointer;
     border-radius: 2px;
+    border-bottom: 2px solid #f0f0f0;
 
     &:hover {
         background-color: #f0f0f0;
@@ -24,34 +21,29 @@ const styledRecordWrapper = css`
 const styledCategoryName = css`
     font-weight: 600;
     font-size: 18px;
+    width: 20%;
 `
 
 const styledRecordDescription = css`
     color: #62656980;
-    position: absolute;
-    left: 200px;
+    width: 25%;
 `
 
 const styledRecordDate = css`
     color: #626569;
-    margin-left: 150px;
-    position: absolute;
-    left: 400px;
+    width: 25%;
 `
 
 const styledAccountName = css`
     color: #626569;
-    position: absolute;
-    left: 800px;
+    width: 20%;
 `
 
 const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
     font-weight: 600;
     color: ${isTransfer ? '#626569' : isExpense ? '#f12e25' : '#1d934b'};
-    position: absolute;
-    left: 980px;
-    width: 100px;
     text-align: right;
+    width: 10%;
 `
 
 export default function Record({

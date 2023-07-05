@@ -55,6 +55,7 @@ const styledRecordsList = css`
 `
 
 const styledPagination = css`
+    margin-left: 14vw;
     display: flex;
     justify-content: center;
 `
@@ -135,8 +136,6 @@ export default function RecordsPage() {
             accountId: account.id,
             category: category.name,
         }).then((data: any) => {
-            console.log(data)
-
             setRecords(data?.items)
             setPageCount(data?.pageCount)
             setLoading(false)

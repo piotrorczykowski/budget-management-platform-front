@@ -22,9 +22,26 @@ const styledFilterWrapper = css`
     padding: 1em;
 `
 
+const styledHeadersWrapper = css`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
+
 const styledHeader = css`
     font-weight: 600;
     font-size: 20px;
+`
+
+const styledTextButton = css`
+    cursor: pointer;
+    border-bottom: 2px solid #ffffff;
+    color: #bebfbf;
+
+    &:hover {
+        color: black;
+        border-bottom: 2px solid black;
+    }
 `
 
 const styledCustomSelect = css`
@@ -143,10 +160,21 @@ export default function SideBarFilter({
         },
     ]
 
+    const resetFilters = () => {
+        onCategoryChangeHandler(categoriesArray[categoriesArray.length - 1])
+        onAccountChangeHandler(accounts[accounts.length - 1])
+        onRecordTypeChangeHandler({ target: { value: RecordType.All } })
+    }
+
     return (
         <div className={styledSideBarFilterWrapper}>
             <div className={styledFilterWrapper}>
-                <p className={styledHeader}>FILTER</p>
+                <div className={styledHeadersWrapper}>
+                    <p className={styledHeader}>FILTER</p>
+                    <p className={styledTextButton} onClick={resetFilters}>
+                        RESET
+                    </p>
+                </div>
 
                 {/* Record Type */}
                 <CustomInputRadio

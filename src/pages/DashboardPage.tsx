@@ -15,6 +15,8 @@ const styledDashboardPageContent = css`
     display: flex;
     flex-wrap: wrap;
     height: 90vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
 `
 
 const styledRecords = css`

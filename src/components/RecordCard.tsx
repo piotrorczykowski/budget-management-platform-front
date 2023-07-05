@@ -45,7 +45,7 @@ const styledAccountName = css`
 const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
     font-weight: 600;
     color: ${isTransfer ? '#626569' : isExpense ? '#f12e25' : '#1d934b'};
-    margin-left: auto;
+    text-align: right;
     width: 10%;
 `
 
