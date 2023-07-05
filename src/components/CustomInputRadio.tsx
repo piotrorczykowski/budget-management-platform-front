@@ -8,8 +8,9 @@ const styledLabel = css`
 `
 
 const styledOption = css`
-    cursor: pointer;
+    width: 100%;
     margin-top: 0.5em;
+    display: flex;
 `
 
 const styledInput = css`
@@ -20,7 +21,9 @@ const styledInput = css`
 
 const styledValue = css`
     cursor: pointer;
-    padding-left: 0.5em;
+    margin-left: 0.5em;
+    display: block;
+    width: 50%;
 `
 
 export default function CustomInputRadio({
