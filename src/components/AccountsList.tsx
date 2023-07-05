@@ -94,7 +94,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     }, [refresh])
 
     const handleAccountBalanceChange = (value: string) => {
-        const regex: RegExp = /[^0-9]/g
+        const regex: RegExp = /[^0-9.]/g
         const transformedAmount: string = value.replace(regex, '')
         setAccountBalance(transformedAmount)
     }

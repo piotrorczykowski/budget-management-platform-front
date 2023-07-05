@@ -10,7 +10,8 @@ export const ENDPOINTS = {
     fetchProfile: '/users/me',
     updateUser: (userId: number) => `/users/${userId}`,
     createAccount: '/accounts/',
-    fetchUserAccounts: (userId: number) => `/accounts/${userId}`,
+    fetchUserAccounts: (userId: number, searchByValue: string = '') =>
+        `/accounts/${userId}?searchByValue=${searchByValue}`,
     fetchPaginatedUserRecords: (
         userId: number,
         page: number,
