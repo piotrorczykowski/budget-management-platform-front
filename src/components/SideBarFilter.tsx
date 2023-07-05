@@ -1,7 +1,12 @@
 import { css } from '@emotion/css'
-import { RecordType } from '../types/enums'
-import { useState } from 'react'
+import { Category, RecordType } from '../types/enums'
+import { useLayoutEffect, useRef, useState } from 'react'
 import CustomSelect from './CustomSelect'
+import CustomInputRadio from './CustomInputRadio'
+import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
+import { AxiosResponse } from 'axios'
+import api from '../api/axios'
+import { ENDPOINTS } from '../api'
 
 const styledSideBarFilterWrapper = css`
     position: absolute;
@@ -22,15 +27,10 @@ const styledHeader = css`
     font-size: 20px;
 `
 
-const styledInput = css`
-    cursor: pointer;
-`
-
-const styledLabel = css``
-
 const styledCustomSelect = css`
     width: 12vw;
     align-self: flex-start;
+    margin-top: 2em;
 `
 
 const styledInputText = css`
@@ -59,8 +59,89 @@ export default function SideBarFilter({
         name: string
     }) => void
 }) {
+    const categoriesArray: { id: number; name: string }[] = Object.keys(
+        Category
+    ).map((category, index) => {
+        return { id: index, name: category }
+    })
+    categoriesArray.push({ id: -1, name: 'All' })
+
+    const dataFetchedRef = useRef(false)
+
+    const fetchUserAccounts = async () => {
+        clearAllToasts()
+
+        try {
+            const userId: number = localStorage.getItem(
+                'userId'
+            ) as unknown as number
+
+            const res: AxiosResponse = await api.get(
+                ENDPOINTS.fetchUserAccounts(userId)
+            )
+
+            return res.data
+        } catch (e: any) {
+            showErrorToast(e?.response?.data?.Error)
+        }
+    }
+
+    useLayoutEffect(() => {
+        if (dataFetchedRef.current) return
+        dataFetchedRef.current = true
+
+        fetchUserAccounts().then((data: any) => {
+            if (!data?.length) {
+                return
+            }
+
+            const accounts: { id: number; name: string }[] = data?.map(
+                (account: any) => {
+                    return { id: account.id, name: account.name }
+                }
+            )
+            accounts.push({ id: 0, name: 'All' })
+            onCategoryChangeHandler(categoriesArray[categoriesArray.length - 1])
+            onAccountChangeHandler(accounts[accounts.length - 1])
+            setAccounts(accounts)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const [accounts, setAccounts] = useState([{ id: -1, name: '-' }])
-    const [categories, setCategories] = useState([{ id: -1, name: '-' }])
+    const [categories] = useState(categoriesArray)
+
+    const recordFilterOptions: {
+        id: string
+        name: string
+        value: string
+        onChangeHandler: (e: any) => void
+    }[] = [
+        {
+            id: 'all',
+            name: 'recordType',
+            value: RecordType.All,
+            onChangeHandler: onRecordTypeChangeHandler,
+        },
+        {
+            id: 'expense',
+            name: 'recordType',
+            value: RecordType.Expense,
+            onChangeHandler: onRecordTypeChangeHandler,
+        },
+        {
+            id: 'income',
+            name: 'recordType',
+            value: RecordType.Income,
+            onChangeHandler: onRecordTypeChangeHandler,
+        },
+        {
+            id: 'transfer',
+            name: 'recordType',
+            value: RecordType.Transfer,
+            onChangeHandler: onRecordTypeChangeHandler,
+        },
+    ]
 
     return (
         <div className={styledSideBarFilterWrapper}>
@@ -68,62 +149,11 @@ export default function SideBarFilter({
                 <p className={styledHeader}>FILTER</p>
 
                 {/* Record Type */}
-                <fieldset>
-                    <p>Record Type</p>
-                    <div>
-                        <input
-                            type="radio"
-                            id="all"
-                            name="recordType"
-                            className={styledInput}
-                            value={RecordType.All}
-                            checked={selectedRecordType === RecordType.All}
-                            onChange={onRecordTypeChangeHandler}
-                        />
-                        <label className={styledLabel} htmlFor="all">
-                            {RecordType.All}
-                        </label>
-                    </div>
-
-                    <div>
-                        <input
-                            type="radio"
-                            id="expense"
-                            name="recordType"
-                            className={styledInput}
-                            value={RecordType.Expense}
-                            checked={selectedRecordType === RecordType.Expense}
-                            onChange={onRecordTypeChangeHandler}
-                        />
-                        <label className={styledLabel} htmlFor="expense">
-                            {RecordType.Expense}
-                        </label>
-                    </div>
-
-                    <div>
-                        <input
-                            type="radio"
-                            id="income"
-                            name="recordType"
-                            value={RecordType.Income}
-                            checked={selectedRecordType === RecordType.Income}
-                            onChange={onRecordTypeChangeHandler}
-                        />
-                        <label htmlFor="income">{RecordType.Income}</label>
-                    </div>
-
-                    <div>
-                        <input
-                            type="radio"
-                            id="transfer"
-                            name="recordType"
-                            value={RecordType.Transfer}
-                            checked={selectedRecordType === RecordType.Transfer}
-                            onChange={onRecordTypeChangeHandler}
-                        />
-                        <label htmlFor="transfer">{RecordType.Transfer}</label>
-                    </div>
-                </fieldset>
+                <CustomInputRadio
+                    labelText="Record Type"
+                    options={recordFilterOptions}
+                    selectedOption={selectedRecordType}
+                />
 
                 {/* Accounts */}
                 <CustomSelect
