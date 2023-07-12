@@ -7,7 +7,7 @@ import {
 } from 'react-icons/md'
 import { useLogout } from '../hooks/useLogout'
 import { useNavigate } from 'react-router-dom'
-import UserProfileButton from './UserProfileButton'
+import MenuButton from './MenuButton'
 
 const styledUserProfile = css`
     display: flex;
@@ -53,11 +53,11 @@ export default function UserProfile() {
                 <div>
                     <MdOutlineKeyboardArrowUp className={styledIcon} />
                     <div className={styledSettings}>
-                        <UserProfileButton
+                        <MenuButton
                             buttonText="Settings"
                             onClickHandler={() => navigate('/settings')}
                         />
-                        <UserProfileButton
+                        <MenuButton
                             buttonText="Logout"
                             onClickHandler={logout}
                         />
