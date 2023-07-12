@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
+// TODO get token dynamically
 const jwtToken: string = localStorage.getItem('accessToken') as string
 
 const api: AxiosInstance = axios.create({

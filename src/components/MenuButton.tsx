@@ -13,7 +13,7 @@ const styledSettingsButton = css`
     }
 `
 
-export default function UserProfileButton({
+export default function MenuButton({
     buttonText,
     onClickHandler,
 }: {

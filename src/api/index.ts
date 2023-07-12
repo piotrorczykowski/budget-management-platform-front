@@ -9,9 +9,15 @@ export const ENDPOINTS = {
     resetPassword: '/auth/reset-password',
     fetchProfile: '/users/me',
     updateUser: (userId: number) => `/users/${userId}`,
+
+    // Accounts Section
     createAccount: '/accounts/',
     fetchUserAccounts: (userId: number, searchByValue: string = '') =>
         `/accounts/${userId}?searchByValue=${searchByValue}`,
+    updateAccount: (accountId: number) => `/accounts/${accountId}`,
+    deleteAccount: (accountId: number) => `/accounts/${accountId}`,
+
+    // Records Section
     fetchPaginatedUserRecords: (
         userId: number,
         page: number,
