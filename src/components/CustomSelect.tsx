@@ -76,7 +76,11 @@ export default function CustomSelect({
                 }}
             >
                 {options.map((optionValue) => (
-                    <option key={optionValue.id} value={optionValue.id}>
+                    <option
+                        key={optionValue.id}
+                        value={optionValue.id}
+                        disabled={!optionValue.id}
+                    >
                         {optionValue.name}
                     </option>
                 ))}

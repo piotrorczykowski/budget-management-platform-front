@@ -127,7 +127,6 @@ export default function RecordForm({
 
     const [formErrors, setFormErrors] = useState({ ...InitialValues })
     const [accounts, setAccounts] = useState([{ id: -1, name: '-' }])
-    const [toAccounts, setToAccounts] = useState([{ id: -1, name: '-' }])
 
     const [loading, setLoading] = useState(false)
 
@@ -173,10 +172,8 @@ export default function RecordForm({
                     return { id: account.id, name: account.name }
                 }
             )
+            accounts.push({ id: 0, name: DefaultAccountName })
             setAccounts(accounts)
-            const toAccounts: { id: number; name: string }[] = [...accounts]
-            toAccounts.push({ id: 0, name: DefaultAccountName })
-            setToAccounts(toAccounts)
 
             if (!isRecordUpdating) {
                 handleSetAccount(accounts[0])
@@ -203,12 +200,17 @@ export default function RecordForm({
             errors.account = 'From Account and To account cannot be the same'
         }
 
+        if (!account.id || (!toAccount.id && isTransfer)) {
+            errors.account = 'Please select any other account'
+        }
+
         return errors
     }
 
     const handleUpsertRecord = async () => {
         setLoading(true)
         clearAllToasts()
+        setFormErrors(InitialValues)
 
         const errors: {
             date: string
@@ -298,7 +300,7 @@ export default function RecordForm({
                         labelText="To Account"
                         selectName="toAccount"
                         selected={toAccount}
-                        options={toAccounts}
+                        options={accounts}
                         onChangeHandler={handleSetToAccount}
                         isDisabled={loading}
                         errorMessage={formErrors.account}

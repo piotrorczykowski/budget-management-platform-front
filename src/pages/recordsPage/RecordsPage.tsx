@@ -202,7 +202,7 @@ export default function RecordsPage() {
 
         const recordAccount: BasicApiObject = {
             id: record.account?.id || 0,
-            name: record.account?.name || DefaultAccountName,
+            name: record.account?.name,
         }
 
         const isRecordTransfer: boolean = record.isTransfer
@@ -214,14 +214,12 @@ export default function RecordsPage() {
         if (isRecordTransfer) {
             correspondingAccount = (
                 records.find(
-                    (record) =>
-                        (record.id === recordId + 1 && record.isTransfer) ||
-                        (record.id === recordId - 1 && record.isTransfer)
+                    (r) =>
+                        r.isTransfer &&
+                        r.date === record.date &&
+                        r.isExpense === !isRecordTransferAndExpense
                 ) as Record
-            )?.account || {
-                id: 0,
-                name: DefaultAccountName,
-            }
+            )?.account || { id: 0 }
 
             if (isRecordTransferAndExpense) {
                 setFormAccount(recordAccount)
