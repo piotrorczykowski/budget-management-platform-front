@@ -61,20 +61,22 @@ const styledEmptyAccount = css`
 `
 
 export default function Account({
+    id,
     accountName,
     accountBalance,
     isEmpty = false,
     onClickHandler,
 }: {
+    id: number
     accountName: string
     accountBalance: number
     isEmpty?: boolean
-    onClickHandler?: () => void
+    onClickHandler: (accountId: number) => void
 }) {
     // TODO add displaying currency from data
     const isNegative: boolean = accountBalance < 0
     return (
-        <div className={styledAccount} onClick={onClickHandler}>
+        <div className={styledAccount} onClick={() => onClickHandler(id)}>
             {isEmpty ? (
                 <div className={styledEmptyAccount}>+ Add Account</div>
             ) : (
