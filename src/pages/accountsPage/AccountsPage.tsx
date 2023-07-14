@@ -12,7 +12,7 @@ import {
 import { AxiosResponse } from 'axios'
 import { ENDPOINTS } from '../../api'
 import api from '../../api/axios'
-import { Account } from './@types'
+import { Account } from './types'
 import AccountForm from '../../components/AccountForm'
 
 const styledAccountsPageWrapper = css`
