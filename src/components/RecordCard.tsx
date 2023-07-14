@@ -4,6 +4,7 @@ import { HiDotsVertical } from 'react-icons/hi'
 import OutsideClickHandler from 'react-outside-click-handler'
 import MenuButton from './MenuButton'
 import { useState } from 'react'
+import { DefaultAccountName } from '../types/constants'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -123,7 +124,9 @@ export default function RecordCard({
                 <p className={styledRecordDate}>
                     {moment(date).format('Do MMM YY')}
                 </p>
-                <p className={styledAccountName}>{accountName}</p>
+                <p className={styledAccountName}>
+                    {accountName || DefaultAccountName}
+                </p>
                 <p className={styledRecordAmount(isExpense, isTransfer)}>
                     {isExpense && '-'}&#36;{amount}
                 </p>

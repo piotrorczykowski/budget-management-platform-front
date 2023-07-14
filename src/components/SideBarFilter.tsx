@@ -76,7 +76,7 @@ export default function SideBarFilter({
         name: string
     }) => void
 }) {
-    const categoriesArray: { id: number; name: string }[] = Object.keys(
+    const categoriesArray: { id: number; name: string }[] = Object.values(
         Category
     ).map((category, index) => {
         return { id: index, name: category }

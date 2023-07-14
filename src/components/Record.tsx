@@ -1,5 +1,6 @@
 import { css } from '@emotion/css'
 import moment from 'moment'
+import { DefaultAccountName } from '../types/constants'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -71,7 +72,9 @@ export default function Record({
             <p className={styledRecordDate}>
                 {moment(date).format('Do MMM YY')}
             </p>
-            <p className={styledAccountName}>{accountName}</p>
+            <p className={styledAccountName}>
+                {accountName || DefaultAccountName}
+            </p>
             <p className={styledRecordAmount(isExpense, isTransfer)}>
                 {isExpense && '-'}&#36;{amount}
             </p>

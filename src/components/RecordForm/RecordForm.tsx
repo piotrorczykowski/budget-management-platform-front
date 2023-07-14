@@ -17,6 +17,8 @@ import CustomHorizontalRadio from '../CustomHorizontalRadio/CustomHorizontalRadi
 import moment from 'moment'
 import { RecordFormErrorsType } from './types'
 import { InitialValues } from './types/constant'
+import { BasicApiObject } from '../../types'
+import { DefaultAccountName } from '../../types/constants'
 
 const accountFormWrapper = (showModal: boolean) => css`
     position: fixed;
@@ -77,29 +79,55 @@ const smallerInputWithMargin = css`
 `
 
 export default function RecordForm({
-    showModal,
+    id,
+    recordType,
+    category,
+    amount,
+    date,
+    description,
+    account,
+    toAccount,
+    handleSetRecordType,
+    handleSetCategory,
+    handleSetAmount,
+    handleSetDate,
+    handleSetDescription,
+    handleSetAccount,
+    handleSetToAccount,
     handleModalClose,
+    showModal,
+    isRecordUpdating = false,
+    showRecordType = true,
 }: {
+    id: number
+    recordType: RecordType
+    category: BasicApiObject
+    amount: string
+    date: Date
+    description: string
+    account: BasicApiObject
+    toAccount: BasicApiObject
     showModal: boolean
-    handleModalClose: (addedRecord: boolean) => void
+    handleSetRecordType: (recordType: RecordType) => void
+    handleSetCategory: (category: BasicApiObject) => void
+    handleSetAmount: (amount: string) => void
+    handleSetDate: (date: Date) => void
+    handleSetDescription: (description: string) => void
+    handleSetAccount: (account: BasicApiObject) => void
+    handleSetToAccount: (toAccount: BasicApiObject) => void
+    handleModalClose: (shouldRefresh: boolean) => void
+    isRecordUpdating?: boolean
+    showRecordType?: boolean
 }) {
-    const categories: { id: number; name: string }[] = Object.keys(
-        Category
-    ).map((category, index) => {
-        return { id: index, name: category }
-    })
+    const categories: BasicApiObject[] = Object.values(Category).map(
+        (category, index) => {
+            return { id: index, name: category }
+        }
+    )
 
     const [formErrors, setFormErrors] = useState({ ...InitialValues })
-
-    const [recordType, setRecordType] = useState(RecordType.Expense)
-    const [category, setCategory] = useState(categories[0])
     const [accounts, setAccounts] = useState([{ id: -1, name: '-' }])
-    const [amount, setAmount] = useState('')
-    const [date, setDate] = useState(new Date())
-    const [description, setDescription] = useState('')
-
-    const [account, setAccount] = useState({ id: -1, name: '-' })
-    const [toAccount, setToAccount] = useState({ id: -1, name: '-' })
+    const [toAccounts, setToAccounts] = useState([{ id: -1, name: '-' }])
 
     const [loading, setLoading] = useState(false)
 
@@ -121,6 +149,7 @@ export default function RecordForm({
             const res: AxiosResponse = await api.get(
                 ENDPOINTS.fetchUserAccounts(userId)
             )
+            setLoading(false)
 
             return res.data
         } catch (e: any) {
@@ -145,8 +174,15 @@ export default function RecordForm({
                 }
             )
             setAccounts(accounts)
-            setAccount(accounts[0])
-            setToAccount(accounts[1] || accounts[0])
+            const toAccounts: { id: number; name: string }[] = [...accounts]
+            toAccounts.push({ id: 0, name: DefaultAccountName })
+            setToAccounts(toAccounts)
+
+            if (!isRecordUpdating) {
+                handleSetAccount(accounts[0])
+                handleSetToAccount(accounts[1] || accounts[0])
+            }
+
             setLoading(false)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -170,7 +206,7 @@ export default function RecordForm({
         return errors
     }
 
-    const handleAddRecord = async () => {
+    const handleUpsertRecord = async () => {
         setLoading(true)
         clearAllToasts()
 
@@ -191,19 +227,37 @@ export default function RecordForm({
         }
 
         try {
-            await api.post(ENDPOINTS.createRecord, {
-                recordType,
-                accountId: account.id,
-                amount,
-                date,
-                category: category.name,
-                toAccountId: toAccount.id,
-                description,
-            })
+            if (isRecordUpdating) {
+                await api.put(ENDPOINTS.updateRecord(id), {
+                    recordType,
+                    accountId: account.id,
+                    amount,
+                    date,
+                    category: category.name,
+                    toAccountId: toAccount.id,
+                    description,
+                })
 
-            showSuccessToast('Successfully added record!')
+                setLoading(false)
+                showSuccessToast('Successfully updated record!')
+            } else {
+                await api.post(ENDPOINTS.createRecord, {
+                    recordType,
+                    accountId: account.id,
+                    amount,
+                    date,
+                    category: category.name,
+                    toAccountId: toAccount.id,
+                    description,
+                })
+
+                setLoading(false)
+                showSuccessToast('Successfully added record!')
+            }
+
             handleModalClose(true)
         } catch (e: any) {
+            setLoading(false)
             showErrorToast(e?.response?.data?.Error)
         }
     }
@@ -211,24 +265,30 @@ export default function RecordForm({
     const handleAmountChange = (value: string) => {
         const regex: RegExp = /[^0-9.]/g
         const transformedAmount: string = value.replace(regex, '')
-        setAmount(transformedAmount)
+        handleSetAmount(transformedAmount)
     }
 
     return (
         <div className={accountFormWrapper(showModal)}>
             <div className={styledModal}>
-                <p className={styledModalName}>Add Record</p>
+                <p className={styledModalName}>
+                    {isRecordUpdating ? 'Update Record' : 'Add Record'}
+                </p>
 
-                <CustomHorizontalRadio
-                    selectedValue={recordType}
-                    onChangeHandler={(e) => setRecordType(e.target.value)}
-                />
+                {showRecordType && (
+                    <CustomHorizontalRadio
+                        selectedValue={recordType}
+                        onChangeHandler={(e) =>
+                            handleSetRecordType(e.target.value)
+                        }
+                    />
+                )}
                 <CustomSelect
                     labelText={isTransfer ? 'From Account' : 'Account'}
                     selectName="account"
                     selected={account}
                     options={accounts}
-                    onChangeHandler={setAccount}
+                    onChangeHandler={handleSetAccount}
                     isDisabled={loading}
                     errorMessage={formErrors.account}
                     customClassName={classWithMargin}
@@ -238,8 +298,8 @@ export default function RecordForm({
                         labelText="To Account"
                         selectName="toAccount"
                         selected={toAccount}
-                        options={accounts}
-                        onChangeHandler={setToAccount}
+                        options={toAccounts}
+                        onChangeHandler={handleSetToAccount}
                         isDisabled={loading}
                         errorMessage={formErrors.account}
                         customClassName={classWithMargin}
@@ -256,6 +316,7 @@ export default function RecordForm({
                     showNumberSign={!isTransfer}
                     isNegative={isValueNegative}
                     errorMessage={formErrors.amount}
+                    isDisabled={loading}
                 />
 
                 {!isTransfer && (
@@ -265,7 +326,7 @@ export default function RecordForm({
                             selectName="category"
                             selected={category}
                             options={categories}
-                            onChangeHandler={setCategory}
+                            onChangeHandler={handleSetCategory}
                             isDisabled={loading}
                             customClassName={smallerInputWithMargin}
                             // workaround for having the same height as CustomDatePicker
@@ -275,9 +336,10 @@ export default function RecordForm({
                         <CustomDatePicker
                             labelText="Date"
                             selectedDate={date}
-                            onChangeHandler={setDate}
+                            onChangeHandler={handleSetDate}
                             customClassName={smallerInput}
                             errorMessage={formErrors.date}
+                            isDisabled={loading}
                         />
                     </div>
                 )}
@@ -286,8 +348,9 @@ export default function RecordForm({
                     <CustomDatePicker
                         labelText="Date"
                         selectedDate={date}
-                        onChangeHandler={setDate}
+                        onChangeHandler={handleSetDate}
                         errorMessage={formErrors.date}
+                        isDisabled={loading}
                     />
                 )}
 
@@ -297,13 +360,16 @@ export default function RecordForm({
                         inputName="description"
                         placeholderText=""
                         value={description}
-                        onChangeHandler={setDescription}
+                        onChangeHandler={handleSetDescription}
+                        isDisabled={loading}
                     />
                 )}
 
                 <CustomButton
-                    buttonText="Add Record"
-                    onClickHandler={handleAddRecord}
+                    buttonText={
+                        isRecordUpdating ? 'Update Record' : 'Add Record'
+                    }
+                    onClickHandler={handleUpsertRecord}
                     isDisabled={loading}
                 />
                 <CustomButton

@@ -65,11 +65,14 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
             id: 0,
             category: '',
             date: '',
-            accountName: '',
             amount: -1,
             isExpense: true,
             isTransfer: false,
             description: '',
+            account: {
+                id: 0,
+                name: '',
+            },
         },
     ])
 
@@ -130,7 +133,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
                             key={record.id}
                             category={record.category}
                             date={record.date}
-                            accountName={record.accountName}
+                            accountName={record.account.name}
                             amount={record.amount}
                             isExpense={record.isExpense}
                             isTransfer={record.isTransfer}
