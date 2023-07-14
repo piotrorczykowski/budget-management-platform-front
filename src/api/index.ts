@@ -30,4 +30,6 @@ export const ENDPOINTS = {
     ) =>
         `/records/${userId}?page=${page}&pageSize=${pageSize}&sortingOption=${sortingOptions}&searchByValue=${searchByValue}&recordType=${recordType}&accountId=${accountId}&category=${category}`,
     createRecord: '/records/',
+    updateRecord: (recordId: number) => `/records/${recordId}`,
+    deleteRecord: (recordId: number) => `/records/${recordId}`,
 }

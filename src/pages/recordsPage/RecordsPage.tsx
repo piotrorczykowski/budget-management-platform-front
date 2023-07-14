@@ -3,7 +3,7 @@ import TopBar from '../../components/TopBar'
 import SearchInput from '../../components/SearchInput'
 import { useLayoutEffect, useState } from 'react'
 import CustomSelect from '../../components/CustomSelect'
-import { RecordType, SortingOptions } from '../../types/enums'
+import { Category, RecordType, SortingOptions } from '../../types/enums'
 import SideBarFilter from '../../components/SideBarFilter'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
@@ -13,6 +13,11 @@ import { RecordsFetchType } from './types'
 import RecordCard from '../../components/RecordCard'
 import { Pagination } from '@mui/material'
 import { useDebounce } from 'use-debounce'
+import RecordForm from '../../components/RecordForm/RecordForm'
+import { BasicApiObject } from '../../types'
+import { Record } from './types/index'
+import moment from 'moment'
+import { DefaultAccountName } from '../../types/constants'
 
 const styledRecordPageWrapper = css`
     display: flex;
@@ -72,11 +77,14 @@ export default function RecordsPage() {
             id: 0,
             category: '',
             date: '',
-            accountName: '',
             amount: -1,
             isExpense: true,
             isTransfer: false,
             description: '',
+            account: {
+                id: 0,
+                name: '',
+            },
         },
     ])
 
@@ -85,13 +93,36 @@ export default function RecordsPage() {
 
     const [loading, setLoading] = useState(true)
 
-    const [sortingOption, setSortingOption] = useState(sortingOptions[0])
+    const [sortingOption, setSortingOption] = useState(
+        sortingOptions.find(
+            (sortingOption) => sortingOption.name === 'Date (new to old)'
+        ) as BasicApiObject
+    )
 
     const [searchByValue, setSearchByValue] = useState('')
     const [searchByValueToSend] = useDebounce(searchByValue, 1000)
     const [recordType, setRecordType] = useState(RecordType.All)
     const [account, setAccount] = useState({ id: -1, name: '-' })
     const [category, setCategory] = useState({ id: -1, name: '-' })
+
+    const [refresh, setRefresh] = useState(false)
+    const [showRecordForm, setShowRecordForm] = useState(false)
+
+    const categories: BasicApiObject[] = Object.values(Category).map(
+        (category, index) => {
+            return { id: index, name: category }
+        }
+    )
+
+    const [recordId, setRecordId] = useState(-1)
+    const [testTypeOfRecord, setTestTypeOfRecord] = useState(RecordType.Expense)
+    const [formCategory, setFormCategory] = useState(categories[0])
+    const [amount, setAmount] = useState('')
+    const [date, setDate] = useState(new Date())
+    const [description, setDescription] = useState('')
+
+    const [formAccount, setFormAccount] = useState({ id: -1, name: '-' })
+    const [toAccount, setToAccount] = useState({ id: -1, name: '-' })
 
     useLayoutEffect(() => {
         const fetchUserRecords = async ({
@@ -147,10 +178,86 @@ export default function RecordsPage() {
         recordType,
         account,
         category,
+        refresh,
     ])
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)
+    }
+
+    const handleRecordEdit = async (recordId: number) => {
+        const record: Record = records.find(
+            (record) => record.id === recordId
+        ) as Record
+
+        const selectedRecordType: RecordType = record.isTransfer
+            ? RecordType.Transfer
+            : record.isExpense
+            ? RecordType.Expense
+            : RecordType.Income
+
+        const category: BasicApiObject = categories.find(
+            (category) => category.name === record.category
+        ) as BasicApiObject
+
+        const recordAccount: BasicApiObject = {
+            id: record.account?.id || 0,
+            name: record.account?.name || DefaultAccountName,
+        }
+
+        const isRecordTransfer: boolean = record.isTransfer
+        const isRecordTransferAndExpense: boolean = record.isExpense
+        let correspondingAccount: BasicApiObject = {
+            id: 0,
+            name: DefaultAccountName,
+        }
+        if (isRecordTransfer) {
+            correspondingAccount = records.find(
+                (r) =>
+                    r.isTransfer &&
+                    r.date === record.date &&
+                    r.isExpense === !isRecordTransferAndExpense
+            )?.account || { id: 0, name: DefaultAccountName }
+
+            if (isRecordTransferAndExpense) {
+                setFormAccount(recordAccount)
+                setToAccount(correspondingAccount)
+            } else {
+                setFormAccount(correspondingAccount)
+                setToAccount(recordAccount)
+            }
+        } else {
+            setFormAccount(recordAccount)
+            setToAccount(correspondingAccount)
+        }
+
+        setRecordId(record.id)
+        setTestTypeOfRecord(selectedRecordType)
+        setFormCategory(category)
+        setAmount(record.amount.toString())
+        setDate(moment(record.date).toDate())
+        setDescription(record.description)
+
+        setShowRecordForm(true)
+    }
+
+    const handleRecordDelete = async (recordId: number) => {
+        setLoading(true)
+        try {
+            await api.delete(ENDPOINTS.deleteRecord(recordId))
+            setRefresh(!refresh)
+            setLoading(false)
+        } catch (e: any) {
+            setLoading(false)
+            showErrorToast(e?.response?.data?.Error)
+        }
+    }
+
+    const handleModalClose = async (shouldRefresh: boolean) => {
+        if (shouldRefresh) {
+            setRefresh(!refresh)
+        }
+        setShowRecordForm(false)
     }
 
     return (
@@ -191,12 +298,17 @@ export default function RecordsPage() {
                         {records?.map((record) => {
                             return (
                                 <RecordCard
+                                    key={record.id}
+                                    id={record.id}
                                     category={record.category}
                                     date={record.date}
-                                    accountName={record.accountName}
+                                    accountName={record.account.name}
                                     amount={record.amount}
                                     isExpense={record.isExpense}
                                     isTransfer={record.isTransfer}
+                                    description={record.description}
+                                    handleRecordEdit={handleRecordEdit}
+                                    handleRecordDelete={handleRecordDelete}
                                 />
                             )
                         })}
@@ -214,6 +326,29 @@ export default function RecordsPage() {
                     />
                 </div>
             </div>
+            {showRecordForm && (
+                <RecordForm
+                    id={recordId}
+                    recordType={testTypeOfRecord}
+                    category={formCategory}
+                    amount={amount}
+                    date={date}
+                    description={description}
+                    account={formAccount}
+                    toAccount={toAccount}
+                    handleSetRecordType={setTestTypeOfRecord}
+                    handleSetCategory={setFormCategory}
+                    handleSetAmount={setAmount}
+                    handleSetDate={setDate}
+                    handleSetDescription={setDescription}
+                    handleSetAccount={setFormAccount}
+                    handleSetToAccount={setToAccount}
+                    handleModalClose={handleModalClose}
+                    showModal={showRecordForm}
+                    isRecordUpdating={true}
+                    showRecordType={false}
+                />
+            )}
         </div>
     )
 }

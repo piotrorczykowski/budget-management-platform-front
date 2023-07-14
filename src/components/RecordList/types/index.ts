@@ -1,12 +1,4 @@
-export type RecordsFetchType = {
-    sortingOption: string
-    searchByValue: string
-    recordType: string
-    accountId: number
-    category: string
-}
-
-export type Record = {
+export type RecordObjectType = {
     id: number
     category: string
     date: string

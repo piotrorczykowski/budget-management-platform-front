@@ -1,15 +1,16 @@
 import { css } from '@emotion/css'
-import Account from './Account'
-import AccountForm from './AccountForm'
+import Account from '../Account'
+import AccountForm from '../AccountForm'
 import { useLayoutEffect, useState } from 'react'
 import {
     clearAllToasts,
     showErrorToast,
     showSuccessToast,
-} from '../utils/toastUtils'
-import api from '../api/axios'
-import { ENDPOINTS } from '../api'
+} from '../../utils/toastUtils'
+import api from '../../api/axios'
+import { ENDPOINTS } from '../../api'
 import { AxiosResponse } from 'axios'
+import { AccountType } from './types/index'
 
 const styledAccountsListWrapper = css`
     display: flex;
@@ -25,6 +26,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
         },
     ])
 
+    const [accountId, setAccountId] = useState(0)
     const [accountName, setAccountName] = useState('')
     const [accountBalance, setAccountBalance] = useState('')
 
@@ -32,7 +34,10 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     const [showAccountForm, setShowAccountForm] = useState(false)
     const [loading, setLoading] = useState(true)
 
-    const handleAddAccount = async () => {
+    const [isAccountUpdating, setIsAccountUpdating] = useState(false)
+    const [shouldRefresh, setShouldRefresh] = useState(false)
+
+    const handleUpsertAccount = async () => {
         setErrorMessage('')
         setLoading(true)
         clearAllToasts()
@@ -44,12 +49,22 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
         }
 
         try {
-            await api.post(ENDPOINTS.createAccount, {
-                name: accountName,
-                balance: accountBalance,
-            })
+            if (isAccountUpdating) {
+                await api.put(ENDPOINTS.updateAccount(accountId), {
+                    name: accountName,
+                    balance: accountBalance,
+                })
 
-            showSuccessToast('Successfully added account!')
+                setShouldRefresh(true)
+                showSuccessToast('Successfully updated account!')
+            } else {
+                await api.post(ENDPOINTS.createAccount, {
+                    name: accountName,
+                    balance: accountBalance,
+                })
+
+                showSuccessToast('Successfully added account!')
+            }
             setAccountName('')
             setAccountBalance('')
 
@@ -59,6 +74,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
             })
 
             setShowAccountForm(false)
+            setIsAccountUpdating(false)
         } catch (e: any) {
             setLoading(false)
             showErrorToast(e?.response?.data?.Error)
@@ -91,12 +107,34 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
             setHasUserMaxAccount(data?.length > 4)
             setLoading(false)
         })
-    }, [refresh])
+    }, [refresh, shouldRefresh])
 
     const handleAccountBalanceChange = (value: string) => {
         const regex: RegExp = /[^0-9.]/g
         const transformedAmount: string = value.replace(regex, '')
         setAccountBalance(transformedAmount)
+    }
+
+    const handleAccountUpdate = (accountId: number) => {
+        setErrorMessage('')
+        const account: AccountType = accounts.find(
+            (account) => account.id === accountId
+        ) as AccountType
+
+        setAccountName(account.name)
+        setAccountBalance(account.balance.toString())
+        setAccountId(accountId)
+        setShowAccountForm(true)
+        setIsAccountUpdating(true)
+    }
+
+    const handleFormClose = () => {
+        setShowAccountForm(false)
+        setIsAccountUpdating(false)
+    }
+
+    const handleAccountCreation = (accountId: number) => {
+        setShowAccountForm(true)
     }
 
     return (
@@ -105,17 +143,21 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
                 return (
                     <Account
                         key={account.id}
+                        id={account.id}
                         accountName={account.name}
                         accountBalance={account.balance}
+                        onClickHandler={handleAccountUpdate}
                     />
                 )
             })}
             {!hasUserMaxAccount && (
                 <Account
+                    key={-1}
+                    id={-1}
                     accountName=""
                     accountBalance={0}
                     isEmpty={true}
-                    onClickHandler={() => setShowAccountForm(true)}
+                    onClickHandler={handleAccountCreation}
                 />
             )}
             {showAccountForm && (
@@ -126,9 +168,10 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
                     isLoading={loading}
                     onNameChangeHandler={setAccountName}
                     onBalanceChangeHandler={handleAccountBalanceChange}
-                    onClickHandler={handleAddAccount}
-                    handleModalClose={() => setShowAccountForm(false)}
+                    onClickHandler={handleUpsertAccount}
+                    handleModalClose={() => handleFormClose()}
                     errorMessage={errorMessage}
+                    isAccountUpdating={isAccountUpdating}
                 />
             )}
         </div>

@@ -8,8 +8,8 @@ import CustomInputText from '../../components/CustomInputText'
 import CustomLink from '../../components/CustomLink'
 import CustomWelcomeMessage from '../../components/CustomWelcomeMessage'
 import AlignCenterWrapper from '../../components/AlignCenterWrapper'
-import { FormInputsType } from './@types/index'
-import { InitialValues } from './@types/constants'
+import { FormInputsType } from './types/index'
+import { InitialValues } from './types/constants'
 import {
     clearAllToasts,
     showErrorToast,

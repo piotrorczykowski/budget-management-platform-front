@@ -1,5 +1,6 @@
 import { css } from '@emotion/css'
 import moment from 'moment'
+import { DefaultAccountName } from '../types/constants'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -47,6 +48,7 @@ const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
 `
 
 export default function Record({
+    id,
     category,
     date,
     accountName,
@@ -54,7 +56,9 @@ export default function Record({
     isExpense = false,
     isTransfer = false,
     description = '',
+    handleRecordEdit,
 }: {
+    id: number
     category: string
     date: string
     accountName: string
@@ -62,16 +66,22 @@ export default function Record({
     isExpense: boolean
     isTransfer: boolean
     description?: string
+    handleRecordEdit: (recordId: number) => void
 }) {
     // TODO add displaying currency from the backend
     return (
-        <div className={styledRecordWrapper}>
+        <div
+            className={styledRecordWrapper}
+            onClick={() => handleRecordEdit(id)}
+        >
             <p className={styledCategoryName}>{category}</p>
             <p className={styledRecordDescription}>{description}</p>
             <p className={styledRecordDate}>
                 {moment(date).format('Do MMM YY')}
             </p>
-            <p className={styledAccountName}>{accountName}</p>
+            <p className={styledAccountName}>
+                {accountName || DefaultAccountName}
+            </p>
             <p className={styledRecordAmount(isExpense, isTransfer)}>
                 {isExpense && '-'}&#36;{amount}
             </p>
