@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountList/AccountsList'
-import RecordsList from '../components/RecordsList'
+import RecordsList from '../components/RecordList/RecordsList'
 import BudgetsList from '../components/BudgetsList'
 import { useState } from 'react'
 import RecordForm from '../components/RecordForm/RecordForm'
