@@ -26,6 +26,12 @@ const styledRecordWrapper = css`
     }
 `
 
+const styledMainAccountSection = css`
+    display: flex;
+    align-items: center;
+    width: 100%;
+`
+
 const styledAccountNameAndIcon = css`
     display: flex;
     align-items: center;
@@ -36,16 +42,18 @@ const styledAccountName = css`
     margin-left: 1em;
 `
 
-const styledAccountBalanceAndIcon = css`
-    display: flex;
-    align-items: center;
-    position: relative;
+const styledAccountBalanceSection = css`
+    margin-left: auto;
 `
 
 const styledAccountBalance = css`
     font-weight: 600;
     text-align: right;
     margin-right: 1em;
+`
+
+const styledMenuSection = css`
+    position: relative;
 `
 
 const styledIcon = css`
@@ -63,7 +71,7 @@ const styledMenu = css`
     position: absolute;
     right: 0;
     top: 0;
-    margin-top: 30%;
+    margin-top: 130%;
     margin-right: -10px;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
@@ -88,16 +96,24 @@ export default function AccountCard({
     const isNegative: boolean = balance < 0
     return (
         <div className={styledRecordWrapper}>
-            <div className={styledAccountNameAndIcon}>
-                <IoWallet size={30} />
-                <p className={styledAccountName}>{name}</p>
+            <div
+                className={styledMainAccountSection}
+                onClick={() => handleAccountEdit(id)}
+            >
+                <div className={styledAccountNameAndIcon}>
+                    <IoWallet size={30} />
+                    <p className={styledAccountName}>{name}</p>
+                </div>
+
+                <div className={styledAccountBalanceSection}>
+                    <p className={styledAccountBalance}>
+                        {isNegative && '-'}&#36;
+                        {Number(Math.abs(balance)).toFixed(2)}
+                    </p>
+                </div>
             </div>
 
-            <div className={styledAccountBalanceAndIcon}>
-                <p className={styledAccountBalance}>
-                    {isNegative && '-'}&#36;
-                    {Number(Math.abs(balance)).toFixed(2)}
-                </p>
+            <div className={styledMenuSection}>
                 <OutsideClickHandler
                     onOutsideClick={() => {
                         setShowMenu(false)
