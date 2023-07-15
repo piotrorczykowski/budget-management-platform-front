@@ -5,7 +5,7 @@ import CustomSelect from './CustomSelect'
 import CustomInputRadio from './CustomInputRadio'
 import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api from '../api/axios'
+import { sendGet } from '../api/axios'
 import { ENDPOINTS } from '../api'
 
 const styledSideBarFilterWrapper = css`
@@ -93,7 +93,7 @@ export default function SideBarFilter({
                 'userId'
             ) as unknown as number
 
-            const res: AxiosResponse = await api.get(
+            const res: AxiosResponse = await sendGet(
                 ENDPOINTS.fetchUserAccounts(userId)
             )
 

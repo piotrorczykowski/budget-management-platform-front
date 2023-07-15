@@ -6,7 +6,7 @@ import { Pagination } from '@mui/material'
 import { useLayoutEffect, useState } from 'react'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api from '../../api/axios'
+import { sendGet } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import RecordForm from '../RecordForm/RecordForm'
 import { BasicApiObject } from '../../types'
@@ -116,7 +116,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
                     'userId'
                 ) as unknown as number
 
-                const res: AxiosResponse = await api.get(
+                const res: AxiosResponse = await sendGet(
                     ENDPOINTS.fetchPaginatedUserRecords(userId, page, 9)
                 )
 

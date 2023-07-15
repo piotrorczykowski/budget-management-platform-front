@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useLayoutEffect, useRef, useState } from 'react'
-import api from '../api/axios'
+import { sendPost } from '../api/axios'
 import { ENDPOINTS } from '../api'
 import CustomButton from '../components/CustomButton'
 import CustomWelcomeMessage from '../components/CustomWelcomeMessage'
@@ -16,7 +16,7 @@ export default function EmailVerificationPage() {
     const verifiedEmail = async (): Promise<boolean> => {
         const token: string = searchParams.get('token') as string
         try {
-            await api.post(ENDPOINTS.emailVerification, {
+            await sendPost(ENDPOINTS.emailVerification, {
                 token: token,
             })
             return true

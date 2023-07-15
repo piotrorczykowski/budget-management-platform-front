@@ -11,7 +11,7 @@ import {
     showSuccessToast,
 } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api from '../../api/axios'
+import { sendGet, sendPost, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import CustomHorizontalRadio from '../CustomHorizontalRadio/CustomHorizontalRadio'
 import moment from 'moment'
@@ -145,7 +145,7 @@ export default function RecordForm({
                 'userId'
             ) as unknown as number
 
-            const res: AxiosResponse = await api.get(
+            const res: AxiosResponse = await sendGet(
                 ENDPOINTS.fetchUserAccounts(userId)
             )
             setLoading(false)
@@ -167,12 +167,14 @@ export default function RecordForm({
                 return
             }
 
-            const accounts: { id: number; name: string }[] = data?.map(
-                (account: any) => {
-                    return { id: account.id, name: account.name }
-                }
-            )
-            accounts.push({ id: 0, name: DefaultAccountName })
+            const accounts: {
+                id: number
+                name: string
+                isDisabled: boolean
+            }[] = data?.map((account: any) => {
+                return { id: account.id, name: account.name }
+            })
+            accounts.push({ id: 0, name: DefaultAccountName, isDisabled: true })
             setAccounts(accounts)
 
             if (!isRecordUpdating) {
@@ -230,7 +232,7 @@ export default function RecordForm({
 
         try {
             if (isRecordUpdating) {
-                await api.put(ENDPOINTS.updateRecord(id), {
+                await sendPut(ENDPOINTS.updateRecord(id), {
                     recordType,
                     accountId: account.id,
                     amount,
@@ -243,7 +245,7 @@ export default function RecordForm({
                 setLoading(false)
                 showSuccessToast('Successfully updated record!')
             } else {
-                await api.post(ENDPOINTS.createRecord, {
+                await sendPost(ENDPOINTS.createRecord, {
                     recordType,
                     accountId: account.id,
                     amount,
@@ -373,11 +375,13 @@ export default function RecordForm({
                     }
                     onClickHandler={handleUpsertRecord}
                     isDisabled={loading}
+                    loading={loading}
                 />
                 <CustomButton
                     buttonText="Cancel"
                     onClickHandler={() => handleModalClose(false)}
                     isDisabled={loading}
+                    loading={loading}
                     inverseColor={true}
                 />
             </div>

@@ -7,7 +7,7 @@ import {
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import api from '../../api/axios'
+import { sendGet, sendPost, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { AxiosResponse } from 'axios'
 import { AccountType } from './types/index'
@@ -50,7 +50,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
 
         try {
             if (isAccountUpdating) {
-                await api.put(ENDPOINTS.updateAccount(accountId), {
+                await sendPut(ENDPOINTS.updateAccount(accountId), {
                     name: accountName,
                     balance: accountBalance,
                 })
@@ -58,7 +58,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
                 setShouldRefresh(true)
                 showSuccessToast('Successfully updated account!')
             } else {
-                await api.post(ENDPOINTS.createAccount, {
+                await sendPost(ENDPOINTS.createAccount, {
                     name: accountName,
                     balance: accountBalance,
                 })
@@ -90,7 +90,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
                 'userId'
             ) as unknown as number
 
-            const res: AxiosResponse = await api.get(
+            const res: AxiosResponse = await sendGet(
                 ENDPOINTS.fetchUserAccounts(userId)
             )
 

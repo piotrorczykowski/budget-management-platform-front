@@ -90,11 +90,13 @@ export default function AccountForm({
                     buttonType="submit"
                     onClickHandler={onClickHandler}
                     isDisabled={isLoading}
+                    loading={isLoading}
                 />
                 <CustomButton
                     buttonText="Cancel"
                     onClickHandler={handleModalClose}
                     isDisabled={isLoading}
+                    loading={isLoading}
                     inverseColor={true}
                 />
             </div>

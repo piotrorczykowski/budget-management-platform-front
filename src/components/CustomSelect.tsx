@@ -50,7 +50,7 @@ export default function CustomSelect({
     labelText: string
     selectName: string
     selected: { id: number; name: string }
-    options: { id: number; name: string }[]
+    options: { id: number; name: string; isDisabled?: boolean }[]
     onChangeHandler: ({ id, name }: { id: number; name: string }) => void
     errorMessage?: string
     isDisabled?: boolean
@@ -79,7 +79,7 @@ export default function CustomSelect({
                     <option
                         key={optionValue.id}
                         value={optionValue.id}
-                        disabled={!optionValue.id}
+                        disabled={optionValue.isDisabled}
                     >
                         {optionValue.name}
                     </option>

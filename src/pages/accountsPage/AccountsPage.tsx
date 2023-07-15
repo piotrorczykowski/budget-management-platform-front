@@ -11,7 +11,7 @@ import {
 } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import { ENDPOINTS } from '../../api'
-import api from '../../api/axios'
+import api, { sendGet, sendPut } from '../../api/axios'
 import { Account } from './types'
 import AccountForm from '../../components/AccountForm'
 
@@ -55,7 +55,7 @@ export default function AccountsPage() {
                     'userId'
                 ) as unknown as number
 
-                const res: AxiosResponse = await api.get(
+                const res: AxiosResponse = await sendGet(
                     ENDPOINTS.fetchUserAccounts(userId, searchByValue)
                 )
 
@@ -101,7 +101,7 @@ export default function AccountsPage() {
             return
         }
         try {
-            await api.put(ENDPOINTS.updateAccount(accountId), {
+            await sendPut(ENDPOINTS.updateAccount(accountId), {
                 name: accountName,
                 balance: accountBalance,
             })

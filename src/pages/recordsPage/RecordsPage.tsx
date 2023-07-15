@@ -7,7 +7,7 @@ import { Category, RecordType, SortingOptions } from '../../types/enums'
 import SideBarFilter from '../../components/SideBarFilter'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api from '../../api/axios'
+import api, { sendGet } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { RecordsFetchType } from './types'
 import RecordCard from '../../components/RecordCard'
@@ -140,7 +140,7 @@ export default function RecordsPage() {
                     'userId'
                 ) as unknown as number
 
-                const res: AxiosResponse = await api.get(
+                const res: AxiosResponse = await sendGet(
                     ENDPOINTS.fetchPaginatedUserRecords(
                         userId,
                         page,

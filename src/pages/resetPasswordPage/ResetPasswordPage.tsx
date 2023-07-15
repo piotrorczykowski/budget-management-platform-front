@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
 import { css } from '@emotion/css'
 import _ from 'lodash'
-import api from '../../api/axios'
+import { sendPost } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import CustomButton from '../../components/CustomButton'
 import CustomInputText from '../../components/CustomInputText'
@@ -54,7 +54,7 @@ export default function ResetPasswordPage() {
 
         const token: string = searchParams.get('token') as string
         try {
-            await api.post(ENDPOINTS.resetPassword, {
+            await sendPost(ENDPOINTS.resetPassword, {
                 token: token,
                 password: password,
             })
