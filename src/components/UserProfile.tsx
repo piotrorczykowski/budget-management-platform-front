@@ -16,6 +16,11 @@ const styledUserProfile = css`
     cursor: pointer;
     margin-right: 1em;
     z-index: 1000;
+    color: #4a4c4f;
+
+    &:hover {
+        color: #000000;
+    }
 `
 
 const styledIcon = css`

@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 
 const styledBudgetProgressBarWrapper = css`
-    height: 15px;
+    height: 100%;
     width: 100%;
     background-color: #e0e0de;
     border-radius: 2px;

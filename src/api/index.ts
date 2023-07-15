@@ -32,4 +32,13 @@ export const ENDPOINTS = {
     createRecord: '/records/',
     updateRecord: (recordId: number) => `/records/${recordId}`,
     deleteRecord: (recordId: number) => `/records/${recordId}`,
+
+    // Budgets Section
+    fetchPaginatedUserBudgets: (
+        userId: number,
+        page: number,
+        pageSize: number,
+        searchByValue: string = ''
+    ) =>
+        `/budgets/${userId}?page=${page}&pageSize=${pageSize}&searchByValue=${searchByValue}`,
 }

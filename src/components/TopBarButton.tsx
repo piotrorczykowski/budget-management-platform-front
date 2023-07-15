@@ -7,11 +7,12 @@ const styledButton = css`
     font-size: 14px;
     background-color: #000000;
     color: #f0f0f0;
+
     border-radius: 2px;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
 
     &:hover {
-        color: #bebfbf;
+        box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.2);
     }
 `
 
