@@ -148,7 +148,7 @@ export default function SettingsPage() {
                 username,
                 fullName,
                 email,
-                currency,
+                currency: currency.name,
                 password: newPassword,
             })
 

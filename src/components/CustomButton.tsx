@@ -40,7 +40,8 @@ export default function CustomButton({
             type={buttonType}
             onClick={onClickHandler}
         >
-            {buttonText}
+            {!loading ? buttonText : 'loading...'}
+            {/* {buttonText} */}
         </button>
     )
 }

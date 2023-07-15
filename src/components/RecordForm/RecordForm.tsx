@@ -167,12 +167,14 @@ export default function RecordForm({
                 return
             }
 
-            const accounts: { id: number; name: string }[] = data?.map(
-                (account: any) => {
-                    return { id: account.id, name: account.name }
-                }
-            )
-            accounts.push({ id: 0, name: DefaultAccountName })
+            const accounts: {
+                id: number
+                name: string
+                isDisabled: boolean
+            }[] = data?.map((account: any) => {
+                return { id: account.id, name: account.name }
+            })
+            accounts.push({ id: 0, name: DefaultAccountName, isDisabled: true })
             setAccounts(accounts)
 
             if (!isRecordUpdating) {
@@ -373,11 +375,13 @@ export default function RecordForm({
                     }
                     onClickHandler={handleUpsertRecord}
                     isDisabled={loading}
+                    loading={loading}
                 />
                 <CustomButton
                     buttonText="Cancel"
                     onClickHandler={() => handleModalClose(false)}
                     isDisabled={loading}
+                    loading={loading}
                     inverseColor={true}
                 />
             </div>
