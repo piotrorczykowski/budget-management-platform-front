@@ -53,6 +53,10 @@ const styledRecords = css`
     margin-top: 2vh;
     height: 85%;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 `
 
 const styledRecordsList = css`

@@ -18,27 +18,25 @@ const styledBudgetWrapper = css`
 const styledBudgetInfo = css`
     display: flex;
     align-items: center;
-    position: relative;
 `
 
 const styledBudgetName = css`
     font-weight: 600;
     font-size: 18px;
+    width: 20%;
 `
 
-const styledBudgetLeftAmount = css`
-    width: 80px;
-    position: absolute;
-    left: 310px;
+const styledLeftRemains = css`
+    width: 20%;
+    text-align: right;
+    margin-left: auto;
 `
 
-const styledBudgetLeftAmountPercentage = css`
+const styledLeftRemainsPercentage = css`
     color: #62656980;
     font-size: 14px;
-    position: absolute;
-    left: 375px;
-    width: 40px;
     text-align: right;
+    width: 12%;
 `
 
 const styledBudgetProgressBar = css`
@@ -46,25 +44,34 @@ const styledBudgetProgressBar = css`
 `
 
 export default function Budget({
+    id,
     name,
-    leftAmount,
-    leftPercentages,
+    planned,
+    spent,
 }: {
+    id: number
     name: string
-    leftAmount: number
-    leftPercentages: number
+    planned: number
+    spent: number
 }) {
+    const remains: number = planned - spent
+    const leftPercentages: number = (remains / planned) * 100
+
     // TODO add displaying currency from the backend
-    const formattedLeftAmount: string =
-        leftAmount < 0 ? `-$${-1 * leftAmount}` : `$${leftAmount}`
+    const formattedRemains: string =
+        remains < 0 ? `-$${-1 * remains}` : `$${remains}`
+    const formattedLeftPercentages: string =
+        leftPercentages > 100
+            ? `-${(leftPercentages - 100).toFixed(0)}%`
+            : `${leftPercentages.toFixed(0)}%`
 
     return (
         <div className={styledBudgetWrapper}>
             <div className={styledBudgetInfo}>
                 <p className={styledBudgetName}>{name}</p>
-                <p className={styledBudgetLeftAmount}>{formattedLeftAmount}</p>
-                <p className={styledBudgetLeftAmountPercentage}>
-                    {leftPercentages}%
+                <p className={styledLeftRemains}>{formattedRemains}</p>
+                <p className={styledLeftRemainsPercentage}>
+                    {formattedLeftPercentages}
                 </p>
             </div>
             <div className={styledBudgetProgressBar}>

@@ -34,7 +34,7 @@ const styledCenterBudgetCardSection = css`
     justify-content: space-between;
 `
 
-const styledPlanned = css`
+const styledBudgetName = css`
     font-size: 25px;
     font-weight: 600;
 `
@@ -42,9 +42,9 @@ const styledPlanned = css`
 const styledLeftPercentages = css`
     font-size: 18px;
     font-weight: 600;
-    background-color: #f0f0f0;
+    background-color: #e6e6e6;
     padding: 0.1em 0.5em 0.1em 0.5em;
-    border: 2px solid #f0f0f0;
+    border: 2px solid #e6e6e6;
     border-radius: 2px;
 `
 
@@ -83,8 +83,9 @@ const styledCategoriesSection = css`
 
 const styledCategory = css`
     display: block;
-    background-color: #f0f0f0;
-    border: 2px solid #f0f0f0;
+    background-color: #e6e6e6;
+
+    border: 2px solid #e6e6e6;
     border-radius: 2px;
     padding: 0.2em 0.4em 0.2em 0.4em;
     font-weight: 600;
@@ -99,7 +100,7 @@ export default function BudgetCard({
     endDate,
     categories,
 }: {
-    id: Number
+    id: number
     name: string
     planned: number
     spent: number
@@ -108,7 +109,7 @@ export default function BudgetCard({
     categories: string[]
 }) {
     const remains: number = planned - spent
-    const leftPercentages: number = (planned / remains) * 100
+    const leftPercentages: number = (remains / planned) * 100
 
     // TODO add displaying currency from the backend
     const formattedRemains: string =
@@ -128,7 +129,7 @@ export default function BudgetCard({
                 </p>
 
                 <div className={styledCenterBudgetCardSection}>
-                    <p className={styledPlanned}>{name}</p>
+                    <p className={styledBudgetName}>{name}</p>
                     <p className={styledLeftPercentages}>
                         {formattedLeftPercentages}
                     </p>
