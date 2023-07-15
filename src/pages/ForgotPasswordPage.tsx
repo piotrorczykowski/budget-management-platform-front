@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ENDPOINTS } from '../api'
-import api from '../api/axios'
+import { sendPost } from '../api/axios'
 import CustomButton from '../components/CustomButton'
 import CustomInputText from '../components/CustomInputText'
 import CustomLink from '../components/CustomLink'
@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
         }
 
         try {
-            await api.post(ENDPOINTS.forgotPassword, {
+            await sendPost(ENDPOINTS.forgotPassword, {
                 email: email,
             })
 

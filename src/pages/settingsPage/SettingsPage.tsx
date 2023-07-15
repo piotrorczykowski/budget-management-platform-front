@@ -11,7 +11,7 @@ import {
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import api from '../../api/axios'
+import { sendGet, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { FormInputsType } from './types'
 import { InitialValues } from './types/constants'
@@ -144,7 +144,7 @@ export default function SettingsPage() {
         }
 
         try {
-            const res: any = await api.put(ENDPOINTS.updateUser(userId), {
+            const res: any = await sendPut(ENDPOINTS.updateUser(userId), {
                 username,
                 fullName,
                 email,
@@ -175,7 +175,7 @@ export default function SettingsPage() {
         clearAllToasts()
 
         try {
-            const res: AxiosResponse = await api.get(ENDPOINTS.fetchProfile)
+            const res: AxiosResponse = await sendGet(ENDPOINTS.fetchProfile)
             return res.data
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
