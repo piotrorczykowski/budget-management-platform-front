@@ -41,6 +41,10 @@ const styledBudgetLeftAmountPercentage = css`
     text-align: right;
 `
 
+const styledBudgetProgressBar = css`
+    height: 20px;
+`
+
 export default function Budget({
     name,
     leftAmount,
@@ -63,7 +67,9 @@ export default function Budget({
                     {leftPercentages}%
                 </p>
             </div>
-            <BudgetProgressBar completed={leftPercentages} />
+            <div className={styledBudgetProgressBar}>
+                <BudgetProgressBar completed={leftPercentages} />
+            </div>
         </div>
     )
 }
