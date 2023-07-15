@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import { ButtonHTMLAttributes } from 'react'
 
-const styledButton = (isDisabled: boolean, inverseColor: boolean) => css`
+const styledButton = (inverseColor: boolean) => css`
     background-color: ${inverseColor ? '#ffffff' : '#040605'};
     color: ${inverseColor ? '#040605' : '#f0f0f0'};
     font-size: 30px;
@@ -35,12 +35,12 @@ export default function CustomButton({
 }) {
     return (
         <button
-            className={styledButton(isDisabled, inverseColor)}
+            className={styledButton(inverseColor)}
             disabled={loading || isDisabled}
             type={buttonType}
             onClick={onClickHandler}
         >
-            {buttonText}
+            {!loading ? buttonText : 'loading...'}
         </button>
     )
 }

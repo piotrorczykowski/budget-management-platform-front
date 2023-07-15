@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
 import { AxiosResponse } from 'axios'
-import api from '../api/axios'
+import { sendPost } from '../api/axios'
 import { showErrorToast } from '../utils/toastUtils'
+import { ENDPOINTS } from '../api'
 
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -12,7 +13,7 @@ export const useLogin = () => {
         setIsLoading(true)
 
         try {
-            const res: AxiosResponse = await api.post('/auth/signIn', {
+            const res: AxiosResponse = await sendPost(ENDPOINTS.signIn, {
                 username,
                 password,
             })

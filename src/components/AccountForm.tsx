@@ -45,6 +45,7 @@ export default function AccountForm({
     onClickHandler,
     handleModalClose,
     errorMessage,
+    isAccountUpdating = false,
 }: {
     showModal: any
     accountName: string
@@ -55,11 +56,14 @@ export default function AccountForm({
     onClickHandler: () => {}
     handleModalClose: () => void
     errorMessage: string
+    isAccountUpdating?: boolean
 }) {
     return (
         <div className={accountFormWrapper(showModal)}>
             <div className={styledModal}>
-                <p className={styledModalName}>Add Account</p>
+                <p className={styledModalName}>
+                    {isAccountUpdating ? 'Update' : 'Add'} Account
+                </p>
                 <CustomInputText
                     labelText="Account Name"
                     inputName="accountName"
@@ -69,22 +73,30 @@ export default function AccountForm({
                     errorMessage={errorMessage}
                 />
                 <CustomInputText
-                    labelText="Initial Balance"
+                    labelText={
+                        isAccountUpdating
+                            ? 'Current Balance'
+                            : 'Initial Balance'
+                    }
                     inputName="accountBalance"
                     placeholderText="0"
                     value={accountBalance}
                     onChangeHandler={onBalanceChangeHandler}
                 />
                 <CustomButton
-                    buttonText="Add Account"
+                    buttonText={
+                        isAccountUpdating ? 'Update Account' : 'Add Account'
+                    }
                     buttonType="submit"
                     onClickHandler={onClickHandler}
                     isDisabled={isLoading}
+                    loading={isLoading}
                 />
                 <CustomButton
                     buttonText="Cancel"
                     onClickHandler={handleModalClose}
                     isDisabled={isLoading}
+                    loading={isLoading}
                     inverseColor={true}
                 />
             </div>

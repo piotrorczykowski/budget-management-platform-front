@@ -1,15 +1,15 @@
 import { SyntheticEvent, useState } from 'react'
 import { css } from '@emotion/css'
 import _ from 'lodash'
-import api from '../../api/axios'
+import { sendPost } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import CustomButton from '../../components/CustomButton'
 import CustomInputText from '../../components/CustomInputText'
 import CustomLink from '../../components/CustomLink'
 import CustomWelcomeMessage from '../../components/CustomWelcomeMessage'
 import AlignCenterWrapper from '../../components/AlignCenterWrapper'
-import { FormInputsType } from './@types/index'
-import { InitialValues } from './@types/constants'
+import { FormInputsType } from './types/index'
+import { InitialValues } from './types/constants'
 import {
     clearAllToasts,
     showErrorToast,
@@ -58,7 +58,7 @@ export default function SignUpPage() {
         }
 
         try {
-            await api.post(ENDPOINTS.signUp, {
+            await sendPost(ENDPOINTS.signUp, {
                 username,
                 fullName,
                 email,
@@ -116,7 +116,7 @@ export default function SignUpPage() {
         setLoading(true)
 
         try {
-            await api.post(ENDPOINTS.resendActivationEmail, { email })
+            await sendPost(ENDPOINTS.resendActivationEmail, { email })
             setLoading(false)
         } catch (e: any) {
             showErrorToast(e.response.data.Error)

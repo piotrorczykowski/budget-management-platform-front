@@ -39,10 +39,12 @@ export default function CustomDatePicker({
     onChangeHandler,
     errorMessage = '',
     customClassName,
+    isDisabled,
 }: {
     labelText: string
     selectedDate: Date
     onChangeHandler: (value: Date) => void
+    isDisabled: boolean
     errorMessage?: string
     customClassName?: string
 }) {
@@ -57,6 +59,7 @@ export default function CustomDatePicker({
                 selected={selectedDate}
                 onChange={(date: Date) => onChangeHandler(date)}
                 dateFormat="dd/MM/yyyy"
+                disabled={isDisabled}
             />
             {errorMessage && (
                 <p className={styledErrorMessage}>{errorMessage}</p>

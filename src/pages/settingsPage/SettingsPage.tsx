@@ -11,7 +11,7 @@ import {
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import api from '../../api/axios'
+import { sendGet, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { FormInputsType } from './types'
 import { InitialValues } from './types/constants'
@@ -20,41 +20,29 @@ import { AxiosResponse } from 'axios'
 const styledSettingsPageWrapper = css`
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    height: 100vh;
 `
 
 const styledIcon = css`
-    font-size: 140px;
     align-self: center;
-    margin-top: 5vh;
+    margin-top: 4vh;
 `
 
 const styledProfileForm = css`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    column-gap: 150px;
-    width: 58vw;
-    align-self: center;
-    margin-top: 1vh;
+    padding: 0em 5em 0em 5em;
 `
 
-const styledBreak = css`
-    flex-basis: 100%;
-    height: 0;
-    margin-bottom: 5vh;
+const styledRow = css`
+    display: flex;
+    justify-content: space-around;
 `
 
 const styledButtons = css`
-    column-gap: 150px;
+    padding: 0em 5em 0em 5em;
     display: flex;
-    width: 58vw;
-
-    flex-direction: row;
-    align-self: center;
+    justify-content: space-around;
     margin-top: auto;
-    margin-bottom: 8vh;
+    margin-bottom: auto;
 `
 
 export default function SettingsPage() {
@@ -144,11 +132,11 @@ export default function SettingsPage() {
         }
 
         try {
-            const res: any = await api.put(ENDPOINTS.updateUser(userId), {
+            const res: any = await sendPut(ENDPOINTS.updateUser(userId), {
                 username,
                 fullName,
                 email,
-                currency,
+                currency: currency.name,
                 password: newPassword,
             })
 
@@ -175,7 +163,7 @@ export default function SettingsPage() {
         clearAllToasts()
 
         try {
-            const res: AxiosResponse = await api.get(ENDPOINTS.fetchProfile)
+            const res: AxiosResponse = await sendGet(ENDPOINTS.fetchProfile)
             return res.data
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
@@ -218,75 +206,81 @@ export default function SettingsPage() {
         <div className={styledSettingsPageWrapper}>
             <TopBar pageNameText={'Settings'} />
 
-            <CgProfile className={styledIcon} />
+            <div className={styledIcon}>
+                <CgProfile size={140} />
+            </div>
 
             <form className={styledProfileForm} autoComplete="off">
-                <CustomInputText
-                    labelText="Username"
-                    inputName="username"
-                    placeholderText=""
-                    value={username}
-                    onChangeHandler={setUsername}
-                    isDisabled={!editingData}
-                    errorMessage={formErrors.username}
-                />
+                <div className={styledRow}>
+                    <CustomInputText
+                        labelText="Username"
+                        inputName="username"
+                        placeholderText=""
+                        value={username}
+                        onChangeHandler={setUsername}
+                        isDisabled={!editingData}
+                        errorMessage={formErrors.username}
+                    />
 
-                <CustomInputText
-                    labelText="Full Name"
-                    inputName="fullname"
-                    placeholderText=""
-                    value={fullName}
-                    onChangeHandler={setFullName}
-                    isDisabled={!editingData}
-                    errorMessage={formErrors.fullName}
-                />
+                    <CustomInputText
+                        labelText="Full Name"
+                        inputName="fullname"
+                        placeholderText=""
+                        value={fullName}
+                        onChangeHandler={setFullName}
+                        isDisabled={!editingData}
+                        errorMessage={formErrors.fullName}
+                    />
+                </div>
 
-                <CustomInputText
-                    labelText="Email"
-                    inputName="email"
-                    placeholderText=""
-                    value={email}
-                    onChangeHandler={setEmail}
-                    isDisabled={!editingData}
-                    errorMessage={formErrors.email}
-                />
+                <div className={styledRow}>
+                    <CustomInputText
+                        labelText="Email"
+                        inputName="email"
+                        placeholderText=""
+                        value={email}
+                        onChangeHandler={setEmail}
+                        isDisabled={!editingData}
+                        errorMessage={formErrors.email}
+                    />
 
-                <CustomSelect
-                    labelText="Currency"
-                    selectName="currency"
-                    selected={currency}
-                    options={currencies}
-                    onChangeHandler={setCurrency}
-                    isDisabled={!editingData}
-                />
+                    <CustomSelect
+                        labelText="Currency"
+                        selectName="currency"
+                        selected={currency}
+                        options={currencies}
+                        onChangeHandler={setCurrency}
+                        isDisabled={!editingData}
+                    />
+                </div>
 
-                <div className={styledBreak}></div>
+                <div className={styledRow}>
+                    <CustomInputText
+                        labelText="Current Password"
+                        inputName="currentPassword"
+                        placeholderText=""
+                        value={currentPassword}
+                        onChangeHandler={setCurrentPassword}
+                        inputType="password"
+                        isInputTypePassword={true}
+                        isDisabled={!editingData}
+                        isRequired={false}
+                        errorMessage={formErrors.currentPassword}
+                    />
 
-                <CustomInputText
-                    labelText="Current Password"
-                    inputName="currentPassword"
-                    placeholderText=""
-                    value={currentPassword}
-                    onChangeHandler={setCurrentPassword}
-                    inputType="password"
-                    isInputTypePassword={true}
-                    isDisabled={!editingData}
-                    isRequired={false}
-                    errorMessage={formErrors.currentPassword}
-                />
-
-                <CustomInputText
-                    labelText="New Password"
-                    inputName="newPassword"
-                    placeholderText=""
-                    value={newPassword}
-                    onChangeHandler={setNewPassword}
-                    inputType="password"
-                    isInputTypePassword={true}
-                    isDisabled={!editingData}
-                    isRequired={false}
-                    errorMessage={formErrors.newPassword}
-                />
+                    <CustomInputText
+                        labelText="New Password"
+                        inputName="newPassword"
+                        placeholderText=""
+                        value={newPassword}
+                        onChangeHandler={setNewPassword}
+                        inputType="password"
+                        isInputTypePassword={true}
+                        isDisabled={!editingData}
+                        isRequired={false}
+                        errorMessage={formErrors.newPassword}
+                    />
+                </div>
             </form>
 
             <div className={styledButtons}>
