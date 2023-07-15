@@ -8,7 +8,7 @@ const styledBudgetWrapper = css`
     border-bottom: 2px solid #ffffff;
 
     font-weight: 500;
-    margin-bottom: 1em;
+    margin-bottom: 2em;
     cursor: pointer;
     border-radius: 2px;
 
@@ -44,7 +44,7 @@ const styledLeftPercentages = css`
     font-weight: 600;
     background-color: #f0f0f0;
     padding: 0.1em 0.5em 0.1em 0.5em;
-    border-bottom: 2px solid #f0f0f0;
+    border: 2px solid #f0f0f0;
     border-radius: 2px;
 `
 
@@ -73,6 +73,21 @@ const styledSpentAndPlanned = css`
 
 const styledRemains = css`
     line-height: 100%;
+`
+
+const styledCategoriesSection = css`
+    margin-top: 1em;
+    display: flex;
+    column-gap: 15px;
+`
+
+const styledCategory = css`
+    display: block;
+    background-color: #f0f0f0;
+    border: 2px solid #f0f0f0;
+    border-radius: 2px;
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    font-weight: 600;
 `
 
 export default function BudgetCard({
@@ -138,6 +153,16 @@ export default function BudgetCard({
                         {formattedRemains} <br />
                         Remains
                     </p>
+                </div>
+
+                <div className={styledCategoriesSection}>
+                    {categories?.map((category, index) => {
+                        return (
+                            <p key={index} className={styledCategory}>
+                                {category}
+                            </p>
+                        )
+                    })}
                 </div>
             </div>
         </div>
