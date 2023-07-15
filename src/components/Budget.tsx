@@ -6,7 +6,7 @@ const styledBudgetWrapper = css`
     padding: 0.5em;
     font-weight: 500;
     margin: auto;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.7em;
     cursor: pointer;
     border-radius: 2px;
 
