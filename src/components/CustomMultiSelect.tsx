@@ -15,6 +15,13 @@ const customClass = css`
     margin-top: 10px;
 `
 
+const styledErrorMessage = css`
+    color: red;
+    font-weight: 600;
+    font-size: 14px;
+    margin: 5px 0 0 0;
+`
+
 const customStyles = {
     option: (defaultStyles: any, state: any) => ({
         ...defaultStyles,
@@ -65,11 +72,13 @@ export default function CustomMultiSelect({
     name,
     handleChange,
     options,
+    errorMessage = '',
 }: {
     labelText: string
     name: string
     handleChange: (selectedOption: any) => void
     options: { value: string; label: string }[]
+    errorMessage?: string
 }) {
     return (
         <div className={styledCustomMuliSelectWrapper}>
@@ -87,6 +96,9 @@ export default function CustomMultiSelect({
                 className={customClass}
                 styles={customStyles}
             />
+            {errorMessage && (
+                <p className={styledErrorMessage}>{errorMessage}</p>
+            )}
         </div>
     )
 }

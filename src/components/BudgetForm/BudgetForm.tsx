@@ -5,7 +5,16 @@ import { useState } from 'react'
 import CustomDatePicker from '../CustomDatePicker'
 import CustomMultiSelect from '../CustomMultiSelect'
 import { Category } from '../../types/enums'
-import { SelectOptionType } from './types'
+import { FormErrorsType, SelectOptionType } from './types'
+import {
+    clearAllToasts,
+    showErrorToast,
+    showSuccessToast,
+} from '../../utils/toastUtils'
+import { sendPost } from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import { InitialValues } from './types/constants'
+import moment from 'moment'
 
 const styledBudgetFormWrapper = (showModal: boolean) => css`
     position: fixed;
@@ -22,7 +31,7 @@ const styledModal = css`
     position: fixed;
     background: white;
     width: 35%;
-    height: 80%;
+    min-height: 80%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -83,19 +92,71 @@ export default function BudgetForm({
         }
     )
 
+    const [formErrors, setFormErrors] = useState({ ...InitialValues })
+
     const [loading, setLoading] = useState(false)
 
     const handleChange = (selectedOption: SelectOptionType[]) => {
         handleSetSelectedCategories(selectedOption)
     }
 
+    const validate = () => {
+        const errors: FormErrorsType = { ...InitialValues }
+
+        if (!budgetName.length) {
+            errors.budgetName = 'Budget name cannot be empty'
+        }
+
+        if (Number(planned) <= 0) {
+            errors.planned = 'Planned cannot be equal or less than zero'
+        }
+
+        if (moment(startDate).isSame(endDate)) {
+            errors.dates = 'Dates cannot be the same'
+        }
+
+        const areSelectedCategoriesValid: boolean = !selectedCategories.every(
+            (selectedCategory) => selectedCategory.value.length > 0
+        )
+        if (areSelectedCategoriesValid) {
+            errors.categories = 'You have to select at least one category'
+        }
+
+        return errors
+    }
+
     const handleAddBudget = async () => {
-        console.log('handleAddBudget')
-        console.log(budgetName)
-        console.log(planned)
-        console.log(startDate)
-        console.log(endDate)
-        console.log(selectedCategories)
+        setLoading(true)
+        clearAllToasts()
+
+        const errors: FormErrorsType = validate()
+        setFormErrors(errors)
+
+        const isFormValid: boolean = Object.values(errors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            setLoading(false)
+            return
+        }
+
+        try {
+            await sendPost(ENDPOINTS.createBudget, {
+                name: budgetName,
+                planned,
+                startDate,
+                endDate,
+                categories: selectedCategories,
+            })
+
+            setLoading(false)
+            showSuccessToast('Successfully added budget!')
+            handleModalClose(true)
+        } catch (e: any) {
+            setLoading(false)
+            showErrorToast(e?.response?.data?.Error)
+        }
     }
 
     return (
@@ -108,6 +169,7 @@ export default function BudgetForm({
                     placeholderText="Budget Name"
                     value={budgetName}
                     onChangeHandler={handleSetBudgetName}
+                    errorMessage={formErrors.budgetName}
                 />
 
                 <CustomInputText
@@ -116,6 +178,7 @@ export default function BudgetForm({
                     placeholderText="0"
                     value={planned}
                     onChangeHandler={handleSetPlanned}
+                    errorMessage={formErrors.planned}
                 />
 
                 <div className={styledDates}>
@@ -125,6 +188,7 @@ export default function BudgetForm({
                         onChangeHandler={handleSetStartDate}
                         customClassName={smallerInput}
                         isDisabled={loading}
+                        errorMessage={formErrors.dates}
                     />
                     <CustomDatePicker
                         labelText="End Date"
@@ -133,6 +197,7 @@ export default function BudgetForm({
                         customClassName={smallerInput}
                         isDisabled={loading}
                         minDate={startDate}
+                        errorMessage={formErrors.dates}
                     />
                 </div>
 
@@ -141,6 +206,7 @@ export default function BudgetForm({
                     name="categories"
                     handleChange={handleChange}
                     options={categories}
+                    errorMessage={formErrors.categories}
                 />
 
                 <CustomButton
