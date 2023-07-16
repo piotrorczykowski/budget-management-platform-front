@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import CustomDatePicker from '../CustomDatePicker'
 import CustomSelect from '../CustomSelect'
 import { Category, RecordType } from '../../types/enums'
@@ -208,6 +208,18 @@ export default function RecordForm({
 
         return errors
     }
+
+    useEffect(() => {
+        const isFormValid: boolean = Object.values(formErrors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            const errors: RecordFormErrorsType = validate()
+            setFormErrors(errors)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [date, amount, account, toAccount])
 
     const handleUpsertRecord = async () => {
         setLoading(true)

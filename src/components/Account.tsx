@@ -8,6 +8,7 @@ const styledAccount = css`
 
     color: white;
     margin: 1em;
+
     border-radius: 2px;
     cursor: pointer;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
@@ -18,12 +19,12 @@ const styledAccount = css`
 `
 
 const styledAccountInfo = css`
-    padding: 1em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
     color: black;
+    padding: 0 0 0 1em;
 `
 
 const styledIcon = css`
@@ -76,11 +77,19 @@ export default function Account({
     // TODO add displaying currency from data
     const isNegative: boolean = accountBalance < 0
     return (
-        <div className={styledAccount} onClick={() => onClickHandler(id)}>
+        <div className={styledAccount}>
             {isEmpty ? (
-                <div className={styledEmptyAccount}>+ Add Account</div>
+                <div
+                    className={styledEmptyAccount}
+                    onClick={() => onClickHandler(id)}
+                >
+                    + Add Account
+                </div>
             ) : (
-                <div className={styledAccountInfo}>
+                <div
+                    className={styledAccountInfo}
+                    onClick={() => onClickHandler(id)}
+                >
                     <IoWallet className={styledIcon} />
                     <p className={styledAccountName}>{accountName}</p>
                     <p className={styledAccountBalance}>
