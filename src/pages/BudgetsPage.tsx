@@ -10,6 +10,7 @@ import { AxiosResponse } from 'axios'
 import { sendGet } from '../api/axios'
 import { showErrorToast } from '../utils/toastUtils'
 import { ENDPOINTS } from '../api'
+import BudgetForm from '../components/BudgetForm/BudgetForm'
 
 const styledBudgetsPageWrapper = css`
     display: flex;
@@ -42,6 +43,19 @@ export default function BudgetsPage() {
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
+
+    const [budgetName, setBudgetName] = useState('')
+    const [planned, setPlanned] = useState('')
+
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
+
+    const [selectedCategories, setSelectedCategories] = useState([
+        {
+            value: '',
+            label: '',
+        },
+    ])
 
     const [budgets, setBudgets] = useState([
         {
@@ -89,6 +103,23 @@ export default function BudgetsPage() {
         setPage(value)
     }
 
+    const handleModalClose = (shouldRefresh: boolean) => {
+        if (shouldRefresh) {
+            setRefresh(!refresh)
+        }
+        setShowBudgetForm(false)
+        setBudgetName('')
+        setPlanned('')
+        setStartDate(new Date())
+        setEndDate(new Date())
+        setSelectedCategories([
+            {
+                value: '',
+                label: '',
+            },
+        ])
+    }
+
     return (
         <div className={styledBudgetsPageWrapper}>
             <TopBar pageNameText={'Budgets'}>
@@ -131,6 +162,23 @@ export default function BudgetsPage() {
                     onChange={handleChange}
                 />
             </div>
+
+            {showBudgetForm && (
+                <BudgetForm
+                    showModal={showBudgetForm}
+                    budgetName={budgetName}
+                    planned={planned}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectedCategories={selectedCategories}
+                    handleSetBudgetName={setBudgetName}
+                    handleSetPlanned={setPlanned}
+                    handleModalClose={handleModalClose}
+                    handleSetStartDate={setStartDate}
+                    handleSetEndDate={setEndDate}
+                    handleSetSelectedCategories={setSelectedCategories}
+                />
+            )}
         </div>
     )
 }
