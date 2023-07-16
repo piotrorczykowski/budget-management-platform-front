@@ -17,7 +17,7 @@ const styledModal = css`
     position: fixed;
     background: white;
     width: 35%;
-    height: 55%;
+    min-height: 55%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -44,7 +44,7 @@ export default function AccountForm({
     onBalanceChangeHandler,
     onClickHandler,
     handleModalClose,
-    errorMessage,
+    errorMessages,
     isAccountUpdating = false,
 }: {
     showModal: any
@@ -55,7 +55,7 @@ export default function AccountForm({
     onBalanceChangeHandler: (accountBalance: string) => void
     onClickHandler: () => {}
     handleModalClose: () => void
-    errorMessage: string
+    errorMessages: { accountName: string; accountBalance: string }
     isAccountUpdating?: boolean
 }) {
     return (
@@ -70,7 +70,7 @@ export default function AccountForm({
                     placeholderText="Account Name"
                     value={accountName}
                     onChangeHandler={onNameChangeHandler}
-                    errorMessage={errorMessage}
+                    errorMessage={errorMessages.accountName}
                 />
                 <CustomInputText
                     labelText={
@@ -82,6 +82,7 @@ export default function AccountForm({
                     placeholderText="0"
                     value={accountBalance}
                     onChangeHandler={onBalanceChangeHandler}
+                    errorMessage={errorMessages.accountBalance}
                 />
                 <CustomButton
                     buttonText={

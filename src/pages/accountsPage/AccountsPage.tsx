@@ -2,7 +2,7 @@ import { css } from '@emotion/css'
 import TopBar from '../../components/TopBar'
 import SearchInput from '../../components/SearchInput'
 import { useDebounce } from 'use-debounce'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import AccountCard from '../../components/AccountCard'
 import {
     clearAllToasts,
@@ -12,8 +12,9 @@ import {
 import { AxiosResponse } from 'axios'
 import { ENDPOINTS } from '../../api'
 import api, { sendGet, sendPut } from '../../api/axios'
-import { Account } from './types'
+import { Account, FormErrorsType } from './types'
 import AccountForm from '../../components/AccountForm'
+import { InitialValues } from './types/constants'
 
 const styledAccountsPageWrapper = css`
     display: flex;
@@ -44,7 +45,33 @@ export default function AccountsPage() {
     const [accountName, setAccountName] = useState('')
     const [accountBalance, setAccountBalance] = useState('')
 
-    const [errorMessage, setErrorMessage] = useState('')
+    const [formErrors, setFormErrors] = useState({ ...InitialValues })
+
+    const validate = () => {
+        const errors: FormErrorsType = { ...InitialValues }
+
+        if (!accountName.length) {
+            errors.accountName = 'Account Name cannot be empty'
+        }
+
+        if (!accountBalance.length) {
+            errors.accountBalance = 'Balance cannot be empty'
+        }
+
+        return errors
+    }
+
+    useEffect(() => {
+        const isFormValid: boolean = Object.values(formErrors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            const errors: FormErrorsType = validate()
+            setFormErrors(errors)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountName, accountBalance])
 
     useLayoutEffect(() => {
         const fetchUserAccounts = async (searchByValue: string) => {
@@ -83,7 +110,6 @@ export default function AccountsPage() {
     }
 
     const handleAccountEdit = async (accountId: number) => {
-        setErrorMessage('')
         const account: Account = accounts.find(
             (account) => account.id === accountId
         ) as Account
@@ -95,11 +121,19 @@ export default function AccountsPage() {
 
     const updateAccount = async () => {
         setLoading(true)
-        if (!accountName.length) {
-            setErrorMessage('Account Name cannot be empty')
+
+        const errors: FormErrorsType = validate()
+        setFormErrors(errors)
+
+        const isFormValid: boolean = Object.values(errors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
             setLoading(false)
             return
         }
+
         try {
             await sendPut(ENDPOINTS.updateAccount(accountId), {
                 name: accountName,
@@ -161,7 +195,7 @@ export default function AccountsPage() {
                     onBalanceChangeHandler={handleAccountBalanceChange}
                     onClickHandler={updateAccount}
                     handleModalClose={() => setShowAccountForm(false)}
-                    errorMessage={errorMessage}
+                    errorMessages={formErrors}
                     isAccountUpdating={true}
                 />
             )}

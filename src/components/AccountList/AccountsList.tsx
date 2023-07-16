@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import Account from '../Account'
 import AccountForm from '../AccountForm'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import {
     clearAllToasts,
     showErrorToast,
@@ -10,14 +10,14 @@ import {
 import { sendGet, sendPost, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { AxiosResponse } from 'axios'
-import { AccountType } from './types/index'
+import { AccountType, FormErrorsType } from './types/index'
+import { InitialValues } from './types/constants'
 
 const styledAccountsListWrapper = css`
     display: flex;
 `
 
 export default function AccountsList({ refresh }: { refresh: boolean }) {
-    const [errorMessage, setErrorMessage] = useState('')
     const [accounts, setAccounts] = useState([
         {
             id: 0,
@@ -37,13 +37,46 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     const [isAccountUpdating, setIsAccountUpdating] = useState(false)
     const [shouldRefresh, setShouldRefresh] = useState(false)
 
+    const [formErrors, setFormErrors] = useState({ ...InitialValues })
+
+    const validate = () => {
+        const errors: FormErrorsType = { ...InitialValues }
+
+        if (!accountName.length) {
+            errors.accountName = 'Account Name cannot be empty'
+        }
+
+        if (!accountBalance.length) {
+            errors.accountBalance = 'Balance cannot be empty'
+        }
+
+        return errors
+    }
+
+    useEffect(() => {
+        const isFormValid: boolean = Object.values(formErrors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            const errors: FormErrorsType = validate()
+            setFormErrors(errors)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accountName, accountBalance])
+
     const handleUpsertAccount = async () => {
-        setErrorMessage('')
         setLoading(true)
         clearAllToasts()
 
-        if (!accountName.length) {
-            setErrorMessage('Account Name cannot be empty')
+        const errors: FormErrorsType = validate()
+        setFormErrors(errors)
+
+        const isFormValid: boolean = Object.values(errors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
             setLoading(false)
             return
         }
@@ -116,7 +149,6 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     }
 
     const handleAccountUpdate = (accountId: number) => {
-        setErrorMessage('')
         const account: AccountType = accounts.find(
             (account) => account.id === accountId
         ) as AccountType
@@ -131,6 +163,8 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     const handleFormClose = () => {
         setShowAccountForm(false)
         setIsAccountUpdating(false)
+        setAccountName('')
+        setAccountBalance('')
     }
 
     const handleAccountCreation = (accountId: number) => {
@@ -170,7 +204,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
                     onBalanceChangeHandler={handleAccountBalanceChange}
                     onClickHandler={handleUpsertAccount}
                     handleModalClose={() => handleFormClose()}
-                    errorMessage={errorMessage}
+                    errorMessages={formErrors}
                     isAccountUpdating={isAccountUpdating}
                 />
             )}

@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import CustomButton from '../CustomButton'
 import CustomInputText from '../CustomInputText'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CustomDatePicker from '../CustomDatePicker'
 import CustomMultiSelect from '../CustomMultiSelect'
 import { Category } from '../../types/enums'
@@ -124,6 +124,18 @@ export default function BudgetForm({
 
         return errors
     }
+
+    useEffect(() => {
+        const isFormValid: boolean = Object.values(formErrors).every(
+            (errorMessage: string) => !errorMessage.length
+        )
+
+        if (!isFormValid) {
+            const errors: FormErrorsType = validate()
+            setFormErrors(errors)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [budgetName, planned, startDate, endDate, categories])
 
     const handleAddBudget = async () => {
         setLoading(true)
