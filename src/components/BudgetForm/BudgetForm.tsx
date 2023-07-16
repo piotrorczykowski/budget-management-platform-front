@@ -142,12 +142,15 @@ export default function BudgetForm({
         }
 
         try {
+            const formattedCategories: string[] = selectedCategories.map(
+                (selectedCategory) => selectedCategory.value
+            )
             await sendPost(ENDPOINTS.createBudget, {
                 name: budgetName,
                 planned,
                 startDate,
                 endDate,
-                categories: selectedCategories,
+                categories: formattedCategories,
             })
 
             setLoading(false)
