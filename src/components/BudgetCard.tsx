@@ -1,6 +1,8 @@
 import { css } from '@emotion/css'
 import BudgetProgressBar from './BudgetProgressBar'
 import moment from 'moment'
+import { Currency } from '../types/enums'
+import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledBudgetWrapper = css`
     display: flex;
@@ -111,11 +113,12 @@ export default function BudgetCard({
     const remains: number = planned - spent
     const leftPercentages: number = (remains / planned) * 100
 
-    // TODO add displaying currency from the backend
+    const currency: Currency = localStorage.getItem('currency') as Currency
+
     const formattedRemains: string =
         remains < 0
-            ? `-$${(-1 * remains).toFixed(2)}`
-            : `$${remains.toFixed(2)}`
+            ? `-${getCurrencySymbol(currency)}${(-1 * remains).toFixed(2)}`
+            : `${getCurrencySymbol(currency)}${remains.toFixed(2)}`
     const formattedLeftPercentages: string =
         leftPercentages > 100
             ? `-${(leftPercentages - 100).toFixed(0)}%`
@@ -143,12 +146,14 @@ export default function BudgetCard({
 
                 <div className={styledBottomBudgetCardSection}>
                     <p className={styledSpentAndPlanned}>
-                        &#36;{spent} <br />
+                        {getCurrencySymbol(currency)}
+                        {spent} <br />
                         Spent
                     </p>
 
                     <p className={styledSpentAndPlanned}>
-                        &#36;{planned} <br />
+                        {getCurrencySymbol(currency)}
+                        {planned} <br />
                         Planned
                     </p>
 

@@ -5,6 +5,8 @@ import OutsideClickHandler from 'react-outside-click-handler'
 import MenuButton from './MenuButton'
 import { useState } from 'react'
 import { DefaultAccountName } from '../types/constants'
+import { getCurrencySymbol } from '../utils/otherUtils'
+import { Currency } from '../types/enums'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -113,6 +115,8 @@ export default function RecordCard({
 }) {
     const [showMenu, setShowMenu] = useState(false)
 
+    const currency: Currency = localStorage.getItem('currency') as Currency
+
     return (
         <div className={styledRecordWrapper}>
             <div
@@ -128,7 +132,9 @@ export default function RecordCard({
                     {accountName || DefaultAccountName}
                 </p>
                 <p className={styledRecordAmount(isExpense, isTransfer)}>
-                    {isExpense && '-'}&#36;{amount}
+                    {isExpense && '-'}
+                    {getCurrencySymbol(currency)}
+                    {amount}
                 </p>
             </div>
 

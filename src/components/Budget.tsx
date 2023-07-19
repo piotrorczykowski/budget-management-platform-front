@@ -1,5 +1,7 @@
 import { css } from '@emotion/css'
 import BudgetProgressBar from './BudgetProgressBar'
+import { Currency } from '../types/enums'
+import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledBudgetWrapper = css`
     width: 95%;
@@ -57,9 +59,13 @@ export default function Budget({
     const remains: number = planned - spent
     const leftPercentages: number = (remains / planned) * 100
 
-    // TODO add displaying currency from the backend
+    const currency: Currency = localStorage.getItem('currency') as Currency
+
     const formattedRemains: string =
-        remains < 0 ? `-$${-1 * remains}` : `$${remains}`
+        remains < 0
+            ? `-${getCurrencySymbol(currency)}${-1 * remains}`
+            : `${getCurrencySymbol(currency)}${remains}`
+
     const formattedLeftPercentages: string =
         leftPercentages > 100
             ? `-${(leftPercentages - 100).toFixed(0)}%`
