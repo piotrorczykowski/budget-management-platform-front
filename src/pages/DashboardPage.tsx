@@ -2,12 +2,16 @@ import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountList/AccountsList'
 import RecordsList from '../components/RecordList/RecordsList'
-import BudgetsList from '../components/BudgetsList'
-import { useState } from 'react'
+import BudgetsList from '../components/BudgetList/BudgetsList'
+import { useLayoutEffect, useRef, useState } from 'react'
 import RecordForm from '../components/RecordForm/RecordForm'
 import TopBarButton from '../components/TopBarButton'
 import { Category, RecordType } from '../types/enums'
 import { BasicApiObject } from '../types'
+import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
+import { AxiosResponse } from 'axios'
+import { sendGet } from '../api/axios'
+import { ENDPOINTS } from '../api'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -37,6 +41,8 @@ const styledLeftPanel = css`
 `
 
 export default function DashboardPage() {
+    const [loading, setLoading] = useState(false)
+
     const [showRecordForm, setShowRecordForm] = useState(false)
     const [refresh, setRefresh] = useState(false)
 
@@ -67,6 +73,32 @@ export default function DashboardPage() {
         setShowRecordForm(false)
     }
 
+    const dataFetchedRef = useRef(false)
+
+    const fetchUserProfile = async () => {
+        setLoading(true)
+        clearAllToasts()
+
+        try {
+            const res: AxiosResponse = await sendGet(ENDPOINTS.fetchProfile)
+            return res.data
+        } catch (e: any) {
+            showErrorToast(e?.response?.data?.Error)
+            setLoading(false)
+        }
+    }
+
+    useLayoutEffect(() => {
+        if (dataFetchedRef.current) return
+        dataFetchedRef.current = true
+
+        fetchUserProfile().then((data: any) => {
+            localStorage.setItem('currency', data?.currency)
+            setLoading(false)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <div className={styledDashboardPageWrapper}>
             <TopBar pageNameText={'Dashboard'}>
@@ -86,7 +118,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
                 <div className={styledBudgets}>
-                    <BudgetsList />
+                    <BudgetsList refresh={refresh} />
                 </div>
             </div>
             {showRecordForm && (

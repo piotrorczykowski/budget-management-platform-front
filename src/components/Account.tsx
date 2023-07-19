@@ -1,5 +1,7 @@
 import { css } from '@emotion/css'
 import { IoWallet } from 'react-icons/io5'
+import { getCurrencySymbol } from '../utils/otherUtils'
+import { Currency } from '../types/enums'
 
 const styledAccount = css`
     width: 200px;
@@ -74,7 +76,7 @@ export default function Account({
     isEmpty?: boolean
     onClickHandler: (accountId: number) => void
 }) {
-    // TODO add displaying currency from data
+    const currency: Currency = localStorage.getItem('currency') as Currency
     const isNegative: boolean = accountBalance < 0
     return (
         <div className={styledAccount}>
@@ -93,7 +95,8 @@ export default function Account({
                     <IoWallet className={styledIcon} />
                     <p className={styledAccountName}>{accountName}</p>
                     <p className={styledAccountBalance}>
-                        {isNegative ? '-' : ''}&#36;
+                        {isNegative ? '-' : ''}
+                        {getCurrencySymbol(currency)}
                         {Number(Math.abs(accountBalance)).toFixed(2)}
                     </p>
                 </div>

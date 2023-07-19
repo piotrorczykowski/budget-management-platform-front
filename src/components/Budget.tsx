@@ -1,5 +1,7 @@
 import { css } from '@emotion/css'
 import BudgetProgressBar from './BudgetProgressBar'
+import { Currency } from '../types/enums'
+import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledBudgetWrapper = css`
     width: 95%;
@@ -23,7 +25,7 @@ const styledBudgetInfo = css`
 const styledBudgetName = css`
     font-weight: 600;
     font-size: 18px;
-    width: 20%;
+    width: 80%;
 `
 
 const styledLeftRemains = css`
@@ -48,25 +50,34 @@ export default function Budget({
     name,
     planned,
     spent,
+    handleBudgetEdit,
 }: {
     id: number
     name: string
     planned: number
     spent: number
+    handleBudgetEdit: (budgetId: number) => void
 }) {
     const remains: number = planned - spent
     const leftPercentages: number = (remains / planned) * 100
 
-    // TODO add displaying currency from the backend
+    const currency: Currency = localStorage.getItem('currency') as Currency
+
     const formattedRemains: string =
-        remains < 0 ? `-$${-1 * remains}` : `$${remains}`
+        remains < 0
+            ? `-${getCurrencySymbol(currency)}${(-1 * remains).toFixed(2)}`
+            : `${getCurrencySymbol(currency)}${remains.toFixed(2)}`
+
     const formattedLeftPercentages: string =
         leftPercentages > 100
             ? `-${(leftPercentages - 100).toFixed(0)}%`
             : `${leftPercentages.toFixed(0)}%`
 
     return (
-        <div className={styledBudgetWrapper}>
+        <div
+            className={styledBudgetWrapper}
+            onClick={() => handleBudgetEdit(id)}
+        >
             <div className={styledBudgetInfo}>
                 <p className={styledBudgetName}>{name}</p>
                 <p className={styledLeftRemains}>{formattedRemains}</p>

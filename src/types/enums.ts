@@ -14,8 +14,12 @@ export enum Category {
     Entertainment = 'Entertainment',
     Communication = 'Communication',
     FinancialExpenses = 'Financial Expenses',
-    Income = 'Income',
     Other = 'Other',
+}
+
+export enum UtilsCategory {
+    Income = 'Income',
+    Transfer = 'Transfer',
 }
 
 export enum RecordType {

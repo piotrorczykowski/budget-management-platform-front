@@ -112,11 +112,11 @@ export default function RecordsPage() {
     const [refresh, setRefresh] = useState(false)
     const [showRecordForm, setShowRecordForm] = useState(false)
 
-    const categories: BasicApiObject[] = Object.values(Category).map(
-        (category, index) => {
+    const categories: BasicApiObject[] = [
+        ...Object.values(Category).map((category, index) => {
             return { id: index, name: category }
-        }
-    )
+        }),
+    ]
 
     const [recordId, setRecordId] = useState(-1)
     const [testTypeOfRecord, setTestTypeOfRecord] = useState(RecordType.Expense)
