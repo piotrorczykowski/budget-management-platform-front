@@ -50,11 +50,13 @@ export default function Budget({
     name,
     planned,
     spent,
+    handleBudgetEdit,
 }: {
     id: number
     name: string
     planned: number
     spent: number
+    handleBudgetEdit: (budgetId: number) => void
 }) {
     const remains: number = planned - spent
     const leftPercentages: number = (remains / planned) * 100
@@ -63,8 +65,8 @@ export default function Budget({
 
     const formattedRemains: string =
         remains < 0
-            ? `-${getCurrencySymbol(currency)}${-1 * remains}`
-            : `${getCurrencySymbol(currency)}${remains}`
+            ? `-${getCurrencySymbol(currency)}${(-1 * remains).toFixed(2)}`
+            : `${getCurrencySymbol(currency)}${remains.toFixed(2)}`
 
     const formattedLeftPercentages: string =
         leftPercentages > 100
@@ -72,7 +74,10 @@ export default function Budget({
             : `${leftPercentages.toFixed(0)}%`
 
     return (
-        <div className={styledBudgetWrapper}>
+        <div
+            className={styledBudgetWrapper}
+            onClick={() => handleBudgetEdit(id)}
+        >
             <div className={styledBudgetInfo}>
                 <p className={styledBudgetName}>{name}</p>
                 <p className={styledLeftRemains}>{formattedRemains}</p>

@@ -2,11 +2,11 @@ import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
 import AccountsList from '../components/AccountList/AccountsList'
 import RecordsList from '../components/RecordList/RecordsList'
-import BudgetsList from '../components/BudgetsList'
+import BudgetsList from '../components/BudgetList/BudgetsList'
 import { useLayoutEffect, useRef, useState } from 'react'
 import RecordForm from '../components/RecordForm/RecordForm'
 import TopBarButton from '../components/TopBarButton'
-import { Category, Currency, RecordType } from '../types/enums'
+import { Category, RecordType } from '../types/enums'
 import { BasicApiObject } from '../types'
 import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
@@ -144,7 +144,4 @@ export default function DashboardPage() {
             )}
         </div>
     )
-}
-function setLoading(arg0: boolean) {
-    throw new Error('Function not implemented.')
 }

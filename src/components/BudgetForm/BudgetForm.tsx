@@ -11,7 +11,7 @@ import {
     showErrorToast,
     showSuccessToast,
 } from '../../utils/toastUtils'
-import { sendPost } from '../../api/axios'
+import { sendPost, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { InitialValues } from './types/constants'
 import moment from 'moment'
@@ -61,6 +61,7 @@ const smallerInput = css`
 
 export default function BudgetForm({
     showModal,
+    id,
     budgetName,
     planned,
     startDate,
@@ -72,8 +73,10 @@ export default function BudgetForm({
     handleSetEndDate,
     handleModalClose,
     handleSetSelectedCategories,
+    isBudgetUpdating = false,
 }: {
     showModal: boolean
+    id: number
     budgetName: string
     planned: string
     startDate: Date
@@ -85,6 +88,7 @@ export default function BudgetForm({
     handleSetEndDate: (endDate: Date) => void
     handleModalClose: (shouldRefresh: boolean) => void
     handleSetSelectedCategories: (selectedOption: SelectOptionType[]) => void
+    isBudgetUpdating?: boolean
 }) {
     const categories: SelectOptionType[] = Object.values(Category).map(
         (category) => {
@@ -137,7 +141,7 @@ export default function BudgetForm({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [budgetName, planned, startDate, endDate, categories])
 
-    const handleAddBudget = async () => {
+    const handleUpsertBudget = async () => {
         setLoading(true)
         clearAllToasts()
 
@@ -157,16 +161,30 @@ export default function BudgetForm({
             const formattedCategories: string[] = selectedCategories.map(
                 (selectedCategory) => selectedCategory.value
             )
-            await sendPost(ENDPOINTS.createBudget, {
-                name: budgetName,
-                planned,
-                startDate,
-                endDate,
-                categories: formattedCategories,
-            })
+
+            if (isBudgetUpdating) {
+                await sendPut(ENDPOINTS.updateBudget(id), {
+                    name: budgetName,
+                    planned,
+                    startDate,
+                    endDate,
+                    categories: formattedCategories,
+                })
+
+                showSuccessToast('Successfully updated budget!')
+            } else {
+                await sendPost(ENDPOINTS.createBudget, {
+                    name: budgetName,
+                    planned,
+                    startDate,
+                    endDate,
+                    categories: formattedCategories,
+                })
+
+                showSuccessToast('Successfully added budget!')
+            }
 
             setLoading(false)
-            showSuccessToast('Successfully added budget!')
             handleModalClose(true)
         } catch (e: any) {
             setLoading(false)
@@ -177,7 +195,9 @@ export default function BudgetForm({
     return (
         <div className={styledBudgetFormWrapper(showModal)}>
             <div className={styledModal}>
-                <p className={styledModalName}>Add Budget</p>
+                <p className={styledModalName}>
+                    {isBudgetUpdating ? 'Update Budget' : 'Add Budget'}
+                </p>
                 <CustomInputText
                     labelText="Budget Name"
                     inputName="budgetName"
@@ -225,9 +245,11 @@ export default function BudgetForm({
                 />
 
                 <CustomButton
-                    buttonText="Add Budget"
+                    buttonText={
+                        isBudgetUpdating ? 'Update Budget' : 'Add Budget'
+                    }
                     buttonType="submit"
-                    onClickHandler={handleAddBudget}
+                    onClickHandler={handleUpsertBudget}
                     isDisabled={loading}
                     loading={loading}
                 />

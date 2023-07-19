@@ -3,6 +3,10 @@ import BudgetProgressBar from './BudgetProgressBar'
 import moment from 'moment'
 import { Currency } from '../types/enums'
 import { getCurrencySymbol } from '../utils/otherUtils'
+import OutsideClickHandler from 'react-outside-click-handler'
+import { HiDotsVertical } from 'react-icons/hi'
+import MenuButton from './MenuButton'
+import { useState } from 'react'
 
 const styledBudgetWrapper = css`
     display: flex;
@@ -93,6 +97,39 @@ const styledCategory = css`
     font-weight: 600;
 `
 
+const styledMenuSection = css`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    width: 5%;
+    text-align: right;
+    position: relative;
+    margin-left: auto;
+`
+
+const styledIcon = css`
+    font-size: 22px;
+    color: #626569;
+
+    &:hover {
+        color: black;
+    }
+`
+
+const styledMenu = css`
+    background-color: #ffffff;
+    padding: 0.5em;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 30%;
+    margin-right: -10px;
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 999;
+`
+
 export default function BudgetCard({
     id,
     name,
@@ -101,6 +138,8 @@ export default function BudgetCard({
     startDate,
     endDate,
     categories,
+    handleBudgetEdit,
+    handleBudgetDelete,
 }: {
     id: number
     name: string
@@ -109,7 +148,11 @@ export default function BudgetCard({
     startDate: Date
     endDate: Date
     categories: string[]
+    handleBudgetEdit: (budgetId: number) => void
+    handleBudgetDelete: (budgetId: number) => void
 }) {
+    const [showMenu, setShowMenu] = useState(false)
+
     const remains: number = planned - spent
     const leftPercentages: number = (remains / planned) * 100
 
@@ -125,7 +168,10 @@ export default function BudgetCard({
             : `${leftPercentages.toFixed(0)}%`
 
     return (
-        <div className={styledBudgetWrapper}>
+        <div
+            className={styledBudgetWrapper}
+            onClick={() => handleBudgetEdit(id)}
+        >
             <div className={styledMainBudgetSection}>
                 <p className={styledDates}>
                     {moment(startDate).format('D MMM') +
@@ -171,6 +217,34 @@ export default function BudgetCard({
                             </p>
                         )
                     })}
+                    <div className={styledMenuSection}>
+                        <OutsideClickHandler
+                            onOutsideClick={() => {
+                                setShowMenu(false)
+                            }}
+                        >
+                            <HiDotsVertical
+                                className={styledIcon}
+                                onClick={(e) => setShowMenu(true)}
+                            />
+                            {showMenu && (
+                                <div className={styledMenu}>
+                                    <MenuButton
+                                        buttonText="Edit"
+                                        onClickHandler={() =>
+                                            handleBudgetEdit(id)
+                                        }
+                                    />
+                                    <MenuButton
+                                        buttonText="Delete"
+                                        onClickHandler={() =>
+                                            handleBudgetDelete(id)
+                                        }
+                                    />
+                                </div>
+                            )}
+                        </OutsideClickHandler>
+                    </div>
                 </div>
             </div>
         </div>

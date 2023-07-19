@@ -118,11 +118,11 @@ export default function RecordCard({
     const currency: Currency = localStorage.getItem('currency') as Currency
 
     return (
-        <div className={styledRecordWrapper}>
-            <div
-                className={styledMainRecordSection}
-                onClick={() => handleRecordEdit(id)}
-            >
+        <div
+            className={styledRecordWrapper}
+            onClick={() => handleRecordEdit(id)}
+        >
+            <div className={styledMainRecordSection}>
                 <p className={styledCategoryName}>{category}</p>
                 <p className={styledRecordDescription}>{description}</p>
                 <p className={styledRecordDate}>
