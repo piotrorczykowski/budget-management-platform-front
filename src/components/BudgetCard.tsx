@@ -113,7 +113,9 @@ export default function BudgetCard({
 
     // TODO add displaying currency from the backend
     const formattedRemains: string =
-        remains < 0 ? `-$${-1 * remains}` : `$${remains}`
+        remains < 0
+            ? `-$${(-1 * remains).toFixed(2)}`
+            : `$${remains.toFixed(2)}`
     const formattedLeftPercentages: string =
         leftPercentages > 100
             ? `-${(leftPercentages - 100).toFixed(0)}%`

@@ -23,7 +23,7 @@ const styledBudgetInfo = css`
 const styledBudgetName = css`
     font-weight: 600;
     font-size: 18px;
-    width: 20%;
+    width: 60%;
 `
 
 const styledLeftRemains = css`
