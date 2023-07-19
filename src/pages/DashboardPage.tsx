@@ -86,7 +86,7 @@ export default function DashboardPage() {
                     </div>
                 </div>
                 <div className={styledBudgets}>
-                    <BudgetsList />
+                    <BudgetsList refresh={refresh} />
                 </div>
             </div>
             {showRecordForm && (

@@ -4,7 +4,7 @@ import CustomInputText from '../CustomInputText'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import CustomDatePicker from '../CustomDatePicker'
 import CustomSelect from '../CustomSelect'
-import { Category, RecordType } from '../../types/enums'
+import { Category, RecordType, UtilsCategory } from '../../types/enums'
 import {
     clearAllToasts,
     showErrorToast,
@@ -131,6 +131,8 @@ export default function RecordForm({
     const [loading, setLoading] = useState(false)
 
     const isTransfer: boolean = recordType === RecordType.Transfer
+    const isExpense: boolean = recordType === RecordType.Expense
+
     const isValueNegative: boolean =
         recordType === RecordType.Expense ? true : false
 
@@ -243,13 +245,19 @@ export default function RecordForm({
         }
 
         try {
+            const categoryName: string = isExpense
+                ? category.name
+                : isTransfer
+                ? UtilsCategory.Transfer
+                : UtilsCategory.Income
+
             if (isRecordUpdating) {
                 await sendPut(ENDPOINTS.updateRecord(id), {
                     recordType,
                     accountId: account.id,
                     amount,
                     date,
-                    category: category.name,
+                    category: categoryName,
                     toAccountId: toAccount.id,
                     description,
                 })
@@ -262,7 +270,7 @@ export default function RecordForm({
                     accountId: account.id,
                     amount,
                     date,
-                    category: category.name,
+                    category: categoryName,
                     toAccountId: toAccount.id,
                     description,
                 })
@@ -335,7 +343,7 @@ export default function RecordForm({
                     isDisabled={loading}
                 />
 
-                {!isTransfer && (
+                {isExpense && (
                     <div className={styledCategoryAndDate}>
                         <CustomSelect
                             labelText="Category"
@@ -360,7 +368,7 @@ export default function RecordForm({
                     </div>
                 )}
 
-                {isTransfer && (
+                {!isExpense && (
                     <CustomDatePicker
                         labelText="Date"
                         selectedDate={date}

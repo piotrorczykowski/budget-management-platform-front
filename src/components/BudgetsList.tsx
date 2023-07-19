@@ -62,7 +62,7 @@ const styledPagination = css`
     margin-top: 1em;
 `
 
-export default function BudgetsList() {
+export default function BudgetsList({ refresh }: { refresh: boolean }) {
     const navigate = useNavigate()
 
     const [budgets, setBudgets] = useState([
@@ -104,7 +104,7 @@ export default function BudgetsList() {
             setPageCount(data?.pageCount)
             setLoading(false)
         })
-    }, [page])
+    }, [page, refresh])
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)
