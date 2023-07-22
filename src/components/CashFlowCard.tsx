@@ -2,6 +2,12 @@ import { css } from '@emotion/css'
 import ProgressBar from './ProgressBar'
 import { Currency, ProgressBarColor } from '../types/enums'
 import { getCurrencySymbol } from '../utils/otherUtils'
+import { useLayoutEffect, useState } from 'react'
+import moment from 'moment'
+import { showErrorToast } from '../utils/toastUtils'
+import { AxiosResponse } from 'axios'
+import { sendGet } from '../api/axios'
+import { ENDPOINTS } from '../api'
 
 const styledCashflowCardWrapper = css`
     background-color: #ffffff;
@@ -57,23 +63,85 @@ const styledExpenses = css`
     padding: 0.5em 0 0.5em 0;
 `
 
-export default function CashFlowCard({
-    month,
-    income,
-    expenses,
-}: {
-    month: string
-    income: number
+const getIncomeProgressBarValue = (
+    isCashFlowNegative: boolean,
+    income: number,
     expenses: number
-}) {
+) => {
+    if (!income) {
+        return 0
+    }
+
+    if (isCashFlowNegative) {
+        return (income / expenses) * 100
+    } else {
+        return 100
+    }
+}
+
+const getExpensesProgressBarValue = (
+    isCashFlowNegative: boolean,
+    income: number,
+    expenses: number
+) => {
+    if (!expenses) {
+        return 0
+    }
+
+    if (isCashFlowNegative) {
+        return (expenses / income) * 100
+    } else {
+        return 100
+    }
+}
+
+export default function CashFlowCard({ date }: { date: Date }) {
+    const [income, setIncome] = useState(0)
+    const [expenses, setExpenses] = useState(0)
+
+    const formattedMonth: string = moment(date).format('MMMM')
+
     const currency: Currency = localStorage.getItem('currency') as Currency
     const cashFlow: number = income - expenses
+    const isCashFlowNegative: boolean = cashFlow < 0
+
+    const incomeProgressBarValue: number = getIncomeProgressBarValue(
+        isCashFlowNegative,
+        income,
+        expenses
+    )
+
+    const expensesProgressBarValue: number = getExpensesProgressBarValue(
+        isCashFlowNegative,
+        income,
+        expenses
+    )
+
+    useLayoutEffect(() => {
+        const fetchCashFlow = async (date: Date) => {
+            try {
+                const timestamp: number = moment(date).unix()
+                const res: AxiosResponse = await sendGet(
+                    ENDPOINTS.fetchCashFlow(timestamp)
+                )
+
+                return res.data
+            } catch (e: any) {
+                showErrorToast(e?.response?.data?.Error)
+            }
+        }
+
+        fetchCashFlow(date).then((data: any) => {
+            setIncome(data?.income)
+            setExpenses(data?.expenses)
+        })
+    }, [date])
 
     return (
         <div className={styledCashflowCardWrapper}>
             <p className={styledHeader}>Cash Flow</p>
 
-            <p className={styledMonth}>{month}</p>
+            <p className={styledMonth}>{formattedMonth}</p>
             <p className={styledCashFlow}>
                 {cashFlow < 0 ? '-' : ''} {getCurrencySymbol(currency)}{' '}
                 {Math.abs(cashFlow).toFixed(2)}
@@ -83,13 +151,12 @@ export default function CashFlowCard({
                 <div className={styledProgressBarInfo}>
                     <p className={styledLabel}>Income</p>
                     <p className={styledLabel}>
-                        {getCurrencySymbol(currency)}{' '}
-                        {Math.abs(cashFlow).toFixed(2)}
+                        {getCurrencySymbol(currency)} {income.toFixed(2)}
                     </p>
                 </div>
                 <div className={styledIncomeBar}>
                     <ProgressBar
-                        progress={100}
+                        progress={incomeProgressBarValue}
                         progressBarColor={ProgressBarColor.Green}
                     />
                 </div>
@@ -99,13 +166,12 @@ export default function CashFlowCard({
                 <div className={styledProgressBarInfo}>
                     <p className={styledLabel}>Expenses</p>
                     <p className={styledLabel}>
-                        -{getCurrencySymbol(currency)}{' '}
-                        {Math.abs(cashFlow).toFixed(2)}
+                        -{getCurrencySymbol(currency)} {expenses.toFixed(2)}
                     </p>
                 </div>
                 <div className={styledExpenses}>
                     <ProgressBar
-                        progress={50}
+                        progress={expensesProgressBarValue}
                         progressBarColor={ProgressBarColor.Red}
                     />
                 </div>

@@ -3,7 +3,6 @@ import TopBar from '../components/TopBar'
 import CustomMontAndYearPicker from '../components/CustomMonthAndYearPicker'
 import { useState } from 'react'
 import CashFlowCard from '../components/CashFlowCard'
-import moment from 'moment'
 
 const styledStatisticsPageWrapper = css`
     width: 100%;
@@ -27,11 +26,6 @@ const styledRightPanel = css`
 export default function AnalyticsPage() {
     const [date, setDate] = useState(new Date())
 
-    const [income, setIncome] = useState(0)
-    const [expenses, setExpenses] = useState(0)
-
-    const formattedMonth: string = moment(date).format('MMMM')
-
     return (
         <div className={styledStatisticsPageWrapper}>
             <TopBar pageNameText={'Analytics'}>
@@ -43,11 +37,7 @@ export default function AnalyticsPage() {
 
             <div className={styledAnalyticsPageContent}>
                 <div className={styledLeftPanel}>
-                    <CashFlowCard
-                        month={formattedMonth}
-                        income={income}
-                        expenses={expenses}
-                    />
+                    <CashFlowCard date={date} />
                 </div>
                 <div className={styledRightPanel}></div>
             </div>
