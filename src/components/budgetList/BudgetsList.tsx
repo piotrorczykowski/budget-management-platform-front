@@ -52,7 +52,7 @@ const styledSeeAllRecords = css`
 
 const styledBudgets = css`
     padding: 0 1em 0 1em;
-    height: 82%;
+    height: 83%;
     overflow-y: scroll;
 
     &::-webkit-scrollbar {
@@ -63,7 +63,7 @@ const styledBudgets = css`
 const styledPagination = css`
     display: flex;
     justify-content: center;
-    margin-top: 1em;
+    margin-top: 0.5em;
 `
 
 export default function BudgetsList({ refresh }: { refresh: boolean }) {

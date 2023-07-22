@@ -51,7 +51,7 @@ const customInputClassName = css`
 const styledRecords = css`
     margin-left: 14vw;
     margin-top: 2vh;
-    height: 85%;
+    height: 86%;
     overflow-y: scroll;
 
     &::-webkit-scrollbar {

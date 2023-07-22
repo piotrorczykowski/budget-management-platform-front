@@ -59,7 +59,7 @@ const styledPagination = css`
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 2em;
+    margin-top: 1.5em;
     padding-bottom: 2em;
 `
 

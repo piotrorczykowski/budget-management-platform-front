@@ -3,6 +3,7 @@ import TopBar from '../components/TopBar'
 import CustomMontAndYearPicker from '../components/CustomMonthAndYearPicker'
 import { useState } from 'react'
 import CashFlowCard from '../components/CashFlowCard'
+import { ExpensesPieChart } from '../components/expensesPieChart/ExpensesPieChart'
 
 const styledStatisticsPageWrapper = css`
     width: 100%;
@@ -39,7 +40,9 @@ export default function AnalyticsPage() {
                 <div className={styledLeftPanel}>
                     <CashFlowCard date={date} />
                 </div>
-                <div className={styledRightPanel}></div>
+                <div className={styledRightPanel}>
+                    <ExpensesPieChart />
+                </div>
             </div>
         </div>
     )
