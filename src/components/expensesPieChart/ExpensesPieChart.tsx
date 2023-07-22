@@ -1,11 +1,17 @@
 import { css } from '@emotion/css'
 import _ from 'lodash'
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import { getCurrencySymbol } from '../../utils/otherUtils'
 import { Currency } from '../../types/enums'
 import { BsFillSquareFill } from 'react-icons/bs'
 import { PieChartEntryType } from './types'
+import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
+import { AxiosResponse } from 'axios'
+import { sendGet } from '../../api/axios'
+import { ENDPOINTS } from '../../api'
+import moment from 'moment'
+import { Colors, Initial_Pie_Chart_Entry } from './types/constants'
 
 const styledExpensesPieChartWrapper = css`
     background-color: #ffffff;
@@ -56,26 +62,15 @@ const legendEntryInfo = css`
     justify-content: space-between;
 `
 
-export function ExpensesPieChart() {
-    const pieChartData: PieChartEntryType[] = [
-        // { title: '', value: 0, color: '#777b86' },
-        { title: 'One', value: 10, color: '#E38627' },
-        { title: 'Two', value: 35, color: '#C13C37' },
-        { title: 'Three', value: 20, color: '#6A2135' },
-        { title: 'Four', value: 200, color: '#6D8135' },
-    ]
+export function ExpensesPieChart({ date }: { date: Date }) {
+    const [pieChartData, setPieChartData] = useState([Initial_Pie_Chart_Entry])
+    const [expensesSum, setExpensesSum] = useState(0)
 
     const currency: Currency = localStorage.getItem('currency') as Currency
     const currencySymbol: string = getCurrencySymbol(currency)
-    const expensesSum: number = _.sumBy(
-        pieChartData,
-        (expense) => expense.value
-    )
 
     const [labelText, setLabelText] = useState(`All Categories`)
-    const [labelValue, setLabelValue] = useState(
-        `${currencySymbol}${expensesSum.toFixed(2)}`
-    )
+    const [labelValue, setLabelValue] = useState('')
 
     const handleMouseOver = (index: number) => {
         const expense: any = pieChartData[index]
@@ -89,6 +84,48 @@ export function ExpensesPieChart() {
         }
     }
 
+    useLayoutEffect(() => {
+        const fetchExpensesStructure = async (date: Date) => {
+            clearAllToasts()
+
+            try {
+                const userId: number = localStorage.getItem(
+                    'userId'
+                ) as unknown as number
+                const timestamp: number = moment(date).unix()
+
+                const res: AxiosResponse = await sendGet(
+                    ENDPOINTS.fetchExpensesStructure(userId, timestamp)
+                )
+
+                return res.data
+            } catch (e: any) {
+                showErrorToast(e?.response?.data?.Error)
+            }
+        }
+
+        fetchExpensesStructure(date).then((data: any[]) => {
+            const formattedPieChartData: PieChartEntryType[] = []
+            data?.forEach((element, index) => {
+                formattedPieChartData.push({
+                    ...element,
+                    color: Colors[index],
+                })
+            })
+
+            setPieChartData(formattedPieChartData)
+
+            const expensesSum: number = _.sumBy(
+                formattedPieChartData,
+                (expense) => expense.value
+            )
+            setExpensesSum(expensesSum)
+            setLabelText('All Categories')
+            setLabelValue(`${currencySymbol}${expensesSum.toFixed(2)}`)
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [date])
+
     return (
         <div className={styledExpensesPieChartWrapper}>
             <p className={styledHeader}>Expenses Structure</p>
@@ -96,6 +133,8 @@ export function ExpensesPieChart() {
             <PieChart
                 style={{ height: '30vh' }}
                 lineWidth={30}
+                totalValue={0}
+                background="#e0e0de"
                 label={() => (
                     <text
                         x={50}

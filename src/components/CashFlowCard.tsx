@@ -4,7 +4,7 @@ import { Currency, ProgressBarColor } from '../types/enums'
 import { getCurrencySymbol } from '../utils/otherUtils'
 import { useLayoutEffect, useState } from 'react'
 import moment from 'moment'
-import { showErrorToast } from '../utils/toastUtils'
+import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import { sendGet } from '../api/axios'
 import { ENDPOINTS } from '../api'
@@ -119,10 +119,15 @@ export default function CashFlowCard({ date }: { date: Date }) {
 
     useLayoutEffect(() => {
         const fetchCashFlow = async (date: Date) => {
+            clearAllToasts()
             try {
+                const userId: number = localStorage.getItem(
+                    'userId'
+                ) as unknown as number
                 const timestamp: number = moment(date).unix()
+
                 const res: AxiosResponse = await sendGet(
-                    ENDPOINTS.fetchCashFlow(timestamp)
+                    ENDPOINTS.fetchCashFlow(userId, timestamp)
                 )
 
                 return res.data

@@ -46,5 +46,8 @@ export const ENDPOINTS = {
     deleteBudget: (budgetId: number) => `/budgets/${budgetId}`,
 
     // Analytics Section
-    fetchCashFlow: (timestamp: number) => `/analytics/cash-flow/${timestamp}`,
+    fetchCashFlow: (userId: number, timestamp: number) =>
+        `/analytics/${userId}/cash-flow/${timestamp}`,
+    fetchExpensesStructure: (userId: number, timestamp: number) =>
+        `/analytics/${userId}/expenses-structure/${timestamp}`,
 }

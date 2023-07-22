@@ -41,7 +41,7 @@ export default function AnalyticsPage() {
                     <CashFlowCard date={date} />
                 </div>
                 <div className={styledRightPanel}>
-                    <ExpensesPieChart />
+                    <ExpensesPieChart date={date} />
                 </div>
             </div>
         </div>
