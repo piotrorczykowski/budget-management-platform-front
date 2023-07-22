@@ -1,7 +1,7 @@
 import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
-import AccountsList from '../components/accountList/AccountsList'
-import BudgetsList from '../components/budgetList/BudgetsList'
+import AccountsList from '../components/accountsList/AccountsList'
+import BudgetsList from '../components/budgetsList/BudgetsList'
 import { useLayoutEffect, useRef, useState } from 'react'
 import RecordForm from '../components/recordForm/RecordForm'
 import TopBarButton from '../components/TopBarButton'
@@ -11,7 +11,7 @@ import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import { sendGet } from '../api/axios'
 import { ENDPOINTS } from '../api'
-import RecordsList from '../components/recordList/RecordsList'
+import RecordsList from '../components/recordsList/RecordsList'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
@@ -41,8 +41,6 @@ const styledLeftPanel = css`
 `
 
 export default function DashboardPage() {
-    const [loading, setLoading] = useState(false)
-
     const [showRecordForm, setShowRecordForm] = useState(false)
     const [refresh, setRefresh] = useState(false)
 
@@ -76,7 +74,6 @@ export default function DashboardPage() {
     const dataFetchedRef = useRef(false)
 
     const fetchUserProfile = async () => {
-        setLoading(true)
         clearAllToasts()
 
         try {
@@ -84,7 +81,6 @@ export default function DashboardPage() {
             return res.data
         } catch (e: any) {
             showErrorToast(e?.response?.data?.Error)
-            setLoading(false)
         }
     }
 
@@ -94,7 +90,6 @@ export default function DashboardPage() {
 
         fetchUserProfile().then((data: any) => {
             localStorage.setItem('currency', data?.currency)
-            setLoading(false)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

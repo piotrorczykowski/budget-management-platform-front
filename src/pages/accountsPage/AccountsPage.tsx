@@ -15,6 +15,7 @@ import api, { sendGet, sendPut } from '../../api/axios'
 import { Account, FormErrorsType } from './types'
 import AccountForm from '../../components/AccountForm'
 import { InitialValues } from './types/constants'
+import InfoCard from '../../components/InfoCard'
 
 const styledAccountsPageWrapper = css`
     display: flex;
@@ -33,13 +34,7 @@ export default function AccountsPage() {
 
     const [searchByValue, setSearchByValue] = useState('')
     const [searchByValueToSend] = useDebounce(searchByValue, 1000)
-    const [accounts, setAccounts] = useState([
-        {
-            id: 0,
-            name: '-',
-            balance: 0,
-        },
-    ])
+    const [accounts, setAccounts] = useState<Account[] | undefined>([])
 
     const [accountId, setAccountId] = useState(0)
     const [accountName, setAccountName] = useState('')
@@ -110,7 +105,7 @@ export default function AccountsPage() {
     }
 
     const handleAccountEdit = async (accountId: number) => {
-        const account: Account = accounts.find(
+        const account: Account = (accounts as any as Account[]).find(
             (account) => account.id === accountId
         ) as Account
         setAccountName(account.name)
@@ -182,6 +177,9 @@ export default function AccountsPage() {
                             />
                         )
                     })}
+                    {!accounts?.length && (
+                        <InfoCard message="There are no accounts to be displayed" />
+                    )}
                 </div>
             </div>
 

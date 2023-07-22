@@ -150,7 +150,7 @@ export default function CashFlowCard({ date }: { date: Date }) {
             <p className={styledCashFlow}>
                 {cashFlow < 0 ? '-' : ''}
                 {getCurrencySymbol(currency)}
-                {Math.abs(cashFlow).toFixed(2)}
+                {Math.abs(cashFlow)?.toFixed(2)}
             </p>
 
             <div className={styledIncomeSection}>
@@ -158,7 +158,7 @@ export default function CashFlowCard({ date }: { date: Date }) {
                     <p className={styledLabel}>Income</p>
                     <p className={styledLabel}>
                         {getCurrencySymbol(currency)}
-                        {income.toFixed(2)}
+                        {income?.toFixed(2)}
                     </p>
                 </div>
                 <div className={styledIncomeBar}>
@@ -174,7 +174,7 @@ export default function CashFlowCard({ date }: { date: Date }) {
                     <p className={styledLabel}>Expenses</p>
                     <p className={styledLabel}>
                         -{getCurrencySymbol(currency)}
-                        {expenses.toFixed(2)}
+                        {expenses?.toFixed(2)}
                     </p>
                 </div>
                 <div className={styledExpenses}>
