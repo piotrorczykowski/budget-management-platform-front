@@ -44,4 +44,10 @@ export const ENDPOINTS = {
     createBudget: '/budgets/',
     updateBudget: (budgetId: number) => `/budgets/${budgetId}`,
     deleteBudget: (budgetId: number) => `/budgets/${budgetId}`,
+
+    // Analytics Section
+    fetchCashFlow: (userId: number, timestamp: number) =>
+        `/analytics/${userId}/cash-flow/${timestamp}`,
+    fetchExpensesStructure: (userId: number, timestamp: number) =>
+        `/analytics/${userId}/expenses-structure/${timestamp}`,
 }

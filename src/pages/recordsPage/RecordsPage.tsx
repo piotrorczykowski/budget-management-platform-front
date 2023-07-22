@@ -51,7 +51,7 @@ const customInputClassName = css`
 const styledRecords = css`
     margin-left: 14vw;
     margin-top: 2vh;
-    height: 85%;
+    height: 86%;
     overflow-y: scroll;
 
     &::-webkit-scrollbar {
@@ -106,8 +106,8 @@ export default function RecordsPage() {
     const [searchByValue, setSearchByValue] = useState('')
     const [searchByValueToSend] = useDebounce(searchByValue, 1000)
     const [recordType, setRecordType] = useState(RecordType.All)
-    const [account, setAccount] = useState({ id: -1, name: '-' })
-    const [category, setCategory] = useState({ id: -1, name: '-' })
+    const [account, setAccount] = useState({ id: 0, name: '-' })
+    const [category, setCategory] = useState({ id: -1, name: 'All' })
 
     const [refresh, setRefresh] = useState(false)
     const [showRecordForm, setShowRecordForm] = useState(false)
@@ -184,6 +184,10 @@ export default function RecordsPage() {
         category,
         refresh,
     ])
+
+    useLayoutEffect(() => {
+        setPage(1)
+    }, [searchByValueToSend, recordType, account, category])
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)

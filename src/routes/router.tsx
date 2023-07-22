@@ -16,7 +16,7 @@ import AnalyticsPage from '../pages/AnalyticsPage'
 import SettingsPage from '../pages/settingsPage/SettingsPage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
-    const { accessToken } = useAuthContext()
+    const accessToken = localStorage.getItem('accessToken')
     return accessToken ? element : <Navigate to="/signIn" />
 }
 

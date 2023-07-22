@@ -1,6 +1,6 @@
 import { css } from '@emotion/css'
-import BudgetProgressBar from './BudgetProgressBar'
-import { Currency } from '../types/enums'
+import ProgressBar from './ProgressBar'
+import { Currency, ProgressBarColor } from '../types/enums'
 import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledBudgetWrapper = css`
@@ -59,7 +59,7 @@ export default function Budget({
     handleBudgetEdit: (budgetId: number) => void
 }) {
     const remains: number = planned - spent
-    const leftPercentages: number = (remains / planned) * 100
+    const budgetProgress: number = (remains / planned) * 100
 
     const currency: Currency = localStorage.getItem('currency') as Currency
 
@@ -69,9 +69,9 @@ export default function Budget({
             : `${getCurrencySymbol(currency)}${remains.toFixed(2)}`
 
     const formattedLeftPercentages: string =
-        leftPercentages > 100
-            ? `-${(leftPercentages - 100).toFixed(0)}%`
-            : `${leftPercentages.toFixed(0)}%`
+        budgetProgress > 100
+            ? `-${(budgetProgress - 100).toFixed(0)}%`
+            : `${budgetProgress.toFixed(0)}%`
 
     return (
         <div
@@ -86,7 +86,14 @@ export default function Budget({
                 </p>
             </div>
             <div className={styledBudgetProgressBar}>
-                <BudgetProgressBar completed={leftPercentages} />
+                <ProgressBar
+                    progress={budgetProgress}
+                    progressBarColor={
+                        budgetProgress > 0
+                            ? ProgressBarColor.Green
+                            : ProgressBarColor.Red
+                    }
+                />
             </div>
         </div>
     )

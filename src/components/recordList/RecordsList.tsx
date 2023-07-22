@@ -24,9 +24,8 @@ const styledRecordsListWrapper = css`
 `
 
 const styledHeader = css`
-    padding: 1em;
+    padding: 1em 0.5em 1em 0.5em;
     font-weight: 600;
-    width: 96.5%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -59,7 +58,7 @@ const styledPagination = css`
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 2em;
+    margin-top: 1.5em;
     padding-bottom: 2em;
 `
 
