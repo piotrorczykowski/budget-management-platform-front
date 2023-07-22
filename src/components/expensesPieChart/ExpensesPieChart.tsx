@@ -25,7 +25,8 @@ const styledHeader = css`
 `
 
 const styledLegend = css`
-    margin-top: 1em;
+    height: 50%;
+    margin-top: 2em;
     overflow-y: scroll;
 
     &::-webkit-scrollbar {
@@ -38,10 +39,26 @@ const legendEntry = css`
     flex-direction: row;
     align-items: center;
     width: 100%;
+    margin-bottom: 1em;
+`
+
+const styledIcon = (color: string) => css`
+    margin-right: 1em;
+    color: ${color};
+`
+
+const legendEntryInfo = css`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    font-weight: 500;
+    font-size: 18px;
+    justify-content: space-between;
 `
 
 export function ExpensesPieChart() {
     const pieChartData: PieChartEntryType[] = [
+        // { title: '', value: 0, color: '#777b86' },
         { title: 'One', value: 10, color: '#E38627' },
         { title: 'Two', value: 35, color: '#C13C37' },
         { title: 'Three', value: 20, color: '#6A2135' },
@@ -109,9 +126,20 @@ export function ExpensesPieChart() {
             />
 
             <div className={styledLegend}>
-                <div className={legendEntry}>
-                    <BsFillSquareFill /> <p>Test</p>
-                </div>
+                {pieChartData?.map((pieChartEntry) => {
+                    return (
+                        <div className={legendEntry}>
+                            <BsFillSquareFill
+                                size={18}
+                                className={styledIcon(pieChartEntry.color)}
+                            />
+                            <div className={legendEntryInfo}>
+                                <p>{pieChartEntry.title}</p>
+                                <p>{currencySymbol + pieChartEntry.value}</p>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
