@@ -1,6 +1,8 @@
 import { css } from '@emotion/css'
 import moment from 'moment'
 import { DefaultAccountName } from '../types/constants'
+import { Currency } from '../types/enums'
+import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -68,7 +70,8 @@ export default function Record({
     description?: string
     handleRecordEdit: (recordId: number) => void
 }) {
-    // TODO add displaying currency from the backend
+    const currency: Currency = localStorage.getItem('currency') as Currency
+
     return (
         <div
             className={styledRecordWrapper}
@@ -83,7 +86,9 @@ export default function Record({
                 {accountName || DefaultAccountName}
             </p>
             <p className={styledRecordAmount(isExpense, isTransfer)}>
-                {isExpense && '-'}&#36;{amount}
+                {isExpense && '-'}
+                {getCurrencySymbol(currency)}
+                {amount}
             </p>
         </div>
     )

@@ -4,6 +4,8 @@ import { HiDotsVertical } from 'react-icons/hi'
 import { useState } from 'react'
 import OutsideClickHandler from 'react-outside-click-handler'
 import MenuButton from './MenuButton'
+import { Currency } from '../types/enums'
+import { getCurrencySymbol } from '../utils/otherUtils'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -93,13 +95,14 @@ export default function AccountCard({
 }) {
     const [showMenu, setShowMenu] = useState(false)
 
+    const currency: Currency = localStorage.getItem('currency') as Currency
     const isNegative: boolean = balance < 0
     return (
-        <div className={styledRecordWrapper}>
-            <div
-                className={styledMainAccountSection}
-                onClick={() => handleAccountEdit(id)}
-            >
+        <div
+            className={styledRecordWrapper}
+            onClick={() => handleAccountEdit(id)}
+        >
+            <div className={styledMainAccountSection}>
                 <div className={styledAccountNameAndIcon}>
                     <IoWallet size={30} />
                     <p className={styledAccountName}>{name}</p>
@@ -107,7 +110,8 @@ export default function AccountCard({
 
                 <div className={styledAccountBalanceSection}>
                     <p className={styledAccountBalance}>
-                        {isNegative && '-'}&#36;
+                        {isNegative && '-'}
+                        {getCurrencySymbol(currency)}
                         {Number(Math.abs(balance)).toFixed(2)}
                     </p>
                 </div>

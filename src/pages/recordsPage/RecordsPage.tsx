@@ -13,7 +13,7 @@ import { RecordsFetchType } from './types'
 import RecordCard from '../../components/RecordCard'
 import { Pagination } from '@mui/material'
 import { useDebounce } from 'use-debounce'
-import RecordForm from '../../components/RecordForm/RecordForm'
+import RecordForm from '../../components/recordForm/RecordForm'
 import { BasicApiObject } from '../../types'
 import { Record } from './types/index'
 import moment from 'moment'
@@ -112,11 +112,11 @@ export default function RecordsPage() {
     const [refresh, setRefresh] = useState(false)
     const [showRecordForm, setShowRecordForm] = useState(false)
 
-    const categories: BasicApiObject[] = Object.values(Category).map(
-        (category, index) => {
+    const categories: BasicApiObject[] = [
+        ...Object.values(Category).map((category, index) => {
             return { id: index, name: category }
-        }
-    )
+        }),
+    ]
 
     const [recordId, setRecordId] = useState(-1)
     const [testTypeOfRecord, setTestTypeOfRecord] = useState(RecordType.Expense)

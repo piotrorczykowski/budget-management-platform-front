@@ -11,7 +11,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import DashboardPage from '../pages/DashboardPage'
 import AccountsPage from '../pages/accountsPage/AccountsPage'
 import RecordsPage from '../pages/recordsPage/RecordsPage'
-import BudgetsPage from '../pages/BudgetsPage'
+import BudgetsPage from '../pages/budgetsPage/BudgetsPage'
 import AnalyticsPage from '../pages/AnalyticsPage'
 import SettingsPage from '../pages/settingsPage/SettingsPage'
 

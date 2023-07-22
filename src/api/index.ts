@@ -41,4 +41,7 @@ export const ENDPOINTS = {
         searchByValue: string = ''
     ) =>
         `/budgets/${userId}?page=${page}&pageSize=${pageSize}&searchByValue=${searchByValue}`,
+    createBudget: '/budgets/',
+    updateBudget: (budgetId: number) => `/budgets/${budgetId}`,
+    deleteBudget: (budgetId: number) => `/budgets/${budgetId}`,
 }

@@ -40,6 +40,7 @@ export default function CustomDatePicker({
     errorMessage = '',
     customClassName,
     isDisabled,
+    minDate,
 }: {
     labelText: string
     selectedDate: Date
@@ -47,6 +48,7 @@ export default function CustomDatePicker({
     isDisabled: boolean
     errorMessage?: string
     customClassName?: string
+    minDate?: Date
 }) {
     return (
         <div className={`${styledDatePickerWrapper} ${customClassName}`}>
@@ -60,6 +62,7 @@ export default function CustomDatePicker({
                 onChange={(date: Date) => onChangeHandler(date)}
                 dateFormat="dd/MM/yyyy"
                 disabled={isDisabled}
+                minDate={minDate}
             />
             {errorMessage && (
                 <p className={styledErrorMessage}>{errorMessage}</p>

@@ -1,13 +1,17 @@
 import { css } from '@emotion/css'
 import { TbMathGreater } from 'react-icons/tb'
-import Budget from './Budget'
 import { useNavigate } from 'react-router-dom'
 import { useLayoutEffect, useState } from 'react'
 import { Pagination } from '@mui/material'
 import { AxiosResponse } from 'axios'
-import { sendGet } from '../api/axios'
-import { ENDPOINTS } from '../api'
-import { showErrorToast } from '../utils/toastUtils'
+
+import moment from 'moment'
+import { ENDPOINTS } from '../../api'
+import { sendGet } from '../../api/axios'
+import { showErrorToast } from '../../utils/toastUtils'
+import Budget from '../Budget'
+import BudgetForm from '../budgetForm/BudgetForm'
+import { BudgetType } from './types'
 
 const styledBudgetsListWrapper = css`
     width: 100%;
@@ -62,7 +66,7 @@ const styledPagination = css`
     margin-top: 1em;
 `
 
-export default function BudgetsList() {
+export default function BudgetsList({ refresh }: { refresh: boolean }) {
     const navigate = useNavigate()
 
     const [budgets, setBudgets] = useState([
@@ -80,6 +84,24 @@ export default function BudgetsList() {
     const [page, setPage] = useState(1)
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
+    const [shouldRefresh, setShouldRefresh] = useState(true)
+
+    const [showBudgetForm, setShowBudgetForm] = useState(false)
+
+    const [budgetId, setBudgetId] = useState(-1)
+
+    const [budgetName, setBudgetName] = useState('')
+    const [planned, setPlanned] = useState('')
+
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
+
+    const [selectedCategories, setSelectedCategories] = useState([
+        {
+            value: '',
+            label: '',
+        },
+    ])
 
     useLayoutEffect(() => {
         const fetchUserBudgets = async () => {
@@ -104,10 +126,46 @@ export default function BudgetsList() {
             setPageCount(data?.pageCount)
             setLoading(false)
         })
-    }, [page])
+    }, [page, refresh, shouldRefresh])
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value)
+    }
+
+    const handleModalClose = (refresh: boolean) => {
+        if (refresh) {
+            setShouldRefresh(!shouldRefresh)
+        }
+        setShowBudgetForm(false)
+        setBudgetName('')
+        setPlanned('')
+        setStartDate(new Date())
+        setEndDate(new Date())
+        setSelectedCategories([
+            {
+                value: '',
+                label: '',
+            },
+        ])
+    }
+
+    const handleBudgetEdit = async (budgetId: number) => {
+        const budget: BudgetType = budgets.find(
+            (budget) => budget.id === budgetId
+        ) as BudgetType
+
+        setBudgetName(budget.name)
+        setPlanned(budget.planned.toString())
+        setStartDate(moment(budget.startDate).utc().toDate())
+        setEndDate(moment(budget.endDate).utc().toDate())
+        setSelectedCategories(
+            budget.categories.map((category) => {
+                return { value: category, label: category }
+            })
+        )
+        setBudgetId(budget.id)
+
+        setShowBudgetForm(true)
     }
 
     return (
@@ -132,6 +190,7 @@ export default function BudgetsList() {
                             name={budget.name}
                             planned={budget.planned}
                             spent={budget.spent}
+                            handleBudgetEdit={handleBudgetEdit}
                         />
                     )
                 })}
@@ -146,6 +205,25 @@ export default function BudgetsList() {
                     onChange={handleChange}
                 />
             </div>
+
+            {showBudgetForm && (
+                <BudgetForm
+                    showModal={showBudgetForm}
+                    id={budgetId}
+                    budgetName={budgetName}
+                    planned={planned}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectedCategories={selectedCategories}
+                    handleSetBudgetName={setBudgetName}
+                    handleSetPlanned={setPlanned}
+                    handleModalClose={handleModalClose}
+                    handleSetStartDate={setStartDate}
+                    handleSetEndDate={setEndDate}
+                    handleSetSelectedCategories={setSelectedCategories}
+                    isBudgetUpdating={true}
+                />
+            )}
         </div>
     )
 }
