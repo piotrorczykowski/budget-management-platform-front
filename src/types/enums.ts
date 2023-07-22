@@ -35,3 +35,8 @@ export enum SortingOptions {
     AmountAsc = 'Amount (lower to higher)',
     AmountDesc = 'Amount (higher to lower)',
 }
+
+export enum ProgressBarColor {
+    Red = '#f12e25',
+    Green = '#1d934b',
+}
