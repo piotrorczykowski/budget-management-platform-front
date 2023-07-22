@@ -13,7 +13,7 @@ import {
 import { AxiosResponse } from 'axios'
 import { sendGet, sendPost, sendPut } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
-import CustomHorizontalRadio from '../CustomHorizontalRadio/CustomHorizontalRadio'
+import CustomHorizontalRadio from '../customHorizontalRadio/CustomHorizontalRadio'
 import moment from 'moment'
 import { RecordFormErrorsType } from './types'
 import { InitialValues } from './types/constant'

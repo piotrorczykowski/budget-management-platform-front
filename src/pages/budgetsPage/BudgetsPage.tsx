@@ -10,9 +10,9 @@ import { AxiosResponse } from 'axios'
 import api, { sendGet } from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import { ENDPOINTS } from '../../api'
-import BudgetForm from '../../components/BudgetForm/BudgetForm'
 import { Budget } from './types'
 import moment from 'moment'
+import BudgetForm from '../../components/budgetForm/BudgetForm'
 
 const styledBudgetsPageWrapper = css`
     display: flex;

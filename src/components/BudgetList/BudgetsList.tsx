@@ -10,7 +10,7 @@ import { ENDPOINTS } from '../../api'
 import { sendGet } from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import Budget from '../Budget'
-import BudgetForm from '../BudgetForm/BudgetForm'
+import BudgetForm from '../budgetForm/BudgetForm'
 import { BudgetType } from './types'
 
 const styledBudgetsListWrapper = css`

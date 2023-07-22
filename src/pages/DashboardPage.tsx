@@ -1,10 +1,9 @@
 import { css } from '@emotion/css'
 import TopBar from '../components/TopBar'
-import AccountsList from '../components/AccountList/AccountsList'
-import RecordsList from '../components/RecordList/RecordsList'
-import BudgetsList from '../components/BudgetList/BudgetsList'
+import AccountsList from '../components/accountList/AccountsList'
+import BudgetsList from '../components/budgetList/BudgetsList'
 import { useLayoutEffect, useRef, useState } from 'react'
-import RecordForm from '../components/RecordForm/RecordForm'
+import RecordForm from '../components/recordForm/RecordForm'
 import TopBarButton from '../components/TopBarButton'
 import { Category, RecordType } from '../types/enums'
 import { BasicApiObject } from '../types'
@@ -12,6 +11,7 @@ import { clearAllToasts, showErrorToast } from '../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import { sendGet } from '../api/axios'
 import { ENDPOINTS } from '../api'
+import RecordsList from '../components/recordList/RecordsList'
 
 const styledDashboardPageWrapper = css`
     height: 100%;
