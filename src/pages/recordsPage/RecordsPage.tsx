@@ -18,6 +18,7 @@ import { BasicApiObject } from '../../types'
 import { Record } from './types/index'
 import moment from 'moment'
 import { DefaultAccountName } from '../../types/constants'
+import InfoCard from '../../components/InfoCard'
 
 const styledRecordPageWrapper = css`
     display: flex;
@@ -76,24 +77,10 @@ export default function RecordsPage() {
         return { id: index, name: sortingOption }
     })
 
-    const [records, setRecords] = useState([
-        {
-            id: 0,
-            category: '',
-            date: '',
-            amount: -1,
-            isExpense: true,
-            isTransfer: false,
-            description: '',
-            account: {
-                id: 0,
-                name: '',
-            },
-        },
-    ])
+    const [records, setRecords] = useState<Record[] | undefined>([])
 
     const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
+    const [pageCount, setPageCount] = useState<number | undefined>(undefined)
 
     const [loading, setLoading] = useState(true)
 
@@ -172,7 +159,7 @@ export default function RecordsPage() {
             category: category.name,
         }).then((data: any) => {
             setRecords(data?.items)
-            setPageCount(data?.pageCount)
+            setPageCount(data?.pageCount || 1)
             setLoading(false)
         })
     }, [
@@ -194,7 +181,7 @@ export default function RecordsPage() {
     }
 
     const handleRecordEdit = async (recordId: number) => {
-        const record: Record = records.find(
+        const record: Record = (records as any as Record[]).find(
             (record) => record.id === recordId
         ) as Record
 
@@ -220,7 +207,7 @@ export default function RecordsPage() {
             name: DefaultAccountName,
         }
         if (isRecordTransfer) {
-            correspondingAccount = records.find(
+            correspondingAccount = (records as any as Record[]).find(
                 (r) =>
                     r.isTransfer &&
                     r.date === record.date &&
@@ -320,6 +307,9 @@ export default function RecordsPage() {
                                 />
                             )
                         })}
+                        {!records?.length && (
+                            <InfoCard message="There are no records to be displayed" />
+                        )}
                     </div>
                 </div>
 

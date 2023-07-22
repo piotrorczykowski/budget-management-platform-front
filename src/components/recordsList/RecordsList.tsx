@@ -63,27 +63,21 @@ const styledPagination = css`
     padding-bottom: 2em;
 `
 
+const infoMessage = css`
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #bebfbf;
+    margin-top: 0.8em;
+`
+
 export default function RecordsList({ refresh }: { refresh: boolean }) {
     const navigate = useNavigate()
 
-    const [records, setRecords] = useState([
-        {
-            id: 0,
-            category: '',
-            date: '',
-            amount: -1,
-            isExpense: true,
-            isTransfer: false,
-            description: '',
-            account: {
-                id: 0,
-                name: '',
-            },
-        },
-    ])
+    const [records, setRecords] = useState<RecordObjectType[] | undefined>([])
 
     const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
+    const [pageCount, setPageCount] = useState<number | undefined>(undefined)
 
     const [loading, setLoading] = useState(true)
 
@@ -129,7 +123,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
 
         fetchUserRecords().then((data: any) => {
             setRecords(data?.items)
-            setPageCount(data?.pageCount)
+            setPageCount(data?.pageCount || 1)
             setLoading(false)
         })
     }, [page, refresh, shouldRefresh])
@@ -139,9 +133,9 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
     }
 
     const handleRecordEdit = async (recordId: number) => {
-        const record: RecordObjectType = records.find(
-            (record) => record.id === recordId
-        ) as RecordObjectType
+        const record: RecordObjectType = (
+            records as any as RecordObjectType[]
+        ).find((record) => record.id === recordId) as RecordObjectType
 
         const selectedRecordType: RecordType = record.isTransfer
             ? RecordType.Transfer
@@ -165,7 +159,7 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
             name: DefaultAccountName,
         }
         if (isRecordTransfer) {
-            correspondingAccount = records.find(
+            correspondingAccount = (records as any as RecordObjectType[]).find(
                 (r) =>
                     r.isTransfer &&
                     r.date === record.date &&
@@ -231,6 +225,11 @@ export default function RecordsList({ refresh }: { refresh: boolean }) {
                         />
                     )
                 })}
+                {!records?.length && (
+                    <p className={infoMessage}>
+                        There are no records to be displayed
+                    </p>
+                )}
             </div>
             <div className={styledPagination}>
                 <Pagination

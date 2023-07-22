@@ -52,7 +52,7 @@ const styledSeeAllRecords = css`
 
 const styledBudgets = css`
     padding: 0 1em 0 1em;
-    height: 82%;
+    height: 83%;
     overflow-y: scroll;
 
     &::-webkit-scrollbar {
@@ -63,26 +63,24 @@ const styledBudgets = css`
 const styledPagination = css`
     display: flex;
     justify-content: center;
-    margin-top: 1em;
+    margin-top: 0.5em;
+`
+
+const infoMessage = css`
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #bebfbf;
+    margin-top: 0.8em;
 `
 
 export default function BudgetsList({ refresh }: { refresh: boolean }) {
     const navigate = useNavigate()
 
-    const [budgets, setBudgets] = useState([
-        {
-            id: 0,
-            name: '-',
-            planned: 0,
-            spent: 0,
-            startDate: new Date(),
-            endDate: new Date(),
-            categories: [],
-        },
-    ])
+    const [budgets, setBudgets] = useState<BudgetType[] | undefined>([])
 
     const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
+    const [pageCount, setPageCount] = useState<number | undefined>(undefined)
     const [loading, setLoading] = useState(true)
     const [shouldRefresh, setShouldRefresh] = useState(true)
 
@@ -123,7 +121,7 @@ export default function BudgetsList({ refresh }: { refresh: boolean }) {
 
         fetchUserBudgets().then((data: any) => {
             setBudgets(data?.items)
-            setPageCount(data?.pageCount)
+            setPageCount(data?.pageCount || 1)
             setLoading(false)
         })
     }, [page, refresh, shouldRefresh])
@@ -150,7 +148,7 @@ export default function BudgetsList({ refresh }: { refresh: boolean }) {
     }
 
     const handleBudgetEdit = async (budgetId: number) => {
-        const budget: BudgetType = budgets.find(
+        const budget: BudgetType = (budgets as any as BudgetType[]).find(
             (budget) => budget.id === budgetId
         ) as BudgetType
 
@@ -182,7 +180,7 @@ export default function BudgetsList({ refresh }: { refresh: boolean }) {
                 </div>
             </div>
             <div className={styledBudgets}>
-                {budgets?.map((budget) => {
+                {budgets?.map((budget: BudgetType) => {
                     return (
                         <Budget
                             key={budget.id}
@@ -194,6 +192,11 @@ export default function BudgetsList({ refresh }: { refresh: boolean }) {
                         />
                     )
                 })}
+                {!budgets?.length && (
+                    <p className={infoMessage}>
+                        There are no budgets to be displayed
+                    </p>
+                )}
             </div>
             <div className={styledPagination}>
                 <Pagination

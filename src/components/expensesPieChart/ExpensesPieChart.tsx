@@ -62,6 +62,13 @@ const legendEntryInfo = css`
     justify-content: space-between;
 `
 
+const infoMessage = css`
+    text-align: center;
+    font-weight: 500;
+    font-size: 18px;
+    color: #bebfbf;
+`
+
 export function ExpensesPieChart({ date }: { date: Date }) {
     const [pieChartData, setPieChartData] = useState([Initial_Pie_Chart_Entry])
     const [expensesSum, setExpensesSum] = useState(0)
@@ -179,6 +186,11 @@ export function ExpensesPieChart({ date }: { date: Date }) {
                         </div>
                     )
                 })}
+                {!pieChartData.length && (
+                    <p className={infoMessage}>
+                        There are no data in the selected time interval
+                    </p>
+                )}
             </div>
         </div>
     )
