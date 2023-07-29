@@ -45,3 +45,8 @@ export enum UserRole {
     ADMIN = 'ADMIN',
     USER = 'USER',
 }
+
+export enum MailType {
+    UserActivation = 'User Activation',
+    ResetPassword = 'Reset Password',
+}

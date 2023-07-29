@@ -8,7 +8,7 @@ const styledUserCardWrapper = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #ffffff;
+    border-bottom: 2px solid #f0f0f0;
 
     font-weight: 500;
     margin-bottom: 1em;
@@ -17,12 +17,13 @@ const styledUserCardWrapper = css`
 
     background-color: #ffffff;
     padding: 1em;
-    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.2);
 
     &:hover {
         background-color: #f0f0f0;
         border-bottom: 2px solid #62656980;
     }
+
+    width: 100%;
 `
 
 const styledMainUserInfo = css`

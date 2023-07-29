@@ -9,6 +9,13 @@ export const ENDPOINTS = {
     forgotPassword: '/auth/forgot-password',
     resetPassword: '/auth/reset-password',
 
+    // Mails Section
+    userActivationMail: '/mails/user-activation/test',
+    resetPasswordMail: '/mails/user-password/test',
+
+    // CronJobs Section
+    forceJobs: '/cron-jobs/force',
+
     // Users Section
     fetchProfile: '/users/me',
     updateUser: (userId: number) => `/users/${userId}`,
