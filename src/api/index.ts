@@ -1,14 +1,23 @@
 import { RecordType, SortingOptions } from '../types/enums'
 
 export const ENDPOINTS = {
+    // Auth Section
     signIn: '/auth/signIn',
     signUp: '/auth/signUp',
     resendActivationEmail: '/auth/resend-activation-mail',
     emailVerification: '/auth/activate-user',
     forgotPassword: '/auth/forgot-password',
     resetPassword: '/auth/reset-password',
+
+    // Users Section
     fetchProfile: '/users/me',
     updateUser: (userId: number) => `/users/${userId}`,
+    fetchPaginatedUsers: (
+        page: number,
+        pageSize: number,
+        searchByValue: string = ''
+    ) =>
+        `/users/?page=${page}&pageSize=${pageSize}&searchByValue=${searchByValue}`,
 
     // Accounts Section
     createAccount: '/accounts/',
