@@ -168,11 +168,11 @@ export default function BudgetCard({
             : `${budgetProgress.toFixed(0)}%`
 
     return (
-        <div
-            className={styledBudgetWrapper}
-            onClick={() => handleBudgetEdit(id)}
-        >
-            <div className={styledMainBudgetSection}>
+        <div className={styledBudgetWrapper}>
+            <div
+                className={styledMainBudgetSection}
+                onClick={() => handleBudgetEdit(id)}
+            >
                 <p className={styledDates}>
                     {moment(startDate).format('D MMM') +
                         ' - ' +

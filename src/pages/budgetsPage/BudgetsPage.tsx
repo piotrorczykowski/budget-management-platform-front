@@ -7,7 +7,7 @@ import { Pagination } from '@mui/material'
 import BudgetCard from '../../components/BudgetCard'
 import { useDebounce } from 'use-debounce'
 import { AxiosResponse } from 'axios'
-import api, { sendGet } from '../../api/axios'
+import { sendDelete, sendGet } from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import { ENDPOINTS } from '../../api'
 import { Budget } from './types'
@@ -140,7 +140,7 @@ export default function BudgetsPage() {
     const handleBudgetDelete = async (budgetId: number) => {
         setLoading(true)
         try {
-            await api.delete(ENDPOINTS.deleteBudget(budgetId))
+            await sendDelete(ENDPOINTS.deleteBudget(budgetId))
             setRefresh(!refresh)
             setLoading(false)
         } catch (e: any) {

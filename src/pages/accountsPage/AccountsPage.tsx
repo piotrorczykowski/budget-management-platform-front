@@ -11,7 +11,7 @@ import {
 } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
 import { ENDPOINTS } from '../../api'
-import api, { sendGet, sendPut } from '../../api/axios'
+import { sendDelete, sendGet, sendPut } from '../../api/axios'
 import { Account, FormErrorsType } from './types'
 import AccountForm from '../../components/AccountForm'
 import { InitialValues } from './types/constants'
@@ -95,7 +95,7 @@ export default function AccountsPage() {
     const handleAccountDelete = async (accountId: number) => {
         setLoading(true)
         try {
-            await api.delete(ENDPOINTS.deleteAccount(accountId))
+            await sendDelete(ENDPOINTS.deleteAccount(accountId))
             setShouldRefresh(true)
             setLoading(false)
         } catch (e: any) {
