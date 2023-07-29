@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SyntheticEvent, useState } from 'react'
 import { css } from '@emotion/css'
 import { useLogin } from '../hooks/useLogin'
@@ -16,6 +16,8 @@ const styledForgotPasswordLink = css`
 `
 
 export default function LoginPage() {
+    const navigate = useNavigate()
+
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const { login, isLoading } = useLogin()
@@ -24,6 +26,7 @@ export default function LoginPage() {
         event.preventDefault()
         clearAllToasts()
         await login(username, password)
+        navigate('/')
     }
 
     return (

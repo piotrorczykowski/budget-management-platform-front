@@ -10,7 +10,6 @@ const styledSelectWrapper = css`
 const styledLabel = css`
     font-weight: 500;
     font-size: 15px;
-    align-self: inherit;
 `
 
 const styledSelect = css`

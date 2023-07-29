@@ -7,12 +7,13 @@ import { Pagination } from '@mui/material'
 import BudgetCard from '../../components/BudgetCard'
 import { useDebounce } from 'use-debounce'
 import { AxiosResponse } from 'axios'
-import api, { sendGet } from '../../api/axios'
+import { sendDelete, sendGet } from '../../api/axios'
 import { showErrorToast } from '../../utils/toastUtils'
 import { ENDPOINTS } from '../../api'
 import { Budget } from './types'
 import moment from 'moment'
 import BudgetForm from '../../components/budgetForm/BudgetForm'
+import InfoCard from '../../components/InfoCard'
 
 const styledBudgetsPageWrapper = css`
     display: flex;
@@ -45,7 +46,7 @@ export default function BudgetsPage() {
     const [showBudgetForm, setShowBudgetForm] = useState(false)
 
     const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
+    const [pageCount, setPageCount] = useState<number | undefined>(undefined)
     const [loading, setLoading] = useState(true)
     const [refresh, setRefresh] = useState(false)
 
@@ -62,17 +63,7 @@ export default function BudgetsPage() {
         },
     ])
 
-    const [budgets, setBudgets] = useState([
-        {
-            id: 0,
-            name: '-',
-            planned: 0,
-            spent: 0,
-            startDate: new Date(),
-            endDate: new Date(),
-            categories: [],
-        },
-    ])
+    const [budgets, setBudgets] = useState<Budget[] | undefined>([])
 
     useLayoutEffect(() => {
         const fetchUserBudgets = async (searchByValue: string) => {
@@ -99,7 +90,7 @@ export default function BudgetsPage() {
 
         fetchUserBudgets(searchByValueToSend).then((data: any) => {
             setBudgets(data?.items)
-            setPageCount(data?.pageCount)
+            setPageCount(data?.pageCount || 1)
             setLoading(false)
         })
     }, [page, searchByValueToSend, refresh])
@@ -127,7 +118,7 @@ export default function BudgetsPage() {
     }
 
     const handleBudgetEdit = async (budgetId: number) => {
-        const budget: Budget = budgets.find(
+        const budget: Budget = (budgets as any as Budget[]).find(
             (budget) => budget.id === budgetId
         ) as Budget
 
@@ -149,7 +140,7 @@ export default function BudgetsPage() {
     const handleBudgetDelete = async (budgetId: number) => {
         setLoading(true)
         try {
-            await api.delete(ENDPOINTS.deleteBudget(budgetId))
+            await sendDelete(ENDPOINTS.deleteBudget(budgetId))
             setRefresh(!refresh)
             setLoading(false)
         } catch (e: any) {
@@ -190,6 +181,9 @@ export default function BudgetsPage() {
                         />
                     )
                 })}
+                {!budgets?.length && (
+                    <InfoCard message="There are no budgets to be displayed" />
+                )}
             </div>
 
             <div className={styledPagination}>

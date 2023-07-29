@@ -35,3 +35,18 @@ export enum SortingOptions {
     AmountAsc = 'Amount (lower to higher)',
     AmountDesc = 'Amount (higher to lower)',
 }
+
+export enum ProgressBarColor {
+    Red = '#f12e25',
+    Green = '#1d934b',
+}
+
+export enum UserRole {
+    ADMIN = 'ADMIN',
+    USER = 'USER',
+}
+
+export enum MailType {
+    UserActivation = 'User Activation',
+    ResetPassword = 'Reset Password',
+}

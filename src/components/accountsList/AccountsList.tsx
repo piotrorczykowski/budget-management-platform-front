@@ -18,13 +18,7 @@ const styledAccountsListWrapper = css`
 `
 
 export default function AccountsList({ refresh }: { refresh: boolean }) {
-    const [accounts, setAccounts] = useState([
-        {
-            id: 0,
-            name: '',
-            balance: -1,
-        },
-    ])
+    const [accounts, setAccounts] = useState<AccountType[] | undefined>([])
 
     const [accountId, setAccountId] = useState(0)
     const [accountName, setAccountName] = useState('')
@@ -149,7 +143,7 @@ export default function AccountsList({ refresh }: { refresh: boolean }) {
     }
 
     const handleAccountUpdate = (accountId: number) => {
-        const account: AccountType = accounts.find(
+        const account: AccountType = (accounts as any as AccountType[]).find(
             (account) => account.id === accountId
         ) as AccountType
 
