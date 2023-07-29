@@ -3,6 +3,7 @@ import { css } from '@emotion/css'
 import AppLogo from './AppLogo'
 import SideBarButton from './SideBarButton'
 import { useLogout } from '../hooks/useLogout'
+import { UserRole } from '../types/enums'
 
 const styledAppLogo = css`
     margin-bottom: 1em;
@@ -23,6 +24,9 @@ const styledBottomButtons = css`
 
 export default function SideBar() {
     const { logout } = useLogout()
+
+    const userRole = localStorage.getItem('role')
+    const isUserAdmin: boolean = userRole === UserRole.ADMIN
 
     return (
         <AlignCenterWrapper>
@@ -60,6 +64,13 @@ export default function SideBar() {
                     buttonText="Analytics"
                     icon="IoMdAnalytics"
                 />
+                {isUserAdmin && (
+                    <SideBarButton
+                        linkTo="/admin"
+                        buttonText="Admin Panel"
+                        icon="MdOutlineAdminPanelSettings"
+                    />
+                )}
             </div>
 
             <div className={styledBottomButtons}>

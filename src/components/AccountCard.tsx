@@ -98,11 +98,11 @@ export default function AccountCard({
     const currency: Currency = localStorage.getItem('currency') as Currency
     const isNegative: boolean = balance < 0
     return (
-        <div
-            className={styledRecordWrapper}
-            onClick={() => handleAccountEdit(id)}
-        >
-            <div className={styledMainAccountSection}>
+        <div className={styledRecordWrapper}>
+            <div
+                className={styledMainAccountSection}
+                onClick={() => handleAccountEdit(id)}
+            >
                 <div className={styledAccountNameAndIcon}>
                     <IoWallet size={30} />
                     <p className={styledAccountName}>{name}</p>

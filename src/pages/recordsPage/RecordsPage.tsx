@@ -7,7 +7,7 @@ import { Category, RecordType, SortingOptions } from '../../types/enums'
 import SideBarFilter from '../../components/SideBarFilter'
 import { clearAllToasts, showErrorToast } from '../../utils/toastUtils'
 import { AxiosResponse } from 'axios'
-import api, { sendGet } from '../../api/axios'
+import { sendDelete, sendGet } from '../../api/axios'
 import { ENDPOINTS } from '../../api'
 import { RecordsFetchType } from './types'
 import RecordCard from '../../components/RecordCard'
@@ -239,7 +239,7 @@ export default function RecordsPage() {
     const handleRecordDelete = async (recordId: number) => {
         setLoading(true)
         try {
-            await api.delete(ENDPOINTS.deleteRecord(recordId))
+            await sendDelete(ENDPOINTS.deleteRecord(recordId))
             setRefresh(!refresh)
             setLoading(false)
         } catch (e: any) {

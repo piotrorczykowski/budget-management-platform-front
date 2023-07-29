@@ -14,6 +14,8 @@ import RecordsPage from '../pages/recordsPage/RecordsPage'
 import BudgetsPage from '../pages/budgetsPage/BudgetsPage'
 import AnalyticsPage from '../pages/AnalyticsPage'
 import SettingsPage from '../pages/settingsPage/SettingsPage'
+import AdminPage from '../pages/adminPage/AdminPage'
+import { UserRole } from '../types/enums'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
     const accessToken = localStorage.getItem('accessToken')
@@ -23,6 +25,11 @@ const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
 const RedirectAuthUser = (element: JSX.Element): JSX.Element => {
     const { accessToken } = useAuthContext()
     return accessToken ? <Navigate to="/" /> : element
+}
+
+const RedirectNonAdminUser = (element: JSX.Element): JSX.Element => {
+    const userRole = localStorage.getItem('role')
+    return userRole !== UserRole.ADMIN ? <Navigate to="/" /> : element
 }
 
 const Router = () => {
@@ -48,6 +55,10 @@ const Router = () => {
                 <Route
                     path="/analytics"
                     element={RedirectNotAuthUser(<AnalyticsPage />)}
+                />
+                <Route
+                    path="/admin"
+                    element={RedirectNonAdminUser(<AdminPage />)}
                 />
                 <Route
                     path="/settings"

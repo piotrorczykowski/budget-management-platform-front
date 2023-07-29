@@ -39,4 +39,14 @@ export const sendPut = async (url: string, body: any) => {
     })
 }
 
+export const sendDelete = async (url: string) => {
+    const jwtToken: string = localStorage.getItem('accessToken') as string
+
+    return await api.delete(url, {
+        headers: {
+            authorization: `Bearer ${jwtToken}`,
+        },
+    })
+}
+
 export default api

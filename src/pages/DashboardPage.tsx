@@ -90,6 +90,7 @@ export default function DashboardPage() {
 
         fetchUserProfile().then((data: any) => {
             localStorage.setItem('currency', data?.currency)
+            localStorage.setItem('role', data?.role)
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

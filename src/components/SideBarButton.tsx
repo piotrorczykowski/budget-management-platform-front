@@ -1,6 +1,10 @@
 import { css } from '@emotion/css'
 import { Link, useLocation } from 'react-router-dom'
-import { MdSpaceDashboard, MdSettings } from 'react-icons/md'
+import {
+    MdSpaceDashboard,
+    MdSettings,
+    MdOutlineAdminPanelSettings,
+} from 'react-icons/md'
 import { IoLogOut, IoWallet } from 'react-icons/io5'
 import { BiTransfer } from 'react-icons/bi'
 import { FaCalculator } from 'react-icons/fa'
@@ -56,6 +60,10 @@ export default function SideBarButton({
         ['IoMdAnalytics', <IoMdAnalytics className={styledIcon} />],
         ['MdSettings', <MdSettings className={styledIcon} />],
         ['IoLogOut', <IoLogOut className={styledIcon} />],
+        [
+            'MdOutlineAdminPanelSettings',
+            <MdOutlineAdminPanelSettings className={styledIcon} />,
+        ],
     ])
 
     return (
