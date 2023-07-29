@@ -68,4 +68,6 @@ export const ENDPOINTS = {
         `/analytics/${userId}/expenses-structure/${timestamp}`,
     fetchAccountsBalance: (userId: number, timestamp: number) =>
         `/analytics/${userId}/accounts-balance/${timestamp}`,
+    fetchAccountBalance: (accountId: number, timestamp: number) =>
+        `/analytics/${accountId}/account-balance/${timestamp}`,
 }

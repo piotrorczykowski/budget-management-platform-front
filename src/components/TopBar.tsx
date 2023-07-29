@@ -1,5 +1,7 @@
+import { IoChevronBackCircle } from 'react-icons/io5'
 import UserProfile from './UserProfile'
 import { css } from '@emotion/css'
+import { useNavigate } from 'react-router-dom'
 
 const topBarWrapper = css`
     display: flex;
@@ -18,6 +20,15 @@ const pageName = css`
     padding: 0.5em;
 `
 
+const styledIcon = css`
+    margin-left: 1em;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.6;
+    }
+`
+
 const styledRightSide = css`
     display: flex;
     flex-direction: row;
@@ -28,12 +39,25 @@ const styledRightSide = css`
 export default function TopBar({
     children,
     pageNameText,
+    showIcon = false,
+    navigateTo = '',
 }: {
     children?: JSX.Element[] | JSX.Element
     pageNameText: string
+    showIcon?: boolean
+    navigateTo?: string
 }) {
+    const navigate = useNavigate()
+
     return (
         <div className={topBarWrapper}>
+            {showIcon && (
+                <IoChevronBackCircle
+                    size={40}
+                    className={styledIcon}
+                    onClick={() => navigate(navigateTo)}
+                />
+            )}
             <p className={pageName}>{pageNameText}</p>
             <div className={styledRightSide}>
                 {children}
