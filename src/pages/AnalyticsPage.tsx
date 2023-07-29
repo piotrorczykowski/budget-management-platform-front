@@ -4,6 +4,7 @@ import CustomMontAndYearPicker from '../components/CustomMonthAndYearPicker'
 import { useState } from 'react'
 import CashFlowCard from '../components/CashFlowCard'
 import { ExpensesPieChart } from '../components/expensesPieChart/ExpensesPieChart'
+import AccountsBalanceChart from '../components/AccountsBalanceChart'
 
 const styledStatisticsPageWrapper = css`
     width: 100%;
@@ -39,6 +40,7 @@ export default function AnalyticsPage() {
             <div className={styledAnalyticsPageContent}>
                 <div className={styledLeftPanel}>
                     <CashFlowCard date={date} />
+                    <AccountsBalanceChart date={date} />
                 </div>
                 <div className={styledRightPanel}>
                     <ExpensesPieChart date={date} />

@@ -146,8 +146,8 @@ export function ExpensesPieChart({ date }: { date: Date }) {
                     <text
                         x={50}
                         y={50}
-                        dominant-baseline="central"
-                        text-anchor="middle"
+                        dominantBaseline="central"
+                        textAnchor="middle"
                         style={{
                             fontSize: '8px',
                             fontWeight: 500,
@@ -172,9 +172,9 @@ export function ExpensesPieChart({ date }: { date: Date }) {
             />
 
             <div className={styledLegend}>
-                {pieChartData?.map((pieChartEntry) => {
+                {pieChartData?.map((pieChartEntry, index) => {
                     return (
-                        <div className={legendEntry}>
+                        <div key={index} className={legendEntry}>
                             <BsFillSquareFill
                                 size={18}
                                 className={styledIcon(pieChartEntry.color)}

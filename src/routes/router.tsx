@@ -16,6 +16,7 @@ import AnalyticsPage from '../pages/AnalyticsPage'
 import SettingsPage from '../pages/settingsPage/SettingsPage'
 import AdminPage from '../pages/adminPage/AdminPage'
 import { UserRole } from '../types/enums'
+import AccountBalancePage from '../pages/AccountBalancePage'
 
 const RedirectNotAuthUser = (element: JSX.Element): JSX.Element => {
     const accessToken = localStorage.getItem('accessToken')
@@ -43,6 +44,10 @@ const Router = () => {
                 <Route
                     path="/accounts"
                     element={RedirectNotAuthUser(<AccountsPage />)}
+                />
+                <Route
+                    path="/account-balance/:id"
+                    element={RedirectNotAuthUser(<AccountBalancePage />)}
                 />
                 <Route
                     path="/records"

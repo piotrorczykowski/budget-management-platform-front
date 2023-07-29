@@ -6,6 +6,7 @@ import OutsideClickHandler from 'react-outside-click-handler'
 import MenuButton from './MenuButton'
 import { Currency } from '../types/enums'
 import { getCurrencySymbol } from '../utils/otherUtils'
+import { useNavigate } from 'react-router-dom'
 
 const styledRecordWrapper = css`
     display: flex;
@@ -93,15 +94,20 @@ export default function AccountCard({
     handleAccountEdit: (accountId: number) => void
     handleAccountDelete: (accountId: number) => void
 }) {
+    const navigate = useNavigate()
+
     const [showMenu, setShowMenu] = useState(false)
 
     const currency: Currency = localStorage.getItem('currency') as Currency
     const isNegative: boolean = balance < 0
+
     return (
         <div className={styledRecordWrapper}>
             <div
                 className={styledMainAccountSection}
-                onClick={() => handleAccountEdit(id)}
+                onClick={() =>
+                    navigate(`/account-balance/${id}?accountName=${name}`)
+                }
             >
                 <div className={styledAccountNameAndIcon}>
                     <IoWallet size={30} />
