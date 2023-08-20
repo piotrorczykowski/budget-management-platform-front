@@ -89,9 +89,9 @@ const getExpensesProgressBarValue = (
     }
 
     if (isCashFlowNegative) {
-        return (expenses / income) * 100
-    } else {
         return 100
+    } else {
+        return (expenses / income) * 100
     }
 }
 
