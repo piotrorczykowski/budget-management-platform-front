@@ -135,7 +135,7 @@ export default function SignUpPage() {
                         otherText="In order to start using your BMP account, please verify
                         your email address: "
                     />
-                    <span className={styledEmail}>{email}test@example.com</span>
+                    <span className={styledEmail}>{email}</span>
 
                     <CustomButton
                         buttonText="Send Verification Email"
