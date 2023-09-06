@@ -241,6 +241,7 @@ export default function BudgetForm({
                     name="categories"
                     handleChange={handleChange}
                     options={categories}
+                    selectedOptions={selectedCategories}
                     errorMessage={formErrors.categories}
                 />
 

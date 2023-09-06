@@ -188,7 +188,7 @@ export default function BudgetCard({
 
                 <div className={styledBudgetProgressBar}>
                     <ProgressBar
-                        progress={budgetProgress}
+                        progress={budgetProgress === 100 ? 0 : budgetProgress}
                         progressBarColor={
                             budgetProgress > 0
                                 ? ProgressBarColor.Green

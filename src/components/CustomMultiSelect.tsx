@@ -72,12 +72,14 @@ export default function CustomMultiSelect({
     name,
     handleChange,
     options,
+    selectedOptions,
     errorMessage = '',
 }: {
     labelText: string
     name: string
     handleChange: (selectedOption: any) => void
     options: { value: string; label: string }[]
+    selectedOptions: { value: string; label: string }[]
     errorMessage?: string
 }) {
     return (
@@ -93,6 +95,7 @@ export default function CustomMultiSelect({
                 isSearchable={true}
                 onChange={handleChange}
                 options={options}
+                value={selectedOptions}
                 className={customClass}
                 styles={customStyles}
             />
