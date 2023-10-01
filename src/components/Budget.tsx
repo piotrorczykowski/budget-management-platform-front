@@ -25,11 +25,11 @@ const styledBudgetInfo = css`
 const styledBudgetName = css`
     font-weight: 600;
     font-size: 18px;
-    width: 80%;
+    width: 75%;
 `
 
 const styledLeftRemains = css`
-    width: 20%;
+    width: 25%;
     text-align: right;
     margin-left: auto;
 `
@@ -59,7 +59,7 @@ export default function Budget({
     handleBudgetEdit: (budgetId: number) => void
 }) {
     const remains: number = planned - spent
-    const budgetProgress: number = (remains / planned) * 100
+    const budgetProgress: number = 100 - (remains / planned) * 100
 
     const currency: Currency = localStorage.getItem('currency') as Currency
 
@@ -89,7 +89,7 @@ export default function Budget({
                 <ProgressBar
                     progress={budgetProgress}
                     progressBarColor={
-                        budgetProgress > 0
+                        remains > 0
                             ? ProgressBarColor.Green
                             : ProgressBarColor.Red
                     }
