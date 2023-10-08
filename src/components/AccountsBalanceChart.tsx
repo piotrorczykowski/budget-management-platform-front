@@ -78,7 +78,7 @@ export default function AccountsBalanceChart({ date }: { date: Date }) {
             <div>
                 <Chart
                     width="100%"
-                    height="47vh"
+                    height="46vh"
                     chartType="LineChart"
                     data={chartData}
                     options={LineChartOptions}

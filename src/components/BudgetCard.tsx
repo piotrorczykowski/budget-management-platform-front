@@ -154,7 +154,7 @@ export default function BudgetCard({
     const [showMenu, setShowMenu] = useState(false)
 
     const remains: number = planned - spent
-    const budgetProgress: number = (remains / planned) * 100
+    const budgetProgress: number = 100 - (remains / planned) * 100
 
     const currency: Currency = localStorage.getItem('currency') as Currency
 
@@ -162,6 +162,7 @@ export default function BudgetCard({
         remains < 0
             ? `-${getCurrencySymbol(currency)}${(-1 * remains).toFixed(2)}`
             : `${getCurrencySymbol(currency)}${remains.toFixed(2)}`
+
     const formattedLeftPercentages: string =
         budgetProgress > 100
             ? `-${(budgetProgress - 100).toFixed(0)}%`
@@ -190,7 +191,7 @@ export default function BudgetCard({
                     <ProgressBar
                         progress={budgetProgress === 100 ? 0 : budgetProgress}
                         progressBarColor={
-                            budgetProgress > 0
+                            remains > 0
                                 ? ProgressBarColor.Green
                                 : ProgressBarColor.Red
                         }

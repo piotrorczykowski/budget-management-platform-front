@@ -34,7 +34,7 @@ const styledRecordDescription = css`
 
 const styledRecordDate = css`
     color: #626569;
-    width: 25%;
+    width: 20%;
 `
 
 const styledAccountName = css`
@@ -46,7 +46,7 @@ const styledRecordAmount = (isExpense: boolean, isTransfer: boolean) => css`
     font-weight: 600;
     color: ${isTransfer ? 'black' : isExpense ? '#f12e25' : '#1d934b'};
     text-align: right;
-    width: 10%;
+    width: 15%;
 `
 
 export default function Record({

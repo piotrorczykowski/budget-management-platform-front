@@ -25,11 +25,11 @@ const styledBudgetInfo = css`
 const styledBudgetName = css`
     font-weight: 600;
     font-size: 18px;
-    width: 75%;
+    width: 55%;
 `
 
 const styledLeftRemains = css`
-    width: 25%;
+    width: 45%;
     text-align: right;
     margin-left: auto;
 `

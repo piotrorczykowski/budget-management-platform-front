@@ -56,12 +56,9 @@ export default function BudgetsPage() {
     const [startDate, setStartDate] = useState(new Date())
     const [endDate, setEndDate] = useState(new Date())
 
-    const [selectedCategories, setSelectedCategories] = useState([
-        {
-            value: '',
-            label: '',
-        },
-    ])
+    const [selectedCategories, setSelectedCategories] = useState<
+        { label: string; value: string }[]
+    >([])
 
     const [budgets, setBudgets] = useState<Budget[] | undefined>([])
 
@@ -108,12 +105,7 @@ export default function BudgetsPage() {
         setPlanned('')
         setStartDate(new Date())
         setEndDate(new Date())
-        setSelectedCategories([
-            {
-                value: '',
-                label: '',
-            },
-        ])
+        setSelectedCategories([])
         setIsBudgetUpdating(false)
     }
 
