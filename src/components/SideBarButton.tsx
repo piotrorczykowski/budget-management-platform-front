@@ -50,7 +50,9 @@ export default function SideBarButton({
     const pathName: string = location.pathname
     const isCurrentButtonActive: boolean =
         pathName === `/${buttonText.toLowerCase()}` ||
-        (pathName === '/' && `/${buttonText.toLowerCase()}` === '/dashboard')
+        (pathName === '/' && `/${buttonText.toLowerCase()}` === '/dashboard') ||
+        (pathName === '/admin' &&
+            `/${buttonText.toLowerCase()}` === '/admin panel')
 
     const icons: Map<string, any> = new Map([
         ['MdSpaceDashboard', <MdSpaceDashboard className={styledIcon} />],
